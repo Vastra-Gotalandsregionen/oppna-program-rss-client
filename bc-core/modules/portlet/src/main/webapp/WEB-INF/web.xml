@@ -29,6 +29,10 @@
   <description>RSS Client</description>
 
   <listener>
+    <listener-class>com.liferay.portal.kernel.servlet.PortletContextListener</listener-class>
+  </listener>
+
+  <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
@@ -38,6 +42,16 @@
       classpath*:/applicationContext.xml /*-portlet.xml
     </param-value>
   </context-param>
+
+  <servlet>
+    <servlet-name>RssClient</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-class</param-name>
+      <param-value>org.springframework.web.portlet.DispatcherPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
 
   <servlet>
     <servlet-name>view</servlet-name>
