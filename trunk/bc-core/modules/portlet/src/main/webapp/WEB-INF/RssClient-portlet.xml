@@ -28,7 +28,7 @@
   <bean class="se.vgregion.portal.rss.client.controllers.RssViewController" p:newsService-ref="rssFetcherService"
     p:rssFeedView="rssFeedView" />
 
-  <bean id="rssFeedView" class="se.vgregion.portal.rss.client.view.rssdemo.web.RssFeedView" p:feedTitle="Feed title"
+  <bean id="rssFeedView" class="se.vgregion.portal.rss.client.view.RssFeedView" p:feedTitle="Feed title"
     p:feedDescription="Feed description" p:feedLink="http://www.vgregion.se/" />
 
 </beans>
