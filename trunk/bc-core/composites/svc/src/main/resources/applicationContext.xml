@@ -28,7 +28,7 @@
   <!-- Enables annotations -->
   <context:annotation-config />  
 
-  <bean id="rssFetcherService" class="se.vgregion.portal.rss.client.RssFetcherService" />
+  <bean id="rssFetcherService" class="se.vgregion.portal.rss.client.service.RssFetcherServiceImpl" />
 
 <!--  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
 <!--    <property name="locations">-->
