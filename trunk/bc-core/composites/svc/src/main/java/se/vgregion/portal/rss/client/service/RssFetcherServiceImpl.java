@@ -23,6 +23,10 @@ import java.util.List;
 
 import se.vgregion.portal.rss.client.domain.RssItem;
 
+/**
+ * @author jonas liljenfeldt
+ *
+ */
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     @Override

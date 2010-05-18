@@ -16,7 +16,6 @@
  *   Boston, MA 02111-1307  USA
  *
  */
-
 package se.vgregion.portal.rss.client.view;
 
 import java.util.*;
@@ -62,9 +61,9 @@ public class RssFeedView extends AbstractRssFeedView {
             throws Exception {
 
         @SuppressWarnings("unchecked")
-        List<RssItem> rssItems = (List<RssItem>) model.get("newsItemList");
+        List<RssItem> rssItems = (List<RssItem>) model.get("rssItems");
 
-        List<Item> feedItems = new ArrayList<Item>();
+        List<Item> items = new ArrayList<Item>();
         for (RssItem newsItem : rssItems) {
             Item feedItem = new Item();
             feedItem.setTitle(newsItem.getTitle());
@@ -77,8 +76,8 @@ public class RssFeedView extends AbstractRssFeedView {
             feedItem.setDescription(desc);
 
             feedItem.setLink(newsItem.getLink());
-            feedItems.add(feedItem);
+            items.add(feedItem);
         }
-        return feedItems;
+        return items;
     }
 }

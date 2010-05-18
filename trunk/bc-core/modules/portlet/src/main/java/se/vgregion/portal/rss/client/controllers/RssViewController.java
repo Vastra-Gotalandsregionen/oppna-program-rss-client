@@ -39,15 +39,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.servlet.view.AbstractView;
 
 import se.vgregion.portal.rss.client.domain.RssItem;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 /**
- * Displays rss items.
+ * Displays RSS items.
  * 
- * @author jonas liljenfeldt
+ * @author Jonas Liljenfeldt
  */
 @Controller
 @RequestMapping("VIEW")
@@ -58,16 +57,11 @@ public class RssViewController {
      */
     public static final String ERROR_WHEN_ACCESSING_DATA_SOURCE = "Error when accessing data source";
     
-    /**
-     * View rss items page name.
-     */
-    public static final String VIEW_TASKS = "viewRssItems";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
 
-    private AbstractView rssFeedView;
+    private String rssFeedView;
     
-    public void setRssFeedView(AbstractView rssFeedView) {
+    public void setRssFeedView(String rssFeedView) {
         this.rssFeedView = rssFeedView;
     }
 
@@ -98,7 +92,7 @@ public class RssViewController {
      * @return View name.
      */
     @RenderMapping()
-    public String viewTaskList(ModelMap model, RenderRequest request, RenderResponse response,
+    public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
             PortletPreferences preferences) {
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
 
@@ -129,7 +123,7 @@ public class RssViewController {
         }
 
         model.addAttribute("rssItemList", rssItemList);
-        return VIEW_TASKS;
+        return rssFeedView;
     }
 
     private String getUserId(Map<String, ?> attributes) {

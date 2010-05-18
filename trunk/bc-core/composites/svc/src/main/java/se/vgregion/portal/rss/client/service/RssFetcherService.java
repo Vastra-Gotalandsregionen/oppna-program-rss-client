@@ -24,7 +24,7 @@ import java.util.List;
 import se.vgregion.portal.rss.client.domain.RssItem;
 
 /**
- * @author jonas
+ * @author jonas liljenfeldt
  *
  */
 public interface RssFetcherService {
