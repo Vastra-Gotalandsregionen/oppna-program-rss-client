@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!--
+<!--
 
     Copyright 2010 Västra Götalandsregionen This library is free software; you can redistribute it and/or modify
     it under the terms of version 2.1 of the GNU Lesser General Public License as published by the Free Software
@@ -25,10 +25,9 @@
 
   <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 
-  <bean class="se.vgregion.portal.rss.client.controllers.RssViewController" p:newsService-ref="rssFetcherService"
+  <bean class="se.vgregion.portal.rss.client.controllers.RssViewController" p:rssFetcherService-ref="rssFetcherService"
     p:rssFeedView="rssFeedView" />
 
   <bean id="rssFeedView" class="se.vgregion.portal.rss.client.view.RssFeedView" p:feedTitle="Feed title"
-    p:feedDescription="Feed description" p:feedLink="http://www.vgregion.se/" />
-
+    p:feedDescription="Feed description" p:feedLink="http://intra.vgregion.se/sv/intravgregionse-ny-webbplats/Aktuellt-Intra-RSS/" />
 </beans>
