@@ -66,7 +66,7 @@ public class RssViewController {
      * @param model ModelMap
      * @param request RenderRequest
      * @param response RenderResponse
-     * @param preferences PortletPreferences
+     * @param preferences RSS client VIEW portlet's PortletPreferences
      * @return View name.
      * @throws
      * @throws IOException
@@ -81,10 +81,14 @@ public class RssViewController {
         Map<String, ?> attributes = (Map<String, ?>) request.getAttribute(PortletRequest.USER_INFO);
         String userId = getUserId(attributes);
 
+        // Get list of URLs for user saved in his/her preferences
+        String feedUrls = preferences.getValue(RssEditController.CONFIG_RSS_FEED_LINK_KEY, "");
+        String[] feedUrlsArray = feedUrls.split("\n");
+        
         List<SyndFeed> rssFeeds = null;
-        if (!"".equals(userId)) {
+        if (feedUrlsArray.length > 0) {
             try {
-                rssFeeds = rssFetcherService.getRssFeed(userId);
+                rssFeeds = rssFetcherService.getRssFeed(feedUrlsArray);
                 int noOfFeeds = 0;
                 for (SyndFeed rssFeed : rssFeeds) {
                     noOfFeeds += rssFeed.getEntries().size();
