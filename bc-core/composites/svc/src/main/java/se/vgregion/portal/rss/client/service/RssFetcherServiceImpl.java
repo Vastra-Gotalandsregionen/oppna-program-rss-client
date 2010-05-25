@@ -40,17 +40,16 @@ import com.sun.syndication.io.XmlReader;
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     @Override
-    public List<SyndFeed> getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException {
-
+    public List<SyndFeed> getRssFeed(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
+            FeedException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
-
-        // Get feeds according to users's preferences
-
-        String[] feedLinks = new String[] {"http://localhost:8000/vgr.rss"};
-        for (String feedLink : feedLinks) {
-            URL feedUrl = new URL(feedLink);
-            SyndFeedInput syndFeedInput = new SyndFeedInput();
-            syndFeeds.add(syndFeedInput.build(new XmlReader(feedUrl)));
+        // String[] feedLinks = new String[] {"http://localhost:8000/vgr.rss"};
+        for (String feedLink : feedUrlsArray) {
+            if (feedLink != null && !feedLink.trim().isEmpty()) {
+                URL feedUrl = new URL(feedLink);
+                SyndFeedInput syndFeedInput = new SyndFeedInput();
+                syndFeeds.add(syndFeedInput.build(new XmlReader(feedUrl)));
+            }
         }
         return syndFeeds;
     }
@@ -65,7 +64,8 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      */
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws FeedException, IllegalArgumentException, IOException {
-        List<SyndFeed> rssItemList = new RssFetcherServiceImpl().getRssFeed("");
+        List<SyndFeed> rssItemList =
+                new RssFetcherServiceImpl().getRssFeed(new String[] {"http://localhost:8000/vgr.rss"});
         for (SyndFeed syndFeed : rssItemList) {
             List<SyndEntry> items = syndFeed.getEntries();
             for (SyndEntry item : items) {

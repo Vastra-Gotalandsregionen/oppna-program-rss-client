@@ -33,7 +33,7 @@ import com.sun.syndication.io.FeedException;
 public interface RssFetcherService {
 
     /**
-     * @param userId
+     * @param feedUrlsArray
      * @return
      * @throws FeedException 
      * @throws MalformedURLException 
@@ -41,5 +41,5 @@ public interface RssFetcherService {
      * @throws IllegalArgumentException 
      * @throws FeedException 
      */
-    public List<SyndFeed> getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException;
+    public List<SyndFeed> getRssFeed(String[] feedUrlsArray) throws IllegalArgumentException, IOException, FeedException;
 }
