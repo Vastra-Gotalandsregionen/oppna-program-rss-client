@@ -31,10 +31,12 @@
 <div id="module-news" class="module">
 <div id="module-content">
 <ul class="list-news">
-  <c:forEach items="${rssFeed}" var="item">
-    <li><a href="${item.link}">${item.title}</a> <span class="date">${item.publishedDate}</span>
-    <p>${item.description.value}</p>
-    </li>
+  <c:forEach items="${rssFeeds}" var="rssFeed">
+    <c:forEach items="${rssFeed.entries}" var="item">
+      <li><a href="${item.link}">${item.title}</a> <span class="date">${item.publishedDate}</span>
+      <p>${item.description.value}</p>
+      </li>
+    </c:forEach>
   </c:forEach>
 </ul>
 </div>

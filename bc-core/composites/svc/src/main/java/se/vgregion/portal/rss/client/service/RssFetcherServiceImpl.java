@@ -21,6 +21,7 @@ package se.vgregion.portal.rss.client.service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -33,26 +34,45 @@ import com.sun.syndication.io.XmlReader;
 
 /**
  * @author jonas liljenfeldt
- *
+ * 
  */
 @Service
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     @Override
-    public SyndFeed getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException {
-        URL feedUrl = new URL("http://localhost:8000/vgr.rss");
-        SyndFeedInput syndFeedInput = new SyndFeedInput();
-        return syndFeedInput.build(new XmlReader(feedUrl));
+    public List<SyndFeed> getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException {
+
+        List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
+
+        // Get feeds according to users's preferences
+
+        String[] feedLinks = new String[] {"http://localhost:8000/vgr.rss"};
+        for (String feedLink : feedLinks) {
+            URL feedUrl = new URL(feedLink);
+            SyndFeedInput syndFeedInput = new SyndFeedInput();
+            syndFeeds.add(syndFeedInput.build(new XmlReader(feedUrl)));
+        }
+        return syndFeeds;
     }
 
+    /**
+     * Used for testing only.
+     * 
+     * @param args
+     * @throws FeedException
+     * @throws IllegalArgumentException
+     * @throws IOException
+     */
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws FeedException, IllegalArgumentException, IOException {
-        SyndFeed rssItemList = new RssFetcherServiceImpl().getRssFeed("");
-        List<SyndEntry> items = rssItemList.getEntries();
-        for (SyndEntry item : items) {
-            System.out.println(item.getPublishedDate() + " " + item.getTitle());
-            System.out.println(item.getDescription().getValue());
+        List<SyndFeed> rssItemList = new RssFetcherServiceImpl().getRssFeed("");
+        for (SyndFeed syndFeed : rssItemList) {
+            List<SyndEntry> items = syndFeed.getEntries();
+            for (SyndEntry item : items) {
+                System.out.println(item.getPublishedDate() + " " + item.getTitle());
+                System.out.println(item.getDescription().getValue());
+            }
         }
     }
-    
+
 }

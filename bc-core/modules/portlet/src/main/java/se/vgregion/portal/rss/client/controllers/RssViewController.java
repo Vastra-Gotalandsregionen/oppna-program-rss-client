@@ -20,6 +20,7 @@
 package se.vgregion.portal.rss.client.controllers;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -80,21 +81,24 @@ public class RssViewController {
         Map<String, ?> attributes = (Map<String, ?>) request.getAttribute(PortletRequest.USER_INFO);
         String userId = getUserId(attributes);
 
-        SyndFeed rssFeed = null;
+        List<SyndFeed> rssFeeds = null;
         if (!"".equals(userId)) {
             try {
-                rssFeed = rssFetcherService.getRssFeed(userId);
+                rssFeeds = rssFetcherService.getRssFeed(userId);
+                int noOfFeeds = 0;
+                for (SyndFeed rssFeed : rssFeeds) {
+                    noOfFeeds += rssFeed.getEntries().size();
+                }
                 // Set number of RSS items in RSS viewer portlet header title.
                 if (bundle != null) {
-                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + rssFeed.getEntries().size()
-                            + ")");
+                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + noOfFeeds + ")");
                 }
             } catch (FeedException e) {
                 LOGGER.error("Error when trying to fetch RSS items for user " + userId + ".", e);
             }
         }
 
-        model.addAttribute("rssFeed", rssFeed.getEntries());
+        model.addAttribute("rssFeeds", rssFeeds);
         return "rssFeedView";
     }
 
