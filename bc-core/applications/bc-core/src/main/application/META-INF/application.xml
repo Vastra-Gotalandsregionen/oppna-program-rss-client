@@ -29,16 +29,16 @@
 			<context-root>/rss-client-bc-core-module-portlet</context-root>
 		</web>
 	</module>
-	<module id="WebModule_1273742269366">
-		<web>
-			<web-uri>rss-client-bc-core-module-web-1.0-SNAPSHOT.war</web-uri>
-			<context-root>/rss-client-bc-core-module-web</context-root>
-		</web>
-	</module>
 	<module id="WebModule_1273742269390">
 		<web>
 			<web-uri>rss-client-bc-core-module-intsvc-1.0-SNAPSHOT.war</web-uri>
 			<context-root>/rss-client-bc-core-module-intsvc</context-root>
+		</web>
+	</module>
+	<module id="WebModule_1274703944854">
+		<web>
+			<web-uri>rss-client-bc-core-module-web-1.0-SNAPSHOT.war</web-uri>
+			<context-root>/rss-client-bc-core-module-web</context-root>
 		</web>
 	</module>
 </application>

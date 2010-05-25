@@ -19,9 +19,11 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import java.util.List;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
-import se.vgregion.portal.rss.client.domain.RssItem;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
 
 /**
  * @author jonas liljenfeldt
@@ -32,6 +34,11 @@ public interface RssFetcherService {
     /**
      * @param userId
      * @return
+     * @throws FeedException 
+     * @throws MalformedURLException 
+     * @throws IOException 
+     * @throws IllegalArgumentException 
+     * @throws FeedException 
      */
-    public List<RssItem> getRssItemList(String userId);
+    public SyndFeed getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException;
 }

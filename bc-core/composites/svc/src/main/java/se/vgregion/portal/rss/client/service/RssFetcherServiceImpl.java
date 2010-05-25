@@ -19,19 +19,40 @@
 
 package se.vgregion.portal.rss.client.service;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
-import se.vgregion.portal.rss.client.domain.RssItem;
+import org.springframework.stereotype.Service;
+
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 
 /**
  * @author jonas liljenfeldt
  *
  */
+@Service
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     @Override
-    public List<RssItem> getRssItemList(String userId) {
-        return null;
+    public SyndFeed getRssFeed(String userId) throws IllegalArgumentException, IOException, FeedException {
+        URL feedUrl = new URL("http://localhost:8000/vgr.rss");
+        SyndFeedInput syndFeedInput = new SyndFeedInput();
+        return syndFeedInput.build(new XmlReader(feedUrl));
     }
 
+    @SuppressWarnings("unchecked")
+    public static void main(String[] args) throws FeedException, IllegalArgumentException, IOException {
+        SyndFeed rssItemList = new RssFetcherServiceImpl().getRssFeed("");
+        List<SyndEntry> items = rssItemList.getEntries();
+        for (SyndEntry item : items) {
+            System.out.println(item.getPublishedDate() + " " + item.getTitle());
+            System.out.println(item.getDescription().getValue());
+        }
+    }
+    
 }
