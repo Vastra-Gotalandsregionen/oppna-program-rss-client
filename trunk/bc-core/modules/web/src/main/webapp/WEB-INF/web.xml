@@ -34,34 +34,15 @@
       se.vgr.javg.util.webcomponent.support.FaceletsClasspathResourceResolver
     </param-value>
   </context-param>
+ 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>
-      classpath*:/services-config.xml /WEB-INF/webflow-config.xml
-    </param-value>
+    <param-value>classpath*:/services-config.xml</param-value>
   </context-param>
-
+  
   <context-param>
     <param-name>facelets.REFRESH_PERIOD</param-name>
     <param-value>2</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>facelets.DEVELOPMENT</param-name>
-    <param-value>true</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <!-- client side state does NOT work with Webflow 1.0.5 (nor with Myfaces/SunRI)
-      <param-value>client</param-value>
-    -->
-    <param-value>server</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-    <param-value>.xhtml</param-value>
   </context-param>
 
   <!-- Sun RI: strict validation at startup
@@ -97,20 +78,6 @@
     <param-value>true</param-value>
   </context-param>
   -->
-
-  <!-- Guarantees that under all JSF exit conditions, the flow context will be cleaned up -->
-  <filter>
-    <filter-name>Flow System Cleanup Filter</filter-name>
-    <filter-class>
-      org.springframework.webflow.executor.jsf.FlowSystemCleanupFilter
-    </filter-class>
-  </filter>
-
-  <!-- Filters all request to *.faces to the Flow System Cleanup Filter for guarenteed cleanup -->
-  <filter-mapping>
-    <filter-name>Flow System Cleanup Filter</filter-name>
-    <url-pattern>*.jsf</url-pattern>
-  </filter-mapping>
 
   <filter>
     <filter-name>encodingFilter</filter-name>
@@ -191,24 +158,8 @@
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
 
-  <!-- JAVG support for using GET-links with JSF/Webflow -->
-  <servlet>
-    <servlet-name>JSFWebFlowGetRequestDispatcher</servlet-name>
-    <servlet-class>se.vgr.javg.support.webflow.v1.JSFWebFlowGetRequestDispatcher</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>JSFWebFlowGetRequestDispatcher</servlet-name>
-    <url-pattern>/getlink</url-pattern>
-  </servlet-mapping>
-
   <error-page>
     <exception-type>javax.servlet.ServletException</exception-type>
-    <location>/error.jsf</location>
-  </error-page>
-  <error-page>
-    <exception-type>
-      org.springframework.webflow.execution.repository.support.InvalidContinuationIdException
-    </exception-type>
     <location>/error.jsf</location>
   </error-page>
 

@@ -52,6 +52,11 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>RssClient</servlet-name>
+    <url-pattern>/RssClient/*</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>view</servlet-name>

@@ -19,8 +19,7 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -33,15 +32,15 @@ import javax.portlet.RenderResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import se.vgregion.portal.rss.client.domain.RssItem;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
 
 /**
  * Displays RSS items.
@@ -52,78 +51,51 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 @RequestMapping("VIEW")
 public class RssViewController {
 
-    /**
-     * Default error message for DataAccessException.
-     */
-    public static final String ERROR_WHEN_ACCESSING_DATA_SOURCE = "Error when accessing data source";
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
 
-    private String rssFeedView;
-    
-    public void setRssFeedView(String rssFeedView) {
-        this.rssFeedView = rssFeedView;
-    }
-
+    @Autowired
     private RssFetcherService rssFetcherService = null;
 
     @Autowired
     private PortletConfig portletConfig = null;
 
-    public void setRssFetcherService(RssFetcherService rssFetcherService) {
-        this.rssFetcherService = rssFetcherService;
-    }
-
-    public void setPortletConfig(PortletConfig portletConfig) {
-        this.portletConfig = portletConfig;
-    }
-
     /**
      * Shows RSS items for user.
      * 
-     * @param model
-     *            ModelMap
-     * @param request
-     *            RenderRequest
-     * @param response
-     *            RenderResponse
-     * @param preferences
-     *            PortletPreferences
+     * @param model ModelMap
+     * @param request RenderRequest
+     * @param response RenderResponse
+     * @param preferences PortletPreferences
      * @return View name.
+     * @throws
+     * @throws IOException
+     * @throws IllegalArgumentException
      */
     @RenderMapping()
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
-            PortletPreferences preferences) {
+            PortletPreferences preferences) throws IllegalArgumentException, IOException {
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
 
         @SuppressWarnings("unchecked")
         Map<String, ?> attributes = (Map<String, ?>) request.getAttribute(PortletRequest.USER_INFO);
         String userId = getUserId(attributes);
 
-        List<RssItem> rssItemList = null;
+        SyndFeed rssFeed = null;
         if (!"".equals(userId)) {
             try {
-                rssItemList = rssFetcherService.getRssItemList(userId);
-                // Set number of RSS items in Rss viewer portlet header.
+                rssFeed = rssFetcherService.getRssFeed(userId);
+                // Set number of RSS items in RSS viewer portlet header title.
                 if (bundle != null) {
-                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + rssItemList.size() + ")");
+                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + rssFeed.getEntries().size()
+                            + ")");
                 }
-            } catch (DataAccessException dataAccessException) {
-                ObjectError objectError;
-                if (bundle != null) {
-                    objectError = new ObjectError("DataAccessError", bundle.getString("error.DataAccessError"));
-                } else {
-                    objectError = new ObjectError("DataAccessError", ERROR_WHEN_ACCESSING_DATA_SOURCE);
-                }
-                LOGGER.error("Error when trying to fetch RSS items for user " + userId + ".", dataAccessException);
-                model.addAttribute("errors", objectError);
+            } catch (FeedException e) {
+                LOGGER.error("Error when trying to fetch RSS items for user " + userId + ".", e);
             }
-        } else {
-            rssItemList = new ArrayList<RssItem>();
         }
 
-        model.addAttribute("rssItemList", rssItemList);
-        return rssFeedView;
+        model.addAttribute("rssFeed", rssFeed.getEntries());
+        return "rssFeedView";
     }
 
     private String getUserId(Map<String, ?> attributes) {
