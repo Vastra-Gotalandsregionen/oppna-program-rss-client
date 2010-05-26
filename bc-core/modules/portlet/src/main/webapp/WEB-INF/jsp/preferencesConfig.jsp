@@ -33,7 +33,7 @@
 <div style="margin: 6px"><b><fmt:message key="settings"/></b><br>
 
 <form action="<portlet:actionURL/>" method="POST">
-  <label for="${feed1}"><fmt:message key="feed" />:</label> 
-    <textarea name="rssFeedLink">${rssFeedLink}"</textarea><br>
+  <label for="rssFeedLink"><fmt:message key="feed" />:</label> 
+    <textarea name="rssFeedLink" cols="50" rows="5">${rssFeedLink}</textarea><br>
 <input value=<fmt:message key="save" /> type="submit"/></form>
 </div>
