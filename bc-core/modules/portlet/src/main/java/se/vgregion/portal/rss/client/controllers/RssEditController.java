@@ -62,15 +62,15 @@ public class RssEditController {
      *            RSS Client EDIT portlet's ModelMap
      * @param preferences
      *            RSS Client portlet's PortletPreferences
-     * @param feedLink1
+     * @param feedLinks
      *            User feed URLs
      */
     @ActionMapping
     public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
-            @RequestParam(value = CONFIG_RSS_FEED_LINK_KEY, required = false) final String feedLink1) {
+            @RequestParam(value = CONFIG_RSS_FEED_LINK_KEY, required = false) final String feedLinks) {
         try {
             // Set preference and store value
-            preferences.setValue(CONFIG_RSS_FEED_LINK_KEY, feedLink1);
+            preferences.setValue(CONFIG_RSS_FEED_LINK_KEY, feedLinks);
             preferences.store();
             model.addAttribute("saveError", null);
         } catch (Exception e) {
