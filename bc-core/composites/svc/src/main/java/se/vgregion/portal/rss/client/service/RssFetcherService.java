@@ -41,5 +41,5 @@ public interface RssFetcherService {
      * @throws IllegalArgumentException 
      * @throws FeedException 
      */
-    public List<SyndFeed> getRssFeed(String[] feedUrlsArray) throws IllegalArgumentException, IOException, FeedException;
+    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException, FeedException;
 }
