@@ -37,6 +37,35 @@
       <artifactId>rome</artifactId>
       <version>1.0</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jetty</artifactId>
+      <version>6.0.2</version>
+    </dependency>
+
+   <dependency>
+      <groupId>jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>6.0.2</version>
+    </dependency>
 
   </dependencies>
 </project>
