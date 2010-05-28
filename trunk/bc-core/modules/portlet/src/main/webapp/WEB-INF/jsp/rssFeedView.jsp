@@ -66,7 +66,7 @@
             };
     
             var myDataTable = new YAHOO.widget.DataTable("basic",
-                    myColumnDefs, myDataSource, {caption:"Nyhetsflöden"});
+                    myColumnDefs, myDataSource, {});
                     
             return {
                 oDS: myDataSource,
