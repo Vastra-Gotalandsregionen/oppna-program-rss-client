@@ -40,18 +40,32 @@ import com.sun.syndication.io.XmlReader;
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     @Override
-    public List<SyndFeed> getRssFeed(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
+    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
             FeedException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
         // String[] feedLinks = new String[] {"http://localhost:8000/vgr.rss"};
         for (String feedLink : feedUrlsArray) {
             if (feedLink != null && !feedLink.trim().isEmpty()) {
                 URL feedUrl = new URL(feedLink);
+                // TODO Should be handled in cooperatin with pubsubhub if URL contains "pubsubhub.vgregion.se"
                 SyndFeedInput syndFeedInput = new SyndFeedInput();
                 syndFeeds.add(syndFeedInput.build(new XmlReader(feedUrl)));
             }
         }
+        
+        trimEntryStrings(syndFeeds);
+        
         return syndFeeds;
+    }
+
+    private void trimEntryStrings(List<SyndFeed> syndFeeds) {
+        for (SyndFeed syndFeed : syndFeeds) {
+            for (int i = 0; i < syndFeed.getEntries().size(); i++) {
+                SyndEntry syndEntry = (SyndEntry) syndFeed.getEntries().get(i);
+                syndEntry.setTitle(syndEntry.getTitle().trim());
+                syndEntry.getDescription().setValue(syndEntry.getDescription().getValue().trim());
+            }
+        }
     }
 
     /**
@@ -65,7 +79,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) throws FeedException, IllegalArgumentException, IOException {
         List<SyndFeed> rssItemList =
-                new RssFetcherServiceImpl().getRssFeed(new String[] {"http://localhost:8000/vgr.rss"});
+                new RssFetcherServiceImpl().getRssFeeds(new String[] {"http://localhost:8000/vgr.rss"});
         for (SyndFeed syndFeed : rssItemList) {
             List<SyndEntry> items = syndFeed.getEntries();
             for (SyndEntry item : items) {
