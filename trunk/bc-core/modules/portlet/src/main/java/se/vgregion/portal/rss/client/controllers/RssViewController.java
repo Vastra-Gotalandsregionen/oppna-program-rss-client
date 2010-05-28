@@ -83,12 +83,15 @@ public class RssViewController {
 
         // Get list of URLs for user saved in his/her preferences
         String feedUrls = preferences.getValue(RssEditController.CONFIG_RSS_FEED_LINK_KEY, "");
-        String[] feedUrlsArray = feedUrls.split("\n");
+        String[] feedUrlsArray = null;
+        if (feedUrls != null) {
+            feedUrlsArray = feedUrls.split("\n");
+        }
         
         List<SyndFeed> rssFeeds = null;
-        if (feedUrlsArray.length > 0) {
+        if (feedUrlsArray != null && feedUrlsArray.length > 0) {
             try {
-                rssFeeds = rssFetcherService.getRssFeed(feedUrlsArray);
+                rssFeeds = rssFetcherService.getRssFeeds(feedUrlsArray);
                 int noOfFeeds = 0;
                 for (SyndFeed rssFeed : rssFeeds) {
                     noOfFeeds += rssFeed.getEntries().size();

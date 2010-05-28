@@ -25,7 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions'%>
-<%@ taglib prefix="fmt" uri="/WEB-INF/fmt.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
 <portlet:defineObjects />
@@ -33,7 +33,7 @@
 <div style="margin: 6px"><b><fmt:message key="settings"/></b><br>
 
 <form action="<portlet:actionURL/>" method="POST">
-  <label for="rssFeedLink"><fmt:message key="feed" />:</label> 
-    <textarea name="rssFeedLink" cols="50" rows="5">${rssFeedLink}</textarea><br>
+  <label for="rssFeedLink" style="vertical-align: top;"><fmt:message key="feeds" />:</label> 
+    <textarea name="rssFeedLink" cols="100" rows="5">${rssFeedLink}</textarea><br>
 <input value=<fmt:message key="save" /> type="submit"/></form>
 </div>
