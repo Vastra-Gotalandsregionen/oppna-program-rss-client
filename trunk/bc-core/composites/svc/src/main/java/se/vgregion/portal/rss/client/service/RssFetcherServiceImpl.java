@@ -47,35 +47,12 @@ public class RssFetcherServiceImpl implements RssFetcherService {
         for (String feedLink : feedUrlsArray) {
             if (feedLink != null && !feedLink.trim().isEmpty()) {
                 URL feedUrl = new URL(feedLink);
-                // TODO Should be handled in cooperatin with pubsubhub if URL contains "pubsubhub.vgregion.se"
+                // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
                 SyndFeedInput syndFeedInput = new SyndFeedInput();
                 syndFeeds.add(syndFeedInput.build(new XmlReader(feedUrl)));
             }
         }
-
-        trimEntryStrings(syndFeeds);
-
         return syndFeeds;
-    }
-
-    private void trimEntryStrings(List<SyndFeed> syndFeeds) {
-        for (SyndFeed syndFeed : syndFeeds) {
-            if (syndFeed.getEntries() != null) {
-                for (int i = 0; i < syndFeed.getEntries().size(); i++) {
-                    SyndEntry syndEntry = (SyndEntry) syndFeed.getEntries().get(i);
-                    if (syndEntry.getTitle() != null) {
-                        syndEntry.setTitle(escapeText(syndEntry.getTitle().trim()));
-                    }
-                    if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null) {
-                        syndEntry.getDescription().setValue(escapeText(syndEntry.getDescription().getValue().trim()));
-                    }
-                }
-            }
-        }
-    }
-    
-    private String escapeText(String string) {
-        return string.replace("'", "\\'");
     }
 
     /**

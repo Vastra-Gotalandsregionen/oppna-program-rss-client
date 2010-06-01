@@ -20,6 +20,7 @@
 package se.vgregion.portal.rss.client.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -38,8 +39,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
+import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 
@@ -87,26 +90,37 @@ public class RssViewController {
         if (feedUrls != null) {
             feedUrlsArray = feedUrls.split("\n");
         }
-        
-        List<SyndFeed> rssFeeds = null;
+
+        List<FeedEntryBean> feedEntryBeans = null;
         if (feedUrlsArray != null && feedUrlsArray.length > 0) {
             try {
-                rssFeeds = rssFetcherService.getRssFeeds(feedUrlsArray);
-                int noOfFeeds = 0;
-                for (SyndFeed rssFeed : rssFeeds) {
-                    noOfFeeds += rssFeed.getEntries().size();
+                List<SyndFeed> rssFeeds = rssFetcherService.getRssFeeds(feedUrlsArray);
+                feedEntryBeans = getFeedEntries(rssFeeds);
+
+                for (FeedEntryBean rssFeedBean : feedEntryBeans) {
+                    System.out.println(rssFeedBean.getFeedTitle() + ": " + rssFeedBean.getExcerpt());
                 }
                 // Set number of RSS items in RSS viewer portlet header title.
                 if (bundle != null) {
-                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + noOfFeeds + ")");
+                    response.setTitle(bundle.getString("javax.portlet.title") + " (" + feedEntryBeans.size() + ")");
                 }
             } catch (FeedException e) {
                 LOGGER.error("Error when trying to fetch RSS items for user " + userId + ".", e);
             }
         }
 
-        model.addAttribute("rssFeeds", rssFeeds);
+        model.addAttribute("rssEntries", feedEntryBeans);
         return "rssFeedView";
+    }
+
+    private List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds) {
+        List<FeedEntryBean> feedEntryBeans = new ArrayList<FeedEntryBean>();
+        for (SyndFeed syndFeed : rssFeeds) {
+            for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
+                feedEntryBeans.add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed.getTitle()));
+            }
+        }
+        return feedEntryBeans;
     }
 
     private String getUserId(Map<String, ?> attributes) {
