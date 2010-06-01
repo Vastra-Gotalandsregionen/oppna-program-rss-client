@@ -40,23 +40,25 @@
 
 <portlet:actionURL escapeXml="false" var="formAction" />
 
+
 <div id="module-news" class="module">
   <div id="module-content">
+
     <script type="text/javascript">
     <!--
     YAHOO.example.Data = {
         rssItems: [
-         <c:forEach items="${rssFeeds}" var="rssFeed"><c:forEach items="${rssFeed.entries}" var="item" varStatus="status">{Flöde:'${rssFeed.title}', Datum:new Date(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy" />, <fmt:formatDate value="${item.publishedDate}" type="both" pattern="MM" />, <fmt:formatDate value="${item.publishedDate}" type="both" pattern="dd" />), Titel:'<a href="${item.link}">${item.title}</a>', Beskrivning:'${item.description.value}'}<c:if test="${not status.last}">,</c:if></c:forEach></c:forEach>
+         <c:forEach items="${rssEntries}" var="item" varStatus="status">{Flöde:'<c:out value="${item.feedTitle}" escapeXml="true" />',Datum:new Date(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy, MM, dd" />),Titel:'<a href="${item.link}"><c:out value="${item.title}" escapeXml="true"/></a>', Beskrivning:'<pre style="font-family:arial;font-size:100%; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;"><c:out value="${item.excerpt}" /></pre>'}<c:if test="${not status.last}">,</c:if></c:forEach>
         ]
     };
     
     YAHOO.util.Event.addListener(window, "load", function() {
         YAHOO.example.Basic = function() {
             var myColumnDefs = [
-                {key:"Flöde", sortable:true, resizeable:true},
-                {key:"Datum", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC},resizeable:true},
-                {key:"Titel", sortable:true, resizeable:true},
-                {key:"Beskrivning", sortable:true, resizeable:true}
+              {key:"Flöde", sortable:true, resizeable:true},
+              {key:"Datum", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC},resizeable:true},
+              {key:"Titel", sortable:true, resizeable:true},
+              {key:"Beskrivning", sortable:true, resizeable:true}
             ];
     
             var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.rssItems);
