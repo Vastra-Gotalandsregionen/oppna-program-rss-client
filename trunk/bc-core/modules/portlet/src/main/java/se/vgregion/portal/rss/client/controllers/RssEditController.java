@@ -94,7 +94,7 @@ public class RssEditController {
             preferences.setValue(CONFIG_RSS_FEED_LINK_KEY, feedLinks);
             preferences.store();
             model.addAttribute("saveError", null);
-            response.setPortletMode(PortletMode.VIEW);
+//            response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was opened initially every time.
         } catch (Exception e) {
             LOGGER.error("Error when trying to store RSS Client preferences.", e);
             model.addAttribute("saveError", "true");
