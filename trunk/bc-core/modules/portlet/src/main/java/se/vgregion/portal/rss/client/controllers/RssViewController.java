@@ -97,9 +97,9 @@ public class RssViewController {
                 List<SyndFeed> rssFeeds = rssFetcherService.getRssFeeds(feedUrlsArray);
                 feedEntryBeans = getFeedEntries(rssFeeds);
 
-                for (FeedEntryBean rssFeedBean : feedEntryBeans) {
-                    System.out.println(rssFeedBean.getFeedTitle() + ": " + rssFeedBean.getExcerpt());
-                }
+//                for (FeedEntryBean rssFeedBean : feedEntryBeans) {
+//                    System.out.println(rssFeedBean.getFeedTitle() + ": " + rssFeedBean.getExcerpt());
+//                }
                 // Set number of RSS items in RSS viewer portlet header title.
                 if (bundle != null) {
                     response.setTitle(bundle.getString("javax.portlet.title") + " (" + feedEntryBeans.size() + ")");
