@@ -20,17 +20,18 @@
 package se.vgregion.portal.rss.client.beans;
 
 import java.io.Serializable;
+import java.rmi.server.UID;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang.StringEscapeUtils;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String id;
     private String title;
     private String excerpt;
+    private String shortExcerpt;
     private List<String> contents;
     private String link;
     private String feedTitle;
@@ -38,16 +39,23 @@ public class FeedEntryBean implements Serializable {
 
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
+        id = new UID().toString();
         if (syndEntry.getTitle() != null) {
             title = escapeText(syndEntry.getTitle().trim());
         }
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null) {
             excerpt = escapeText(syndEntry.getDescription().getValue().trim());
-            for (char c : excerpt.toCharArray()) {
-                System.out.print(">" + c + '<');
-                System.out.println(">" + new Integer(c).intValue() + '<');
-            }
+//            for (char c : excerpt.toCharArray()) {
+//                System.out.print(">" + c + '<');
+//                System.out.println(">" + new Integer(c).intValue() + '<');
+//            }
         }
+        if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null && syndEntry.getDescription().getValue().length() > 200) {
+            shortExcerpt = excerpt.substring(0, 200);
+        } else {
+            shortExcerpt = excerpt;
+        }
+        
         contents = syndEntry.getContents();
         if (syndEntry.getLink() != null) {
             link = syndEntry.getLink().trim();
@@ -109,6 +117,22 @@ public class FeedEntryBean implements Serializable {
 
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getShortExcerpt() {
+        return shortExcerpt;
+    }
+
+    public void setShortExcerpt(String shortExcerpt) {
+        this.shortExcerpt = shortExcerpt;
     }
 
 }

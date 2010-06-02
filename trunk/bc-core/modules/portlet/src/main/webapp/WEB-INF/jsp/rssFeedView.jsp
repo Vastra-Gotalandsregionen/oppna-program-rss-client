@@ -40,43 +40,66 @@
 
 <portlet:actionURL escapeXml="false" var="formAction" />
 
+<style>
+.list-news li {
+  list-style:none; 
+}
+
+.news-source {
+  display: block;
+  font-style: italic;
+}
+
+.news-date {
+  color: grey;
+}
+
+.news-title {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.news-excerpt {
+  color: #33332A;
+}
+</style>
+
+<script>
+
+function sortByDate() {
+
+}
+
+function sortBySource() {
+
+}
+
+function showHide(showElementId, hideElementId) {
+  $('#'+hideElementId).hide('slow');
+  $('#'+showElementId).show('slow');
+}
+
+</script>
 
 <div id="module-news" class="module">
   <div id="module-content">
-
-    <script type="text/javascript">
-    <!--
-    YAHOO.example.Data = {
-        rssItems: [
-         <c:forEach items="${rssEntries}" var="item" varStatus="status">{Flöde:'<c:out value="${item.feedTitle}" escapeXml="true" />',Datum:new Date(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy, MM, dd" />),Titel:'<a href="${item.link}"><c:out value="${item.title}" escapeXml="true"/></a>', Beskrivning:'<pre style="font-family:arial;font-size:100%; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;"><c:out value="${item.excerpt}" /></pre>'}<c:if test="${not status.last}">,</c:if></c:forEach>
-        ]
-    };
-    
-    YAHOO.util.Event.addListener(window, "load", function() {
-        YAHOO.example.Basic = function() {
-            var myColumnDefs = [
-              {key:"Flöde", sortable:true, resizeable:true},
-              {key:"Datum", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC},resizeable:true},
-              {key:"Titel", sortable:true, resizeable:true},
-              {key:"Beskrivning", sortable:true, resizeable:true}
-            ];
-    
-            var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.rssItems);
-            myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-            myDataSource.responseSchema = {
-                fields: ["Flöde","Datum","Titel","Beskrivning"]
-            };
-    
-            var myDataTable = new YAHOO.widget.DataTable("basic",
-                    myColumnDefs, myDataSource, {});
-                    
-            return {
-                oDS: myDataSource,
-                oDT: myDataTable
-            };
-        }();
-    });
-    //--></script>
-    <div id="basic"></div> 
+  
+  <div class="sort-box">
+    <span id="sort-by">Sortera efter: </span>
+    <a id="sort-by-date" onclick="sortByDate();">Datum</a> | <a id="sort-by-source" onclick="sortBySource();">Källa</a>
+  </div>
+  
+    <ul class="list-news"> 
+         <c:forEach items="${rssEntries}" var="item" varStatus="status">
+           <li>
+             <span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
+             <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd hh:mm" />]</span>
+             <a class="news-title" href="${item.link}">${item.title}</a>
+             <p class="news-excerpt" id="${item.id}-excerpt">${item.shortExcerpt} <a onclick="showHide(${item.id}-content, ${item.id}-excerpt);">Expandera</a></p>
+             <div class="news-content" id="${item.id}-content">${item.contents} <a onclick="showHide(${item.id}-excerpt, ${item.id}-content);">Minimera</a></div>
+           </li>
+         </c:forEach>
+    </ul>
   </div>
 </div>
