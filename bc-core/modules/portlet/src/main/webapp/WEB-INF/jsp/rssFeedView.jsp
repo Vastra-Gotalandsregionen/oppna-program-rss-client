@@ -63,6 +63,10 @@
 .news-excerpt {
   color: #33332A;
 }
+
+.news-content {
+  display: none;
+}
 </style>
 
 <script>
@@ -73,11 +77,6 @@ function sortByDate() {
 
 function sortBySource() {
 
-}
-
-function showHide(showElementId, hideElementId) {
-  $('#'+hideElementId).hide('slow');
-  $('#'+showElementId).show('slow');
 }
 
 </script>
@@ -96,8 +95,8 @@ function showHide(showElementId, hideElementId) {
              <span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
              <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd hh:mm" />]</span>
              <a class="news-title" href="${item.link}">${item.title}</a>
-             <p class="news-excerpt" id="${item.id}-excerpt">${item.shortExcerpt} <a onclick="showHide(${item.id}-content, ${item.id}-excerpt);">Expandera</a></p>
-             <div class="news-content" id="${item.id}-content">${item.contents} <a onclick="showHide(${item.id}-excerpt, ${item.id}-content);">Minimera</a></div>
+             <p class="news-excerpt" id="${item.id}-excerpt">${item.shortExcerpt} <a onclick='jQuery("#${item.id}-content").show("slow"); jQuery("#${item.id}-excerpt").hide("slow");'>Expandera</a></p>
+             <div class="news-content" id="${item.id}-content">${item.contentsString} <a onclick='jQuery("#${item.id}-content").hide("slow"); jQuery("#${item.id}-excerpt").show("slow");'>Minimera</a></div>
            </li>
          </c:forEach>
     </ul>
