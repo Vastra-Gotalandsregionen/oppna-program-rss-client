@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -45,7 +46,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
         // String[] feedLinks = new String[] {"http://localhost:8000/vgr.rss"};
         for (String feedLink : feedUrlsArray) {
-            if (feedLink != null && !feedLink.trim().isEmpty()) {
+            if (!StringUtils.isBlank(feedLink)) {
                 URL feedUrl = new URL(feedLink);
                 // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
                 SyndFeedInput syndFeedInput = new SyndFeedInput();
@@ -75,5 +76,4 @@ public class RssFetcherServiceImpl implements RssFetcherService {
             }
         }
     }
-
 }
