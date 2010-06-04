@@ -21,16 +21,20 @@ package se.vgregion.portal.rss.client.beans;
 
 import java.io.Serializable;
 import java.rmi.server.UID;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
 
-public class FeedEntryBean implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
+    private static final long serialVersionUID = 2L;
     private String id;
     private String title;
     private String excerpt;
@@ -41,6 +45,14 @@ public class FeedEntryBean implements Serializable {
     private String feedTitle;
     private Date publishedDate;
 
+
+    public static final Comparator<FeedEntryBean> GROUP_BY_SOURCE = new Comparator<FeedEntryBean>() {
+        @Override
+        public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
+            return feedEntryBean1.feedTitle.compareTo(feedEntryBean2.feedTitle);
+        }
+    };
+    
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
         String uid = new UID().toString();
@@ -53,7 +65,7 @@ public class FeedEntryBean implements Serializable {
         }
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
                 && syndEntry.getDescription().getValue().length() > 200) {
-            shortExcerpt = excerpt.substring(0, 200);
+            shortExcerpt = excerpt.substring(0, 200) + "...";
         } else {
             shortExcerpt = excerpt;
         }
@@ -155,4 +167,13 @@ public class FeedEntryBean implements Serializable {
         this.contentsString = contentsString;
     }
 
+    @Override
+    public int compareTo(FeedEntryBean o) {
+        return new CompareToBuilder().append(o.publishedDate, this.publishedDate).toComparison();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+    }
 }
