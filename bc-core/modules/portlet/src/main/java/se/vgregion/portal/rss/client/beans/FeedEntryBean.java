@@ -45,14 +45,13 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String feedTitle;
     private Date publishedDate;
 
-
     public static final Comparator<FeedEntryBean> GROUP_BY_SOURCE = new Comparator<FeedEntryBean>() {
         @Override
         public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
             return feedEntryBean1.feedTitle.compareTo(feedEntryBean2.feedTitle);
         }
     };
-    
+
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
         String uid = new UID().toString();
@@ -65,7 +64,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         }
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
                 && syndEntry.getDescription().getValue().length() > 200) {
-            shortExcerpt = excerpt.substring(0, 200) + "...";
+            shortExcerpt = StringUtils.abbreviate(excerpt, 200);
         } else {
             shortExcerpt = excerpt;
         }

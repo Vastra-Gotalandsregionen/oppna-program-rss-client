@@ -41,7 +41,7 @@
 <portlet:actionURL escapeXml="false" var="sortByDate" name="sortByDate" />
 <portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource" />
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
-<portlet:resourceURL id="sortByDate" escapeXml="false" var="groupBySourceResource" />
+<portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
 <style>
 .list-news .news-item {
@@ -82,27 +82,24 @@
 <script>
 
 jQuery(document).ready(function() {
+  
   jQuery('#sort-by-date').click(function() {
-    //alert("Hej med Jquery");
-    alert("url: ${groupBySourceResource}");
-    jQuery.ajax({
-            method: "get",
-            url: "${groupBySourceResource}",
-            data: "",
-            beforeSend: function() { alert("before"); },
-            complete: function() {  alert("complete"); },
-            success: function(result) { alert("Update dom with new fragment: " + result ); }
-        });
-    return false;
+	  jQuery('#sort-by-date')
+      return updateSorting("${sortByDateResource}");
+  });
+
+  jQuery('#group-by-source').click(function() {
+    
+	  return updateSorting("${groupBySourceResource}");
   });
 });
 
-function sortByDate() {
-
-}
-
-function groupBySource() {
-
+function updateSorting(sortingUrl) {
+  jQuery.ajax({
+    url: sortingUrl,
+    success: function(data) {jQuery("#rss-item-container").html(data); }
+  });
+  return false;
 }
 
 </script>
@@ -110,21 +107,5 @@ function groupBySource() {
 <div id="module-news" class="module">
 <div id="module-content">
 
-<div class="sort-box"><span id="sort-by">Sortera efter: </span> <a id="sort-by-date" href="${sortByDate}">Datum</a>
-| <a id="group-by-source" href="${groupBySource}" onclick="groupBySource(); return false;">Källa</a></div>
-
-<ul class="list-news">
-  <c:forEach items="${rssEntries}" var="item" varStatus="status">
-    <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
-    <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both"
-      pattern="yyyy-MM-dd hh:mm" />]</span> <a class="news-title" href="${item.link}">${item.title}</a>
-    <p class="news-excerpt" id="${item.id}-excerpt">${item.shortExcerpt} <a class="read-more" href="#"
-      onclick='jQuery("#${item.id}-content").show("slow"); jQuery("#${item.id}-excerpt").hide("slow");'>Läs
-    mer</a></p>
-    <div class="news-content" id="${item.id}-content">${item.contentsString} <a href="#"
-      onclick='jQuery("#${item.id}-content").hide("slow"); jQuery("#${item.id}-excerpt").show("slow");'>Stäng</a></div>
-    </li>
-  </c:forEach>
-</ul>
-</div>
+<%@ include file="rssItems.jsp"%></div>
 </div>
