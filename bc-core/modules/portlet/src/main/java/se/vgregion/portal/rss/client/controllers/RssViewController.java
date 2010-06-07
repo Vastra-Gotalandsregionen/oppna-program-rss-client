@@ -88,15 +88,14 @@ public class RssViewController {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
         }
         response.setContentType("text/html");
-        // System.out.println(request.getResponseContentType());
+        model.addAttribute(SORT_ORDER, request.getParameter(SORT_ORDER));
         model.addAttribute("rssEntries", sortedRssEntries);
         return "rssFeedView";
     }
 
     @SuppressWarnings("unchecked")
     private Comparator<FeedEntryBean> getSortOrder(ModelMap model) {
-        // System.out.println("RssViewController.getSortOrder()");
-        Comparator<FeedEntryBean> comparator = (Comparator<FeedEntryBean>) model.get("sort_order");
+        Comparator<FeedEntryBean> comparator = (Comparator<FeedEntryBean>) model.get(SORT_ORDER);
         return comparator;
     }
 
@@ -109,14 +108,12 @@ public class RssViewController {
 
     public List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IllegalArgumentException,
             IOException {
-        // System.out.println("RssViewController.getSortedRssEntries()");
-        // String userId = getUserId(request);
         String[] feedUrls = getFeedUrls(preferences);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
         } catch (FeedException e) {
-            // LOGGER.error("Error when trying to fetch RSS items for user " + userId + ".", e);
+             LOGGER.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
             e.printStackTrace();
         }
         return feedEntries;
@@ -171,20 +168,5 @@ public class RssViewController {
             }
         }
         return feedEntryBeans;
-    }
-
-    private String getUserId(PortletRequest request) {
-        @SuppressWarnings("unchecked")
-        Map<String, ?> attributes = (Map<String, ?>) request.getAttribute(PortletRequest.USER_INFO);
-        String userId = getUserId(attributes);
-        return userId;
-    }
-
-    private String getUserId(Map<String, ?> attributes) {
-        String userId = "";
-        if (attributes != null) {
-            userId = (String) attributes.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString());
-        }
-        return userId;
     }
 }
