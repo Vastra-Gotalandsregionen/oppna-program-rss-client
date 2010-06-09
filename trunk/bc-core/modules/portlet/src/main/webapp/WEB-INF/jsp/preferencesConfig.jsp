@@ -24,7 +24,7 @@
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
 <portlet:defineObjects />
-<portlet:actionURL var="save" />
+<portlet:actionURL var="save" escapeXml="false"/>
 
 <style>
   fieldset {  
@@ -38,17 +38,20 @@
   }  
   fieldset ol {  
     padding: 1em 1em 0 1em;  
-    list-style: none;  
   }  
   fieldset li {  
+    list-style: none;  
     padding-bottom: 1em;  
   }  
   fieldset.submit {  
     border-style: none;  
   }
+  fieldset label {    
+    display: block;  
+  }
 </style>
 
-<form:form method="POST" action="${save}">
+<form:form method="POST" action="${save}" commandName="preferences">
   <fieldset>
     <legend><fmt:message key="settings"/></legend>
     <ol>
@@ -57,12 +60,12 @@
         <form:input id="maxium-items" path="numberOfItems"/>
       </li>
       <li>
-        <label for="rss-feed-link"><fmt:message key="feeds" />:</label> 
-        <form:textarea id="rss-feed-link" path="rssFeedLink" cols="100" rows="5"/>
+        <label for="rss-feed-links"><fmt:message key="feeds" />:</label> 
+        <form:textarea id="rss-feed-links" path="rssFeedLinks" cols="100" rows="5"/>
       </li>
     </ol>
   </fieldset>
   <fieldset class="submit">
-    <input value=<fmt:message key="save"/> />
+    <input type="submit" value=<fmt:message key="save"/> />
   </fieldset>
 </form:form>
