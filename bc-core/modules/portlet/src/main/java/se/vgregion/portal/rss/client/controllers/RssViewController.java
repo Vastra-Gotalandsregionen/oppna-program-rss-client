@@ -35,6 +35,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -53,8 +54,6 @@ public class RssViewController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
 
     private static final String SORT_ORDER = "sort_order";
-
-    private static final int MAX_NUMBER_OF_ITEMS = 20;
 
     @Autowired
     private RssFetcherService rssFetcherService = null;
@@ -84,7 +83,10 @@ public class RssViewController {
 
         List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
-        sortedRssEntries = getSortedRssEntries(model, preferences).subList(0, MAX_NUMBER_OF_ITEMS);
+        sortedRssEntries = getSortedRssEntries(model, preferences);
+        sortedRssEntries = sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer
+                .valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
+                        .valueOf(PortletPreferencesWrapperBean.MAX_NUMBER_OF_ITEMS)))));
 
         if (bundle != null) {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
@@ -135,7 +137,9 @@ public class RssViewController {
     }
 
     private String addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
-        List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences).subList(0, MAX_NUMBER_OF_ITEMS);
+        List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
+        feedEntries = feedEntries.subList(0, Math.min(feedEntries.size(), Integer
+                .valueOf(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS)));
         model.addAttribute("rssEntries", feedEntries);
         return "rssItems";
     }
@@ -152,7 +156,7 @@ public class RssViewController {
 
     private String[] getFeedUrls(PortletPreferences preferences) {
         // Get list of URLs for user saved in his/her preferences
-        String feedUrls = preferences.getValue(RssEditController.CONFIG_RSS_FEED_LINK_KEY, "");
+        String feedUrls = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         String[] feedUrlsArray = null;
         if (feedUrls != null) {
             feedUrlsArray = feedUrls.split("\n");

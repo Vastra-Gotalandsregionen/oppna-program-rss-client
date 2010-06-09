@@ -21,15 +21,18 @@ package se.vgregion.portal.rss.client.controllers;
 
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
+import javax.portlet.ReadOnlyException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 
 /**
  * Controller for edit mode.
@@ -52,7 +55,7 @@ public class RssEditController {
     /**
      * Property key name for users feed URLs setting.
      */
-    public static final String CONFIG_RSS_FEED_LINK_KEY = "rssFeedLink";
+    public static final String PREFERENCES = "preferences";
 
     /**
      * Method handling Render request, fetching portlet preferences for view.
@@ -62,16 +65,21 @@ public class RssEditController {
      * @param preferences
      *            RSS Client portlet's PortletPreferences
      * @return jsp url for view
+     * @throws ReadOnlyException
      */
     @RenderMapping
-    public final String showPreferences(final ModelMap model, final PortletPreferences preferences) {
+    public final String showPreferences(final ModelMap model, PortletPreferences preferences)
+            throws ReadOnlyException {
         // Check if save action rendered an error
         if ("true".equals(model.get("saveError"))) {
             return ERROR_JSP;
         }
-
         // Set preferences key
-        model.addAttribute(CONFIG_RSS_FEED_LINK_KEY, preferences.getValue(CONFIG_RSS_FEED_LINK_KEY, ""));
+        PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
+        preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+                String.valueOf(PortletPreferencesWrapperBean.MAX_NUMBER_OF_ITEMS)));
+        preferencesBean.setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
+        model.addAttribute(PREFERENCES, preferencesBean);
         return CONFIG_JSP;
     }
 
@@ -86,13 +94,11 @@ public class RssEditController {
      *            User feed URLs
      */
     @ActionMapping
-    public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
-            ActionResponse response,
-            @RequestParam(value = CONFIG_RSS_FEED_LINK_KEY, required = false) final String feedLinks) {
+    public final void savePreferences(final ModelMap model, ActionResponse response,
+            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, final PortletPreferences preferences) {
         try {
             // Set preference and store value
-            preferences.setValue(CONFIG_RSS_FEED_LINK_KEY, feedLinks);
-            preferences.store();
+            preferencesBean.store(preferences);
             model.addAttribute("saveError", null);
             // response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was
             // opened initially every time.
