@@ -48,8 +48,27 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     public static final Comparator<FeedEntryBean> GROUP_BY_SOURCE = new Comparator<FeedEntryBean>() {
         @Override
         public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
-            return feedEntryBean1.feedTitle.compareTo(feedEntryBean2.feedTitle);
+            return new CompareToBuilder().append(feedEntryBean1.feedTitle, feedEntryBean2.feedTitle)
+                    .toComparison();
         }
+
+        @Override
+        public String toString() {
+            return "GROUP_BY_SOURCE";
+        };
+    };
+
+    public static final Comparator<FeedEntryBean> SORT_BY_DATE = new Comparator<FeedEntryBean>() {
+        @Override
+        public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
+            return new CompareToBuilder().append(feedEntryBean2.publishedDate, feedEntryBean1.publishedDate)
+                    .toComparison();
+        }
+
+        @Override
+        public String toString() {
+            return "SORT_BY_DATE";
+        };
     };
 
     @SuppressWarnings("unchecked")
@@ -168,7 +187,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     @Override
     public int compareTo(FeedEntryBean o) {
-        return new CompareToBuilder().append(o.publishedDate, this.publishedDate).toComparison();
+        return FeedEntryBean.SORT_BY_DATE.compare(this, o);
     }
 
     @Override

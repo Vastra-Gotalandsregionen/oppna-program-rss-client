@@ -21,7 +21,6 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions'%>
@@ -37,11 +36,6 @@
 <!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) -->
 <script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/dragdrop-min.js"></script>
 <script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/datatable-min.js"></script>
-
-<portlet:actionURL escapeXml="false" var="sortByDate" name="sortByDate" />
-<portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource" />
-<portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
-<portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
 <style>
 .list-news .news-item {
@@ -79,33 +73,6 @@
 }
 </style>
 
-<script>
-
-jQuery(document).ready(function() {
-  
-  jQuery('#sort-by-date').click(function() {
-	  jQuery('#sort-by-date')
-      return updateSorting("${sortByDateResource}");
-  });
-
-  jQuery('#group-by-source').click(function() {
-    
-	  return updateSorting("${groupBySourceResource}");
-  });
-});
-
-function updateSorting(sortingUrl) {
-  jQuery.ajax({
-    url: sortingUrl,
-    success: function(data) {jQuery("#rss-item-container").html(data); }
-  });
-  return false;
-}
-
-</script>
-
 <div id="module-news" class="module">
-<div id="module-content">
-
-<%@ include file="rssItems.jsp"%></div>
+<div id="module-content"><jsp:directive.include file="rssItems.jsp" /></div>
 </div>

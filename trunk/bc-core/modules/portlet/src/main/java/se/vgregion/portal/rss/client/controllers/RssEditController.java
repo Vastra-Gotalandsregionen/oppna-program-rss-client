@@ -20,7 +20,6 @@
 package se.vgregion.portal.rss.client.controllers;
 
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 @RequestMapping("EDIT")
 public class RssEditController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RssEditController.class);
-    
+
     /**
      * JSP to show on success.
      */
@@ -87,14 +86,16 @@ public class RssEditController {
      *            User feed URLs
      */
     @ActionMapping
-    public final void savePreferences(final ModelMap model, final PortletPreferences preferences, ActionResponse response,
+    public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
+            ActionResponse response,
             @RequestParam(value = CONFIG_RSS_FEED_LINK_KEY, required = false) final String feedLinks) {
         try {
             // Set preference and store value
             preferences.setValue(CONFIG_RSS_FEED_LINK_KEY, feedLinks);
             preferences.store();
             model.addAttribute("saveError", null);
-//            response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was opened initially every time.
+            // response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was
+            // opened initially every time.
         } catch (Exception e) {
             LOGGER.error("Error when trying to store RSS Client preferences.", e);
             model.addAttribute("saveError", "true");

@@ -44,6 +44,11 @@ Generation time : 2010-05-13 10:52:30 CEST
       <artifactId>portlet-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-jaxrs</artifactId>
+      <version>1.5.3</version>
+    </dependency>
+    <dependency>
       <groupId>com.sun.portal</groupId>
       <artifactId>portlet-container</artifactId>
     </dependency>
