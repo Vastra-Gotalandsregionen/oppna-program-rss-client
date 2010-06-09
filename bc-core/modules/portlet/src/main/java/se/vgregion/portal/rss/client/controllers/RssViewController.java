@@ -54,6 +54,8 @@ public class RssViewController {
 
     private static final String SORT_ORDER = "sort_order";
 
+    private static final int MAX_NUMBER_OF_ITEMS = 20;
+
     @Autowired
     private RssFetcherService rssFetcherService = null;
 
@@ -82,21 +84,14 @@ public class RssViewController {
 
         List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
-        sortedRssEntries = getSortedRssEntries(model, preferences);
+        sortedRssEntries = getSortedRssEntries(model, preferences).subList(0, MAX_NUMBER_OF_ITEMS);
 
         if (bundle != null) {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
         }
         response.setContentType("text/html");
-        model.addAttribute(SORT_ORDER, request.getParameter(SORT_ORDER));
         model.addAttribute("rssEntries", sortedRssEntries);
         return "rssFeedView";
-    }
-
-    @SuppressWarnings("unchecked")
-    private Comparator<FeedEntryBean> getSortOrder(ModelMap model) {
-        Comparator<FeedEntryBean> comparator = (Comparator<FeedEntryBean>) model.get(SORT_ORDER);
-        return comparator;
     }
 
     public List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
@@ -106,6 +101,12 @@ public class RssViewController {
         return feedEntries;
     }
 
+    @SuppressWarnings("unchecked")
+    private Comparator<FeedEntryBean> getSortOrder(ModelMap model) {
+        Comparator<FeedEntryBean> comparator = (Comparator<FeedEntryBean>) model.get(SORT_ORDER);
+        return comparator;
+    }
+
     public List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IllegalArgumentException,
             IOException {
         String[] feedUrls = getFeedUrls(preferences);
@@ -113,7 +114,7 @@ public class RssViewController {
         try {
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
         } catch (FeedException e) {
-             LOGGER.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            LOGGER.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
             e.printStackTrace();
         }
         return feedEntries;
@@ -134,14 +135,14 @@ public class RssViewController {
     }
 
     private String addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
-        List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
+        List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences).subList(0, MAX_NUMBER_OF_ITEMS);
         model.addAttribute("rssEntries", feedEntries);
         return "rssItems";
     }
 
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
-        model.addAttribute(SORT_ORDER, null); // Use natural sorting.
+        model.addAttribute(SORT_ORDER, FeedEntryBean.SORT_BY_DATE);
     }
 
     @ActionMapping("groupBySource")
