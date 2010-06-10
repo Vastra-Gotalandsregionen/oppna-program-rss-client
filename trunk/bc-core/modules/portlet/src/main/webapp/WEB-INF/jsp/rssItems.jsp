@@ -30,17 +30,27 @@
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 <script>
   jQuery(document).ready(function() {
-    jQuery('#group-by-source').click(function() {
-        updateSorting("${groupBySourceResource}");
-        return false;
+    jQuery(".news-excerpt").show;
+    jQuery(".news-content").hide;
+
+	jQuery('#group-by-source').click(function() {
+      updateSorting("${groupBySourceResource}");
+      return false;
     });
-  });
-  jQuery(document).ready(function() {
+    
     jQuery('#sort-by-date').click(function() {
-        updateSorting("${sortByDateResource}");
-        return false;
+      updateSorting("${sortByDateResource}");
+      return false;
+    });
+    
+    jQuery('.read-more, .read-less').click(function() {
+      var li = jQuery(this).parents("li");
+      li.find(".news-excerpt").toggle("medium");
+      li.find(".news-content").toggle("medium");
+      return false;
     });
   });
+  
   function updateSorting(sortingUrl) {
     jQuery.ajax({
       url: sortingUrl,
@@ -53,23 +63,29 @@
 
 <div id="rss-item-container">
   <div class="sort-box">
-    <c:if test="${sort_order != 'GROUP_BY_SOURCE'}">
-      <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
-    </c:if>
-    <c:if test="${sort_order == 'GROUP_BY_SOURCE'}">   
-      <span id="group-by-source-selected"><strong>Källa</strong> | <a id="sort-by-date" href="${sortByDate}">Datum</a></span>
-    </c:if>
+  <c:choose>
+    <c:when test="${sort_order == 'SORT_BY_NAME'}">
+        <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+    </c:when>
+    <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
+        <span id="group-by-source-selected"><strong>Källa</strong> | <a id="sort-by-date" href="${sortByDate}">Datum</a></span>
+    </c:when>
+    <c:otherwise>
+        <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+    </c:otherwise>
+  </c:choose>
   </div>
-  <ul class="list-news">
+  <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
       <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both"
         pattern="yyyy-MM-dd hh:mm" />]</span> <a class="news-title" href="${item.link}">${item.title}</a>
       <p class="news-excerpt" id="${item.id}-excerpt">
-      ${item.shortExcerpt} <c:if test="${!empty item.contentsString}"><a class="read-more" href="#" onclick='jQuery("#${item.id}-content").show("medium"); jQuery("#${item.id}-excerpt").hide("medium"); return false;'>&raquo;</a></c:if>
+        <c:out value="${item.shortExcerpt}" /><c:if test="${!empty item.contentsString}"><a class="read-more" href="#">&raquo;</a></c:if>
       </p>
       <div class="news-content" id="${item.id}-content">${item.contentsString}
-      <a href="#" onclick='jQuery("#${item.id}-content").hide("medium"); jQuery("#${item.id}-excerpt").show("medium"); return false;'>Stäng</a></div>
+        <a href="#" class="read-less">Stäng</a>
+      </div>
       </li>
     </c:forEach>
   </ul>
