@@ -65,10 +65,11 @@
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
       <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both"
         pattern="yyyy-MM-dd hh:mm" />]</span> <a class="news-title" href="${item.link}">${item.title}</a>
-      <p class="news-excerpt" id="${item.id}-excerpt">${item.shortExcerpt} <a class="read-more" href="#"
-        onclick='jQuery("#${item.id}-content").show("medium"); jQuery("#${item.id}-excerpt").hide("medium"); return false;'>Läs mer</a></p>
-      <div class="news-content" id="${item.id}-content">${item.contentsString} <a href="#"
-        onclick='jQuery("#${item.id}-content").hide("medium"); jQuery("#${item.id}-excerpt").show("medium"); return false;'>Stäng</a></div>
+      <p class="news-excerpt" id="${item.id}-excerpt">
+      ${item.shortExcerpt} <c:if test="${!empty item.contentsString}"><a class="read-more" href="#" onclick='jQuery("#${item.id}-content").show("medium"); jQuery("#${item.id}-excerpt").hide("medium"); return false;'>&raquo;</a></c:if>
+      </p>
+      <div class="news-content" id="${item.id}-content">${item.contentsString}
+      <a href="#" onclick='jQuery("#${item.id}-content").hide("medium"); jQuery("#${item.id}-excerpt").show("medium"); return false;'>Stäng</a></div>
       </li>
     </c:forEach>
   </ul>

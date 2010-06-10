@@ -17,7 +17,7 @@ import javax.portlet.ValidatorException;
  */
 public class PortletPreferencesWrapperBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    public static final int MAX_NUMBER_OF_ITEMS = 20;
+    public static final int DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
     public static final String NUMBER_OF_ITEMS = "numberOfItems";
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
     private String rssFeedLinks = "";
