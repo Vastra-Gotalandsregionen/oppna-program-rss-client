@@ -77,7 +77,7 @@ public class RssEditController {
         // Set preferences key
         PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
         preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
-                String.valueOf(PortletPreferencesWrapperBean.MAX_NUMBER_OF_ITEMS)));
+                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
         preferencesBean.setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
         model.addAttribute(PREFERENCES, preferencesBean);
         return CONFIG_JSP;

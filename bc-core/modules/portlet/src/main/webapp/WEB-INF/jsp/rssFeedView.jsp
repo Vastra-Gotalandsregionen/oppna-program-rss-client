@@ -40,9 +40,13 @@
 <style>
 .list-news .news-item {
   list-style: none;
-  padding: 1em;
-  margin: 1em;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
   border: 1px dotted #CCC;
+}
+
+ul.list-news {
+  margin-left: 0em;
 }
 
 .news-source {
@@ -62,10 +66,12 @@
 
 .news-excerpt {
   color: #33332A;
+  margin-bottom: 0em;
 }
 
 .news-excerpt .read-more {
-  display: block;
+  /*position: absolute;
+  float: right; display: block; */
 }
 
 .news-content {

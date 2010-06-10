@@ -64,14 +64,10 @@ public class RssViewController {
     /**
      * Shows RSS items for user.
      * 
-     * @param model
-     *            ModelMap
-     * @param request
-     *            RenderRequest
-     * @param response
-     *            RenderResponse
-     * @param preferences
-     *            RSS client VIEW portlet's PortletPreferences
+     * @param model ModelMap
+     * @param request RenderRequest
+     * @param response RenderResponse
+     * @param preferences RSS client VIEW portlet's PortletPreferences
      * @return View name.
      * @throws
      * @throws IOException
@@ -84,9 +80,10 @@ public class RssViewController {
         List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
         sortedRssEntries = getSortedRssEntries(model, preferences);
-        sortedRssEntries = sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer
-                .valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
-                        .valueOf(PortletPreferencesWrapperBean.MAX_NUMBER_OF_ITEMS)))));
+        sortedRssEntries =
+                sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer.valueOf(preferences
+                        .getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
+                                .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
 
         if (bundle != null) {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
@@ -138,8 +135,10 @@ public class RssViewController {
 
     private String addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
         List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
-        feedEntries = feedEntries.subList(0, Math.min(feedEntries.size(), Integer
-                .valueOf(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS)));
+        feedEntries =
+                feedEntries.subList(0, Math.min(feedEntries.size(), Integer.valueOf(preferences.getValue(
+                        PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
+                                .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         model.addAttribute("rssEntries", feedEntries);
         return "rssItems";
     }
