@@ -69,11 +69,6 @@ ul.list-news {
   margin-bottom: 0em;
 }
 
-.news-excerpt .read-more {
-  /*position: absolute;
-  float: right; display: block; */
-}
-
 .news-content {
   display: none;
 }

@@ -109,7 +109,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String escapeText(String input) {
         String output = "";
         output = input.replace("'", "\\'");
-        output = input.replaceAll("\\u000A", "\\\\n");
+        output = input.replaceAll("\\u000A", "<br/>");
         return output;
     }
 

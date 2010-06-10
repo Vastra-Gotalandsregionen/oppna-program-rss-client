@@ -62,28 +62,33 @@
 </script>
 
 <div id="rss-item-container">
-  <div class="sort-box">
-  <c:choose>
-    <c:when test="${sort_order == 'SORT_BY_NAME'}">
-        <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
-    </c:when>
-    <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
-        <span id="group-by-source-selected"><strong>Källa</strong> | <a id="sort-by-date" href="${sortByDate}">Datum</a></span>
-    </c:when>
-    <c:otherwise>
-        <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
-    </c:otherwise>
-  </c:choose>
-  </div>
+  <c:if test="${!empty rssEntries}">
+    <div class="sort-box">
+    Sortera på: 
+    <c:choose>
+      <c:when test="${sort_order == 'SORT_BY_NAME'}">
+          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+      </c:when>
+      <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
+          <span id="group-by-source-selected"><strong>Källa</strong> | <a id="sort-by-date" href="${sortByDate}">Datum</a></span>
+      </c:when>
+      <c:otherwise>
+          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+      </c:otherwise>
+    </c:choose>
+    </div>
+  </c:if>
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
-      <span class="news-date">[<fmt:formatDate value="${item.publishedDate}" type="both"
-        pattern="yyyy-MM-dd hh:mm" />]</span> <a class="news-title" href="${item.link}">${item.title}</a>
-      <p class="news-excerpt" id="${item.id}-excerpt">
-        <c:out value="${item.shortExcerpt}" /><c:if test="${!empty item.contentsString}"><a class="read-more" href="#">&raquo;</a></c:if>
-      </p>
-      <div class="news-content" id="${item.id}-content">${item.contentsString}
+      <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
+        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a>
+      <div class="news-excerpt">
+        <p class="news-excerpt" id="${item.id}-excerpt">
+          <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${!empty item.contentsString}"><a class="read-more" href="#">&raquo;</a></c:if>
+        </p>
+      </div>
+      <div class="news-content" id="${item.id}-content"><c:out value="${item.contentsString}"  escapeXml="false" />
         <a href="#" class="read-less">Stäng</a>
       </div>
       </li>
