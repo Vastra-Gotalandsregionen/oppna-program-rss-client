@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2010 Västra Götalandsregionen
+    Copyright 2010 VÃ¤stra GÃ¶talandsregionen
 
       This library is free software; you can redistribute it and/or modify
       it under the terms of version 2.1 of the GNU Lesser General Public
@@ -18,37 +18,18 @@
 
 
 --%>
+
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
-<portlet:defineObjects />
 <portlet:actionURL var="save" escapeXml="false"/>
-
 <style>
-  fieldset {  
-    margin: 1.5em 0 0 0;  
-    padding: 0;  
-  }  
-  legend {  
-    margin-left: 1em;  
-    color: #000000;  
-    font-weight: bold;  
-  }  
-  fieldset ol {  
-    padding: 1em 1em 0 1em;  
-  }  
-  fieldset li {  
-    list-style: none;  
-    padding-bottom: 1em;  
-  }  
-  fieldset.submit {  
-    border-style: none;  
-  }
-  fieldset label {    
-    display: block;  
-  }
+<!--
+    @import url("${pageContext.request.contextPath}/style/style.css");
+-->
 </style>
 
 <form:form method="POST" action="${save}" commandName="preferences">
