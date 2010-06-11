@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+fieldset {  
+  margin: 1.5em 0 0 0;  
+  padding: 0;  
+}  
+legend {  
+  margin-left: 1em;  
+  color: #000000;  
+  font-weight: bold;  
+}  
+fieldset ol {  
+  padding: 1em 1em 0 1em;  
+}  
+fieldset li {  
+  list-style: none;  
+  padding-bottom: 1em;  
+}  
+fieldset.submit {  
+  border-style: none;  
+}
+fieldset label {    
+  display: block;  
+}
+
+.list-news .news-item {
+  list-style: none;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border: 1px dotted #CCC;
+}
+
+ul.list-news {
+  margin-left: 0em;
+}
+
+.news-source {
+  display: block;
+  font-style: italic;
+}
+
+.news-date {
+  color: grey;
+}
+
+.news-title {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.news-excerpt {
+  color: #33332A;
+  margin-bottom: 0em;
+}
+
+.news-content {
+  display: none;
+}

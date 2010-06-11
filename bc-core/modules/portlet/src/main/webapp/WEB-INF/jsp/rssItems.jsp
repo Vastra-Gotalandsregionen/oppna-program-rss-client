@@ -28,6 +28,7 @@
 <portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource" />
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
+
 <script>
   jQuery(document).ready(function() {
     jQuery(".news-excerpt").show;

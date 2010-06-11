@@ -20,60 +20,11 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions'%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-<!--CSS file (default YUI Sam Skin) -->
-<link type="text/css" rel="stylesheet" href="/vgr-theme/javascript/yui-2.8.0r4/assets/skins/sam/datatable.css" />
-
-<!-- Dependencies -->
-<script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/element-min.js"></script>
-<script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/datasource-min.js"></script>
-<!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) -->
-<script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/dragdrop-min.js"></script>
-<script type="text/javascript" src="/vgr-theme/javascript/yui-2.8.0r4/datatable-min.js"></script>
-
 <style>
-.list-news .news-item {
-  list-style: none;
-  padding: 0.5em;
-  margin-bottom: 0.5em;
-  border: 1px dotted #CCC;
-}
-
-ul.list-news {
-  margin-left: 0em;
-}
-
-.news-source {
-  display: block;
-  font-style: italic;
-}
-
-.news-date {
-  color: grey;
-}
-
-.news-title {
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.news-excerpt {
-  color: #33332A;
-  margin-bottom: 0em;
-}
-
-.news-content {
-  display: none;
-}
+<!--
+    @import url("${pageContext.request.contextPath}/style/style.css");
+-->
 </style>
-
 <div id="module-news" class="module">
 <div id="module-content"><jsp:directive.include file="rssItems.jsp" /></div>
 </div>
