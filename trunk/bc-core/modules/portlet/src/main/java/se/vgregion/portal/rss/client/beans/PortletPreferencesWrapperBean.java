@@ -25,6 +25,8 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @author Anders Asplund - Callista Enterprise
  * @author Jonas Liljenfeldt - Know IT
@@ -36,6 +38,8 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final String NUMBER_OF_ITEMS = "numberOfItems";
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
     private String rssFeedLinks = "";
+
+    @NotEmpty
     private String numberOfItems;
 
     public void setRssFeedLinks(String rssFeedLinks) throws ReadOnlyException {

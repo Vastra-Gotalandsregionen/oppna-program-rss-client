@@ -11,9 +11,9 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
   <import resource="classpath:applicationContext.xml" />
 
@@ -23,10 +23,20 @@
   <!-- Enables annotations -->
   <context:annotation-config />
 
-<!--  <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">-->
-<!--    <property name="contentType" value="application/json" />-->
-<!--    <property name="prefixJson" value="true" />-->
-<!--  </bean>-->
+  <!-- JSR-303 support will be detected on classpath and enabled automatically -->
+  <mvc:annotation-driven />
+
+  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name="alwaysUseFullPath" value="true" />
+    <property name="webBindingInitializer">
+      <!-- Configures Spring MVC DataBinder instances -->
+      <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+        <property name="validator" ref="validator" />
+      </bean>
+    </property>
+  </bean>
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -34,30 +44,5 @@
     <property name="suffix" value=".jsp" />
     <property name="contentType" value="text/html;charset=UTF-8" />
   </bean>
-
-  <!-- bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-    <property name="mediaTypes">
-      <map>
-        <entry key="html" value="text/html" />
-        <entry key="json" value="application/json" />
-      </map>
-    </property>
-    <property name="viewResolvers">
-      <list>
-        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-          <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-          <property name="prefix" value="/WEB-INF/jsp/" />
-          <property name="suffix" value=".jsp" />
-        </bean>
-      </list>
-    </property>
-    <property name="defaultViews">
-      <list>
-        <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-          <property name="prefixJson" value="true" />
-        </bean>
-      </list>
-    </property>
-  </bean -->
 
 </beans>

@@ -22,11 +22,13 @@ package se.vgregion.portal.rss.client.controllers;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
@@ -95,7 +97,13 @@ public class RssEditController {
      */
     @ActionMapping
     public final void savePreferences(final ModelMap model, ActionResponse response,
-            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, final PortletPreferences preferences) {
+            @ModelAttribute @Valid PortletPreferencesWrapperBean preferencesBean, BindingResult result,
+            final PortletPreferences preferences) {
+        System.out.println("RssEditController.savePreferences(1)");
+        if (result.hasErrors()) {
+            System.out.println("RssEditController.savePreferences(2)");
+            System.out.println(result.getErrorCount());
+        }
         try {
             // Set preference and store value
             preferencesBean.store(preferences);
