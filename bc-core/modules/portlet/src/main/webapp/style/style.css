@@ -76,3 +76,18 @@ ul.list-news {
   display: none;
   width: 100%;
 }
+
+textarea.validation-error, input.validation-error {
+  border: 1px solid red;
+}
+
+.validation-error-message {
+  padding-left: 18px;
+  margin: 0.3em 0 0 .3em;
+  background: url('/vgr-theme/i/icons/exclamation.png') no-repeat;
+  display: block; 
+}
+
+.validation-error-message-feed-urls {
+  background: url('/vgr-theme/i/icons/feed_error.png') no-repeat;
+}
