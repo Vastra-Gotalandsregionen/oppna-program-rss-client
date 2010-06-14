@@ -23,8 +23,9 @@
   <!-- Enables annotations -->
   <context:annotation-config />
 
-  <!-- JSR-303 support will be detected on classpath and enabled automatically -->
-  <mvc:annotation-driven />
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename" value="se.vgregion.portal.rss.client.rssClient" />
+  </bean>
 
   <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 

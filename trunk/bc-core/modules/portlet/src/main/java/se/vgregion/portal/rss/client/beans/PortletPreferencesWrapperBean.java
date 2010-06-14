@@ -38,10 +38,9 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final int DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
     public static final String NUMBER_OF_ITEMS = "numberOfItems";
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
-    private String rssFeedLinks = "";
-
+    public String rssFeedLinks;
     @NotEmpty
-    private String numberOfItems;
+    public String numberOfItems;
 
     public void setRssFeedLinks(String rssFeedLinks) throws ReadOnlyException {
         this.rssFeedLinks = rssFeedLinks;
@@ -61,7 +60,7 @@ public class PortletPreferencesWrapperBean implements Serializable {
 
     public void store(PortletPreferences preferences) throws ValidatorException, IOException, ReadOnlyException {
         parseAndFixUrls();
-        
+
         preferences.setValue(NUMBER_OF_ITEMS, numberOfItems);
         preferences.setValue(RSS_FEED_LINKS, rssFeedLinks);
         preferences.store();
