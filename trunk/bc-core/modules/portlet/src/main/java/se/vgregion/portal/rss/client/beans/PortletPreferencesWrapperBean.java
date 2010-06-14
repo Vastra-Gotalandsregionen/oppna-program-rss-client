@@ -25,6 +25,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -59,8 +60,16 @@ public class PortletPreferencesWrapperBean implements Serializable {
     }
 
     public void store(PortletPreferences preferences) throws ValidatorException, IOException, ReadOnlyException {
+        parseAndFixUrls();
+        
         preferences.setValue(NUMBER_OF_ITEMS, numberOfItems);
         preferences.setValue(RSS_FEED_LINKS, rssFeedLinks);
         preferences.store();
+    }
+
+    private void parseAndFixUrls() {
+        if (!StringUtils.isBlank(rssFeedLinks)) {
+            rssFeedLinks = rssFeedLinks.replace(" ", "\n");
+        }
     }
 }
