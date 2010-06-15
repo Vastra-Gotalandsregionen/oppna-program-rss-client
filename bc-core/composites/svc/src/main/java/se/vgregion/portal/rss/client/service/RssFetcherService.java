@@ -28,18 +28,20 @@ import com.sun.syndication.io.FeedException;
 
 /**
  * @author jonas liljenfeldt
- *
+ * @author Anders Asplund - Callista Enterprise
+ * 
  */
 public interface RssFetcherService {
 
     /**
      * @param feedUrlsArray
      * @return
-     * @throws FeedException 
-     * @throws MalformedURLException 
-     * @throws IOException 
-     * @throws IllegalArgumentException 
-     * @throws FeedException 
+     * @throws FeedException
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws IllegalArgumentException
+     * @throws FeedException
      */
-    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException, FeedException;
+    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
+            FeedException;
 }
