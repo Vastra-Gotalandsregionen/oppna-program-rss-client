@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -39,6 +40,13 @@ import com.sun.syndication.io.XmlReader;
 @Service
 public class RssFetcherServiceImpl implements RssFetcherService {
 
+    private SyndFeedInput syndFeedInput;
+    
+    @Autowired
+    public void setSyndFeedInput(SyndFeedInput syndFeedInput) {
+        this.syndFeedInput = syndFeedInput;
+    }
+
     @Override
     public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
             FeedException {
@@ -47,7 +55,6 @@ public class RssFetcherServiceImpl implements RssFetcherService {
             if (!StringUtils.isBlank(feedLink)) {
                 URL feedUrl = new URL(feedLink);
                 // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
-                SyndFeedInput syndFeedInput = new SyndFeedInput();
                 SyndFeed syndFeed = syndFeedInput.build(new XmlReader(feedUrl));
                 syndFeeds.add(syndFeed);
             }
