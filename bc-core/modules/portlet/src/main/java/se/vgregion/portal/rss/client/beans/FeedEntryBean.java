@@ -20,7 +20,6 @@
 package se.vgregion.portal.rss.client.beans;
 
 import java.io.Serializable;
-import java.rmi.server.UID;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +33,8 @@ import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
+    private static final int SHORT_EXCERPT_LENGTH = 200;
     private static final long serialVersionUID = 2L;
-    private String id;
     private String title;
     private String excerpt;
     private String shortExcerpt;
@@ -73,8 +72,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
-        String uid = new UID().toString();
-        id = uid.toString().replaceAll(":", "-");
         if (syndEntry.getTitle() != null) {
             title = escapeText(syndEntry.getTitle().trim());
         }
@@ -82,8 +79,8 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
             excerpt = escapeText(syndEntry.getDescription().getValue().trim());
         }
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
-                && syndEntry.getDescription().getValue().length() > 200) {
-            shortExcerpt = StringUtils.abbreviate(excerpt, 200);
+                && syndEntry.getDescription().getValue().length() > SHORT_EXCERPT_LENGTH) {
+            shortExcerpt = StringUtils.abbreviate(excerpt, SHORT_EXCERPT_LENGTH);
         } else {
             shortExcerpt = excerpt;
         }
@@ -97,6 +94,8 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
                     contentsString += syndContentImpl.getValue();
                 }
             }
+        } else {
+            contentsString = excerpt;
         }
 
         if (syndEntry.getLink() != null) {
@@ -159,14 +158,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getShortExcerpt() {

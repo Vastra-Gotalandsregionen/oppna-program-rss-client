@@ -23,6 +23,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <portlet:actionURL escapeXml="false" var="sortByDate" name="sortByDate" />
 <portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource" />
@@ -87,11 +88,11 @@
       <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
         pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a>
       <div class="news-excerpt">
-        <p class="news-excerpt" id="${item.id}-excerpt">
-          <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${!empty item.contentsString}"><a class="read-more" href="#">&raquo;</a></c:if>
+        <p class="news-excerpt">
+          <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}"><a class="read-more" href="#">&raquo;</a></c:if>
         </p>
       </div>
-      <div class="news-content" id="${item.id}-content"><c:out value="${item.contentsString}"  escapeXml="false" />
+      <div class="news-content"><c:out value="${item.contentsString}"  escapeXml="false" />
         <a href="#" class="read-less"><fmt:message key="close"/></a>
       </div>
       </li>
