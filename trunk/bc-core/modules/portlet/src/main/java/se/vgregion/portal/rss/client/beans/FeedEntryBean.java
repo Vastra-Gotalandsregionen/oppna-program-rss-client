@@ -29,11 +29,11 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.sun.syndication.feed.synd.SyndContentImpl;
+import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
-    private static final int SHORT_EXCERPT_LENGTH = 200;
+    public static final int SHORT_EXCERPT_LENGTH = 200;
     private static final long serialVersionUID = 2L;
     private String title;
     private String excerpt;
@@ -89,9 +89,9 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
         if (syndEntry.getContents() != null && syndEntry.getContents().size() > 0) {
             for (int i = 0; i < syndEntry.getContents().size(); i++) {
-                SyndContentImpl syndContentImpl = (SyndContentImpl) syndEntry.getContents().get(i);
-                if (!StringUtils.isBlank(syndContentImpl.getValue())) {
-                    contentsString += syndContentImpl.getValue();
+                SyndContent syndContent = (SyndContent) syndEntry.getContents().get(i);
+                if (!StringUtils.isBlank(syndContent.getValue())) {
+                    contentsString += syndContent.getValue();
                 }
             }
         } else {

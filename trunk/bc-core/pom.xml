@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
-<!--
-This is the Business Component Maven POM.
-
-
-Template version: 1.4
-Generation time : 2010-05-13 10:52:30 CEST
--->
+  <!--
+    This is the Business Component Maven POM. Template version: 1.4 Generation time : 2010-05-13 10:52:30 CEST
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -25,4 +21,12 @@ Generation time : 2010-05-13 10:52:30 CEST
     <module>composites/webcomp</module>
     <module>modules/portlet</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>
