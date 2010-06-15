@@ -29,6 +29,8 @@
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
+<fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
+
 <script>
   jQuery(document).ready(function() {
     jQuery(".news-excerpt").show;
@@ -65,16 +67,16 @@
 <div id="rss-item-container">
   <c:if test="${!empty rssEntries}">
     <div class="sort-box">
-    Sortera på: 
+    <fmt:message key="sorton"/>: 
     <c:choose>
       <c:when test="${sort_order == 'SORT_BY_NAME'}">
-          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
       </c:when>
       <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
-          <span id="group-by-source-selected"><strong>Källa</strong> | <a id="sort-by-date" href="${sortByDate}">Datum</a></span>
+          <span id="group-by-source-selected"><strong><fmt:message key="source"/></strong> | <a id="sort-by-date" href="${sortByDate}"><fmt:message key="date"/></a></span>
       </c:when>
       <c:otherwise>
-          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}">Källa</a> | <strong>Datum</strong></span>
+          <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
       </c:otherwise>
     </c:choose>
     </div>
@@ -90,7 +92,7 @@
         </p>
       </div>
       <div class="news-content" id="${item.id}-content"><c:out value="${item.contentsString}"  escapeXml="false" />
-        <a href="#" class="read-less">Stäng</a>
+        <a href="#" class="read-less"><fmt:message key="close"/></a>
       </div>
       </li>
     </c:forEach>
