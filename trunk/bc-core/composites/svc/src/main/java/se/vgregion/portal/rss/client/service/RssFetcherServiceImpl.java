@@ -41,7 +41,7 @@ import com.sun.syndication.io.XmlReader;
 public class RssFetcherServiceImpl implements RssFetcherService {
 
     private SyndFeedInput syndFeedInput;
-    
+
     @Autowired
     public void setSyndFeedInput(SyndFeedInput syndFeedInput) {
         this.syndFeedInput = syndFeedInput;

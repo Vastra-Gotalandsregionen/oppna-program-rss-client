@@ -19,18 +19,19 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.BDDMockito.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
@@ -38,30 +39,53 @@ public class RssFetcherServiceImplTest {
 
     @Mock
     private SyndFeedInput syndFeedInput;
-
     @Mock
     private SyndFeed syndFeed;
-    
+    @Mock
+    FeedException feedException;
+
     private RssFetcherServiceImpl rssFetcherService;
-    
+    private String[] testFeeds;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
         rssFetcherService = new RssFetcherServiceImpl();
         rssFetcherService.setSyndFeedInput(syndFeedInput);
+        testFeeds = new String[] { "http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek" };
     }
 
     @Test
     public void shouldGetRssFeeds() throws Exception {
-        //Given
-        String[] testFeeds =
-            new String[] {"http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek"};
+        // Given
         given(syndFeedInput.build(any(XmlReader.class))).willReturn(syndFeed);
-        
-        //When
+
+        // When
         List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
 
-        //Then
+        // Then
         assertEquals(testFeeds.length, syndFeeds.size());
+    }
+
+    @Test(expected = FeedException.class)
+    public void shouldThrowFeedExceptionIfInvalidXml() throws Exception {
+        given(syndFeedInput.build(any(XmlReader.class))).willThrow(feedException);
+
+        // When
+        rssFetcherService.getRssFeeds(testFeeds);
+
+    }
+
+    @Test
+    public void shouldReturnEmptyFeedListIfNoUrlsGiven() throws Exception {
+        // Given
+        testFeeds = new String[] {};
+
+        // When
+        List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        assertTrue(syndFeeds.isEmpty());
+
     }
 }
