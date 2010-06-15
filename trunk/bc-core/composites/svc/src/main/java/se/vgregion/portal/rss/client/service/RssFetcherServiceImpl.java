@@ -35,7 +35,7 @@ import com.sun.syndication.io.XmlReader;
 
 /**
  * @author jonas liljenfeldt
- * 
+ * @author anders asplund
  */
 @Service
 public class RssFetcherServiceImpl implements RssFetcherService {
