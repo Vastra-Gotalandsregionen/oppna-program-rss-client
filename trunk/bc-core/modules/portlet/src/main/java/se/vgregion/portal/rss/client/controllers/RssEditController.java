@@ -19,7 +19,6 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
 
@@ -31,7 +30,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
@@ -69,8 +67,10 @@ public class RssEditController {
      * 
      * @param model RSS Client EDIT portlet's ModelMap
      * @param preferences RSS Client portlet's PortletPreferences
+     * @param preferencesBean Wrapper bean for portlet preferences
+     * @param result Spring object representing the binding of web view element and java object
+     * @throws ReadOnlyException Thrown if portlet container does not succeeds changing the portlet preferences
      * @return jsp url for view
-     * @throws ReadOnlyException
      */
     @RenderMapping
     public final String showPreferences(final ModelMap model, PortletPreferences preferences,
@@ -95,12 +95,12 @@ public class RssEditController {
      * 
      * @param model RSS Client EDIT portlet's ModelMap
      * @param preferences RSS Client portlet's PortletPreferences
-     * @param feedLinks User feed URLs
+     * @param preferencesBean Wrapper bean for portlet preferences
+     * @param result Spring object representing the binding of web view element and java object
      */
     @ActionMapping
-    public final void savePreferences(final ModelMap model, ActionResponse response,
-            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result,
-            final PortletPreferences preferences) {
+    public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
+            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result) {
         validator.validate(preferencesBean, result);
         if (!result.hasErrors()) {
             try {

@@ -33,6 +33,9 @@ import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
+    /**
+     * The limit for the short version of the news item description.
+     */
     public static final int SHORT_EXCERPT_LENGTH = 200;
     private static final long serialVersionUID = 2L;
     private String title;
@@ -44,10 +47,13 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String feedTitle;
     private Date publishedDate;
 
+    /**
+     * Group-by-source comparator.
+     */
     public static final Comparator<FeedEntryBean> GROUP_BY_SOURCE = new Comparator<FeedEntryBean>() {
         @Override
         public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
-            return new CompareToBuilder().append(feedEntryBean1.feedTitle, feedEntryBean2.feedTitle)
+            return new CompareToBuilder().append(feedEntryBean1.getFeedTitle(), feedEntryBean2.getFeedTitle())
                     .toComparison();
         }
 
@@ -57,11 +63,14 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         };
     };
 
+    /**
+     * Sort-by-date comparator.
+     */
     public static final Comparator<FeedEntryBean> SORT_BY_DATE = new Comparator<FeedEntryBean>() {
         @Override
         public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
-            return new CompareToBuilder().append(feedEntryBean2.publishedDate, feedEntryBean1.publishedDate)
-                    .toComparison();
+            return new CompareToBuilder().append(feedEntryBean2.getPublishedDate(),
+                    feedEntryBean1.getPublishedDate()).toComparison();
         }
 
         @Override
@@ -70,6 +79,12 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         };
     };
 
+    /**
+     * Create instance from SyndEntry object and feed title.
+     * 
+     * @param syndEntry Rome representation of an news item
+     * @param feedTitle The name of the feed
+     */
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
         if (syndEntry.getTitle() != null) {

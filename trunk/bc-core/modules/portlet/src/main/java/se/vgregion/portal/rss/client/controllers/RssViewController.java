@@ -20,9 +20,19 @@
 package se.vgregion.portal.rss.client.controllers;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ResourceBundle;
 
-import javax.portlet.*;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletPreferences;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +56,7 @@ import com.sun.syndication.io.FeedException;
  * Displays RSS items.
  * 
  * @author Jonas Liljenfeldt
+ * @author anders asplund
  */
 @Controller
 @RequestMapping("VIEW")
@@ -70,12 +81,11 @@ public class RssViewController {
      * @param preferences RSS client VIEW portlet's PortletPreferences
      * @return View name.
      * @throws
-     * @throws IOException
-     * @throws IllegalArgumentException
+     * @throws IOException If I/O problems occur
      */
     @RenderMapping
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
-            PortletPreferences preferences) throws IllegalArgumentException, IOException {
+            PortletPreferences preferences) throws IOException {
 
         List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
@@ -93,8 +103,8 @@ public class RssViewController {
         return "rssFeedView";
     }
 
-    public List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
-            throws IllegalArgumentException, IOException {
+    private List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
+            throws IOException {
         List<FeedEntryBean> feedEntries = getRssEntries(preferences);
         Collections.sort(feedEntries, getSortOrder(model));
         return feedEntries;
@@ -106,8 +116,7 @@ public class RssViewController {
         return comparator;
     }
 
-    public List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IllegalArgumentException,
-            IOException {
+    private List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IOException {
         String[] feedUrls = getFeedUrls(preferences);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
@@ -119,35 +128,66 @@ public class RssViewController {
         return feedEntries;
     }
 
+    /**
+     * Prepare to show feed entries view by adding RSS entries sorted by date to model.
+     * 
+     * @param model The model
+     * @param request The portlet request
+     * @param response The portlet response
+     * @param preferences The portlet preferences
+     * @return The name of the view to display
+     * @throws IOException If I/O problems occur
+     */
     @ResourceMapping("sortByDate")
-    public String getFeedEntriesByDate(ModelMap model, ResourceRequest request, ResourceResponse response,
+    public String viewFeedEntriesByDate(ModelMap model, ResourceRequest request, ResourceResponse response,
             PortletPreferences preferences) throws IOException {
         setSortOrderByDate(model);
-        return addSortedFeedEntriesToModel(model, preferences);
+        addSortedFeedEntriesToModel(model, preferences);
+        return "rssItems";
     }
 
+    /**
+     * Prepare to show feed entries view by adding RSS entries sorted by feed title to model.
+     * 
+     * @param model The model
+     * @param request The portlet request
+     * @param response The portlet response
+     * @param preferences The portlet preferences
+     * @return The name of the view to display
+     * @throws IOException If I/O problems occur
+     */
     @ResourceMapping("groupBySource")
-    public String getFeedEntriesBySource(ModelMap model, ResourceRequest request, ResourceResponse response,
+    public String viewFeedEntriesBySource(ModelMap model, ResourceRequest request, ResourceResponse response,
             PortletPreferences preferences) throws IOException {
         setSortOrderByFeedTitle(model);
-        return addSortedFeedEntriesToModel(model, preferences);
+        addSortedFeedEntriesToModel(model, preferences);
+        return "rssItems";
     }
 
-    private String addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
+    private void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
         List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
         feedEntries =
                 feedEntries.subList(0, Math.min(feedEntries.size(), Integer.valueOf(preferences.getValue(
                         PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
                                 .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         model.addAttribute("rssEntries", feedEntries);
-        return "rssItems";
     }
 
+    /**
+     * Set the sort order of the RSS items to date (descending).
+     * 
+     * @param model The model
+     */
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
         model.addAttribute(SORT_ORDER, FeedEntryBean.SORT_BY_DATE);
     }
 
+    /**
+     * Set the sort order of the RSS items to feed title (ascending).
+     * 
+     * @param model The model
+     */
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
         model.addAttribute(SORT_ORDER, FeedEntryBean.GROUP_BY_SOURCE);
@@ -165,12 +205,21 @@ public class RssViewController {
 
     private List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds) {
         List<FeedEntryBean> feedEntryBeans = new ArrayList<FeedEntryBean>();
-        for (SyndFeed syndFeed : rssFeeds) {
+        for (int j = 0; j < rssFeeds.size(); j++) {
+            SyndFeed syndFeed = rssFeeds.get(j);
             for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
                 feedEntryBeans
                         .add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed.getTitle()));
             }
         }
         return feedEntryBeans;
+    }
+
+    public void setPortletConfig(PortletConfig portletConfig) {
+        this.portletConfig = portletConfig;
+    }
+
+    public void setRssFetcherService(RssFetcherService rssFetcherService) {
+        this.rssFetcherService = rssFetcherService;
     }
 }

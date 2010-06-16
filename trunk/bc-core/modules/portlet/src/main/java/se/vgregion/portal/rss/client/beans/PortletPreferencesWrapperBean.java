@@ -28,23 +28,40 @@ import javax.portlet.ValidatorException;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * Container for the portlet preferences.
+ * 
  * @author Anders Asplund - Callista Enterprise
  * @author Jonas Liljenfeldt - Know IT
- * 
  */
 public class PortletPreferencesWrapperBean implements Serializable {
     private static final long serialVersionUID = 1L;
+    /**
+     * Max no of items that can be shown, whatever the user may think.
+     */
     public static final int DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
-    public static final String NUMBER_OF_ITEMS = "numberOfItems";
-    public static final String RSS_FEED_LINKS = "rssFeedLinks";
-    public String rssFeedLinks;
-    public String numberOfItems;
 
-    public void setRssFeedLinks(String rssFeedLinks) throws ReadOnlyException {
+    /**
+     * The key name to the preference number of items do display.
+     */
+    public static final String NUMBER_OF_ITEMS = "numberOfItems";
+
+    /**
+     * The key name to the preference for feed urls.
+     */
+    public static final String RSS_FEED_LINKS = "rssFeedLinks";
+    private String rssFeedLinks;
+    private String numberOfItems;
+
+    /**
+     * Sets the Rss Feed urls. The urls are sparated by comma(,) or new line.
+     * 
+     * @param rssFeedLinks the urls
+     */
+    public void setRssFeedLinks(String rssFeedLinks) {
         this.rssFeedLinks = rssFeedLinks;
     }
 
-    public void setNumberOfItems(String numberOfItems) throws ReadOnlyException {
+    public void setNumberOfItems(String numberOfItems) {
         this.numberOfItems = numberOfItems;
     }
 
@@ -56,7 +73,16 @@ public class PortletPreferencesWrapperBean implements Serializable {
         return numberOfItems;
     }
 
-    public void store(PortletPreferences preferences) throws ValidatorException, IOException, ReadOnlyException {
+    /**
+     * Stores this bean values in the provided PortletPreferences.
+     * 
+     * @param preferences the PortletPreference to store the bean values
+     * @throws ReadOnlyException Thrown if the portlet container is unable write the bean values in the
+     *             PortletPreferences
+     * @throws IOException Thrown if the portlet container is unable store the PortletPreferences
+     * @throws ValidatorException Thrown if the portlet container is unable store the PortletPreferences
+     */
+    public void store(PortletPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {
         parseAndFixUrls();
 
         preferences.setValue(NUMBER_OF_ITEMS, numberOfItems);
