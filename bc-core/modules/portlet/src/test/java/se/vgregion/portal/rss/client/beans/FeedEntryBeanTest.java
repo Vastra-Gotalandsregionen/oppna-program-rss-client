@@ -19,10 +19,12 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,6 +47,10 @@ public class FeedEntryBeanTest {
     private ArrayList<SyndContent> contentList;
     @Mock
     private Date publishedDate;
+    @Mock
+    private FeedEntryBean feedEntryBeanSample1;
+    @Mock
+    private FeedEntryBean feedEntryBeanSample2;
 
     @Before
     public void setUp() throws Exception {
@@ -104,9 +110,22 @@ public class FeedEntryBeanTest {
 
     @Test
     public void shouldSortByPublishDate() throws Exception {
-        // Todo
+        given(feedEntryBeanSample1.getPublishedDate()).willReturn(new Date());
+        Calendar longTimeAgoCalendar = Calendar.getInstance();
+        longTimeAgoCalendar.set(1970, 1, 1);
+        given(feedEntryBeanSample2.getPublishedDate()).willReturn(longTimeAgoCalendar.getTime());
+        int compareResult = FeedEntryBean.SORT_BY_DATE.compare(feedEntryBeanSample2, feedEntryBeanSample1);
+        assertEquals(1, compareResult);
     }
 
+    @Test
+    public void shouldSortByFeedTitle() throws Exception {
+        given(feedEntryBeanSample1.getFeedTitle()).willReturn("Title 1");
+        given(feedEntryBeanSample2.getFeedTitle()).willReturn("Title 2");
+        int compareResult = FeedEntryBean.GROUP_BY_SOURCE.compare(feedEntryBeanSample1, feedEntryBeanSample2);
+        assertEquals(-1, compareResult);
+    }
+    
     private void constructFeedBean(String descriptionValue, boolean addContent) {
         // Given
         given(syndEntry.getTitle()).willReturn("title");
@@ -123,5 +142,4 @@ public class FeedEntryBeanTest {
             given(contentList.get(0)).willReturn(syndContent);
         }
     }
-
 }
