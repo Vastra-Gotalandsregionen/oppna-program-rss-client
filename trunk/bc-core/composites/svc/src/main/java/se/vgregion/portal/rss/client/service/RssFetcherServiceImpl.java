@@ -47,9 +47,11 @@ public class RssFetcherServiceImpl implements RssFetcherService {
         this.syndFeedInput = syndFeedInput;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws IllegalArgumentException, IOException,
-            FeedException {
+    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws FeedException, IOException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
         for (String feedLink : feedUrlsArray) {
             if (!StringUtils.isBlank(feedLink)) {

@@ -19,9 +19,10 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 import java.util.List;
 
