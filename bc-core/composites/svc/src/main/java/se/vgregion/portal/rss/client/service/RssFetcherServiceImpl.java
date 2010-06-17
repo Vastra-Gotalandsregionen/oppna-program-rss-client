@@ -53,12 +53,14 @@ public class RssFetcherServiceImpl implements RssFetcherService {
     @Override
     public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws FeedException, IOException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
-        for (String feedLink : feedUrlsArray) {
-            if (!StringUtils.isBlank(feedLink)) {
-                URL feedUrl = new URL(feedLink);
-                // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
-                SyndFeed syndFeed = syndFeedInput.build(new XmlReader(feedUrl));
-                syndFeeds.add(syndFeed);
+        if (feedUrlsArray != null) {
+            for (String feedLink : feedUrlsArray) {
+                if (!StringUtils.isBlank(feedLink)) {
+                    URL feedUrl = new URL(feedLink);
+                    // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
+                    SyndFeed syndFeed = syndFeedInput.build(new XmlReader(feedUrl));
+                    syndFeeds.add(syndFeed);
+                }
             }
         }
         return syndFeeds;
