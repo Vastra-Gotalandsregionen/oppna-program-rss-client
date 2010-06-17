@@ -39,5 +39,5 @@
     <!-- Suppress files under target -->
     <suppress checks=".*" files=".*[/\\]target[/\\].*" />
     <!-- Suppress resources -->
-    <suppress checks=".*" files=".*[/\\]main[/\\]java[/\\]flagthis[/\\].pubsubhub[/\\]..*" />
+    <suppress checks=".*" files=".*[/\\]main[/\\]java[/\\]flagthis[/\\].pubsubhub[/\\].*" />
 </suppressions>
