@@ -27,18 +27,6 @@
     <property name="basename" value="se.vgregion.portal.rss.client.rssClient" />
   </bean>
 
-  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-
-  <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-    <property name="alwaysUseFullPath" value="true" />
-    <property name="webBindingInitializer">
-      <!-- Configures Spring MVC DataBinder instances -->
-      <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-        <property name="validator" ref="validator" />
-      </bean>
-    </property>
-  </bean>
-
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
     <property name="prefix" value="/WEB-INF/jsp/" />
