@@ -50,7 +50,7 @@ public class PortletPreferencesWrapperBean implements Serializable {
      */
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
     private String rssFeedLinks;
-    private String numberOfItems;
+    private String numberOfItems = String.valueOf(DEFAULT_MAX_NUMBER_OF_ITEMS);
 
     /**
      * Sets the Rss Feed urls. The urls are sparated by comma(,) or new line.

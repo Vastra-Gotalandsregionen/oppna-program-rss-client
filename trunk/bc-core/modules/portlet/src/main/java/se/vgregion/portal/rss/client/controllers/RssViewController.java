@@ -90,10 +90,8 @@ public class RssViewController {
         List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
         sortedRssEntries = getSortedRssEntries(model, preferences);
-        sortedRssEntries =
-                sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer.valueOf(preferences
-                        .getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
-                                .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+
+        sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
 
         if (bundle != null) {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
@@ -101,13 +99,6 @@ public class RssViewController {
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
         return "rssFeedView";
-    }
-
-    private List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
-            throws IOException {
-        List<FeedEntryBean> feedEntries = getRssEntries(preferences);
-        Collections.sort(feedEntries, getSortOrder(model));
-        return feedEntries;
     }
 
     @SuppressWarnings("unchecked")
@@ -166,10 +157,7 @@ public class RssViewController {
 
     private void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
         List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
-        feedEntries =
-                feedEntries.subList(0, Math.min(feedEntries.size(), Integer.valueOf(preferences.getValue(
-                        PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
-                                .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+        feedEntries = getItemsToBeDisplayed(preferences, feedEntries);
         model.addAttribute("rssEntries", feedEntries);
     }
 
@@ -213,6 +201,22 @@ public class RssViewController {
             }
         }
         return feedEntryBeans;
+    }
+
+    private List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
+            List<FeedEntryBean> sortedRssEntries) {
+        sortedRssEntries =
+                sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer.valueOf(preferences
+                        .getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+                                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+        return sortedRssEntries;
+    }
+
+    private List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
+            throws IOException {
+        List<FeedEntryBean> feedEntries = getRssEntries(preferences);
+        Collections.sort(feedEntries, getSortOrder(model));
+        return feedEntries;
     }
 
     public void setPortletConfig(PortletConfig portletConfig) {
