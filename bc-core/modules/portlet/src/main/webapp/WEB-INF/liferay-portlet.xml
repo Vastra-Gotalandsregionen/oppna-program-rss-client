@@ -25,7 +25,7 @@
 <liferay-portlet-app>
 	<portlet>
       <portlet-name>RssClient</portlet-name>
-      <preferences-unique-per-layout>false</preferences-unique-per-layout>
-      <preferences-owned-by-group>false</preferences-owned-by-group>
+<!--      <preferences-unique-per-layout>false</preferences-unique-per-layout>-->
+<!--      <preferences-owned-by-group>false</preferences-owned-by-group>-->
     </portlet>
 </liferay-portlet-app>
