@@ -47,7 +47,7 @@
       return false;
     });
     
-    jQuery('.read-more, .read-less').click(function() {
+    jQuery('.read-more, .read-less, .news-title').click(function() {
       var li = jQuery(this).parents("li");
       li.find(".news-excerpt").toggle("medium");
       li.find(".news-content").toggle("medium");
@@ -86,7 +86,7 @@
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
       <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
-        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a>
+        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a><a href="${item.link}"><img src="/vgr-theme/images/external_link_icon.gif" /></a>
       <div class="news-excerpt">
         <p class="news-excerpt">
           <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}"><a class="read-more" href="#">&raquo;</a></c:if>
