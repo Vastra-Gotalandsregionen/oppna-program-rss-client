@@ -7,12 +7,12 @@
   <parent>
     <groupId>se.vgregion.rss-client</groupId>
     <artifactId>rss-client-system</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
   </parent>
   <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-bc-core</artifactId>
   <packaging>pom</packaging>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <name>${project.artifactId}</name>
 
   <modules>
