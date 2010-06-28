@@ -9,13 +9,13 @@
   <parent>
     <groupId>se.vgregion.common</groupId>
     <artifactId>profile-open</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
   </parent>
 
   <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-system</artifactId>
   <packaging>pom</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>${project.artifactId}</name>
 
   <modules>
@@ -45,8 +45,8 @@
   <!--NB! SCM config below assumes system name equals VGR subversion/googlecode project name! -->
   <!-- Open Source repo -->
   <scm>
-    <developerConnection>scm:svn:https://oppna-program-rss-client.googlecode.com/svn/trunk</developerConnection>
-    <url>http://oppna-program-rss-client.googlecode.com/svn/trunk</url>
+    <developerConnection>scm:svn:https://oppna-program-rss-client.googlecode.com/svn/tags/rss-client-system-1.1</developerConnection>
+    <url>http://oppna-program-rss-client.googlecode.com/svn/tags/rss-client-system-1.1</url>
   </scm>
 
   <dependencies>
