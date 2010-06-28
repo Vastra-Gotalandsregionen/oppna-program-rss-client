@@ -33,9 +33,9 @@ Generation time : 2010-05-13 10:52:30 CEST
   </build>
 
   <dependencies>
-    <dependency>
+      <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rss-client-bc-core-composite-webcomp</artifactId>
+      <artifactId>rss-client-bc-core-composite-svc</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

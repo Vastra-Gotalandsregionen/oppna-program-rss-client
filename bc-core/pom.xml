@@ -17,7 +17,6 @@
 
   <modules>
     <module>composites/svc</module>
-    <module>composites/webcomp</module>
     <module>modules/portlet</module>
   </modules>
 
