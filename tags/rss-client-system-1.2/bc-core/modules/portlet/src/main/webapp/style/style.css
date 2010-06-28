@@ -1,0 +1,102 @@
+/**
+ * Copyright 2010 Västra Götalandsregionen
+ *
+ *   This library is free software; you can redistribute it and/or modify
+ *   it under the terms of version 2.1 of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Lesser General Public
+ *   License along with this library; if not, write to the
+ *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ *   Boston, MA 02111-1307  USA
+ *
+ */
+
+@CHARSET "UTF-8";
+fieldset {  
+  margin: 1.5em 0 0 0;  
+  padding: 0;  
+}  
+legend {  
+  margin-left: 1em;  
+  color: #000000;  
+  font-weight: bold;  
+}  
+fieldset ol {  
+  padding: 1em 1em 0 1em;  
+}  
+fieldset li {  
+  list-style: none;  
+  padding-bottom: 1em;  
+}  
+fieldset.submit {  
+  border-style: none;  
+}
+fieldset label {    
+  display: block;  
+}
+
+.list-news .news-item {
+  list-style: none;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border: 1px dotted #CCC;
+}
+
+ul.list-news {
+  margin-left: 0em;
+}
+
+.news-source {
+  display: block;
+  font-style: italic;
+}
+
+.news-date {
+  color: grey;
+}
+
+.news-title {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.news-excerpt {
+  color: #33332A;
+  margin-bottom: 0em;
+}
+
+.news-content {
+  display: none;
+  width: 100%;
+}
+
+textarea.validation-error, input.validation-error {
+  border: 1px solid red;
+}
+
+.validation-error-message {
+  padding-left: 18px;
+  margin: 0.3em 0 0 .3em;
+  background: url('/vgr-theme/i/icons/exclamation.png') no-repeat;
+  display: block; 
+}
+
+.validation-error-message-feed-urls {
+  background: url('/vgr-theme/i/icons/feed_error.png') no-repeat;
+}
+
+.source-link {
+  background: url('/vgr-theme/images/external_link_icon.gif') no-repeat right scroll transparent;
+  padding-right: 1.3em;
+  margin-right: 1.3em;
+}
+.news-actions {
+  margin-top: 1em;
+}
