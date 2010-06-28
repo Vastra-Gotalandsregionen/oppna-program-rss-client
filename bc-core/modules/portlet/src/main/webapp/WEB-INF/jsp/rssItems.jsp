@@ -31,23 +31,22 @@
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
-
 <script>
   jQuery(document).ready(function() {
-    jQuery(".news-excerpt").show;
-    jQuery(".news-content").hide;
+    jQuery("#p_p_id<portlet:namespace/> .news-excerpt").show;
+    jQuery("#p_p_id<portlet:namespace/> .news-content").hide;
 
-	jQuery('#group-by-source').click(function() {
+	jQuery('#p_p_id<portlet:namespace/> #group-by-source').click(function() {
       updateSorting("${groupBySourceResource}");
       return false;
     });
     
-    jQuery('#sort-by-date').click(function() {
+    jQuery('#p_p_id<portlet:namespace/> #sort-by-date').click(function() {
       updateSorting("${sortByDateResource}");
       return false;
     });
     
-    jQuery('.read-more, .read-less, .news-title').click(function() {
+    jQuery('#p_p_id<portlet:namespace/> .read-more, #p_p_id<portlet:namespace/> .read-less, #p_p_id<portlet:namespace/> .news-title').click(function() {
       var li = jQuery(this).parents("li");
       li.find(".news-excerpt").toggle("medium");
       li.find(".news-content").toggle("medium");
@@ -59,7 +58,7 @@
     jQuery.ajax({
       url: sortingUrl,
       success: function(data) {
-        jQuery("#rss-item-container").html(data);
+        jQuery("#p_p_id<portlet:namespace/> #rss-item-container").html(data);
        }
     });
   }
@@ -86,14 +85,17 @@
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
       <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
-        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a><a href="${item.link}"><img src="/vgr-theme/images/external_link_icon.gif" /></a>
+        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a><a class="source-link" href="${item.link}"></a>
       <div class="news-excerpt">
         <p class="news-excerpt">
           <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}"><a class="read-more" href="#">&raquo;</a></c:if>
         </p>
       </div>
-      <div class="news-content"><c:out value="${item.contentsString}"  escapeXml="false" />
-        <a href="#" class="read-less"><fmt:message key="close"/></a>
+      <div class="news-content"><c:out value="${item.contentsString}" escapeXml="false" />
+        <div class="news-actions">
+          <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
+          <a href="#" class="read-less"><fmt:message key="close"/></a>
+        </div>
       </div>
       </li>
     </c:forEach>
