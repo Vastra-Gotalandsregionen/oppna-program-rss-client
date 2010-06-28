@@ -20,11 +20,12 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <style>
 <!--
     @import url("${pageContext.request.contextPath}/style/style.css");
 -->
 </style>
-<div id="module-news" class="module">
-<div id="module-content"><jsp:directive.include file="rssItems.jsp" /></div>
+<div id="<portlet:namespace/>-module-news" class="module">
+<div id="<portlet:namespace/>-module-content"><jsp:directive.include file="rssItems.jsp" /></div>
 </div>
