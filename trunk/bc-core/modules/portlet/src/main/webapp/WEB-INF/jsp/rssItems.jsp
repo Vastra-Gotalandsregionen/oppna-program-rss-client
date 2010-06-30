@@ -37,7 +37,7 @@
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 <script>
   jQuery(document).ready(function() {
-    jQuery("#p_p_id<portlet:namespace/> .news-excerpt").excerpt({lines: ${portletPreferencesValues.numberOfExcerptRows[0]}, end: '...'});
+    jQuery("#p_p_id<portlet:namespace/> .news-excerpt").excerpt({lines: '${portletPreferencesValues.numberOfExcerptRows[0]}', end: '...'});
     jQuery("#p_p_id<portlet:namespace/> .news-excerpt").show;
     jQuery("#p_p_id<portlet:namespace/> .news-content").hide;
 

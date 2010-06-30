@@ -1,3 +1,22 @@
+/*
+ * Copyright 2010 VÃ¤stra GÃ¶talandsregionen
+ *
+ *   This library is free software; you can redistribute it and/or modify
+ *   it under the terms of version 2.1 of the GNU Lesser General Public
+ *   License as published by the Free Software Foundation.
+ *
+ *   This library is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU Lesser General Public License for more details.
+ *
+ *   You should have received a copy of the GNU Lesser General Public
+ *   License along with this library; if not, write to the
+ *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ *   Boston, MA 02111-1307  USA
+ *
+ */
+
 (function($) {
 
 /*
@@ -5,7 +24,7 @@
  *
  * The element must have a nonzero width when empty. (Most commonly a block
  * element, such as a <p>, will fit this criterion.) The contained, HTML-free
- * text will be truncated to fit the width along with an "end", e.g., '…'.
+ * text will be truncated to fit the width along with an "end", e.g., 'ï¿½'.
  * Truncation will only occur along whitespace.
  *
  * Assumptions:
@@ -18,7 +37,7 @@
  * - As many words in the element's text will be displayed as possible.
  *
  * Options:
- *   end: (default '…') String to append to the end when truncating. May also
+ *   end: (default 'ï¿½') String to append to the end when truncating. May also
  *                      be a DOM node.
  *   always_end: String or DOM node which must always be appended, whether or
  *               not we truncate. (This may actually cause truncation which
@@ -33,7 +52,7 @@
 function Excerpt(elem, options) {
 	this.$elem = $(elem);
 	this.options = $.extend({
-		end: '…',
+		end: 'ï¿½',
 		always_end: undefined,
 		lines: 1
 	}, options);
