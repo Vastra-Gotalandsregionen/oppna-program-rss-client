@@ -42,6 +42,10 @@
         <form:input id="maximum-items" path="numberOfItems" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfItems"/>
       </li>
       <li>
+        <label for="excerpt-rows"><fmt:message key="numberofexcerptrows" />:</label>
+        <form:input id="excerpt-rows" path="numberOfExcerptRows" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfExcerptRows"/>
+      </li>
+      <li>
         <label for="rss-feed-links"><fmt:message key="feeds" />:</label> 
         <form:textarea id="rss-feed-links" path="rssFeedLinks" cols="100" rows="5" cssErrorClass="validation-error"/>
         <form:errors path="rssFeedLinks" cssClass="validation-error-message validation-error-message-feed-urls"/>
