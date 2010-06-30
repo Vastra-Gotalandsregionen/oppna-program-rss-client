@@ -19,15 +19,13 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.mockito.BDDMockito.given;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -76,24 +74,24 @@ public class FeedEntryBeanTest {
         assertSame(publishedDate, feedEntryBean.getPublishedDate());
     }
 
-    @Test
-    public final void shouldConstructAbbreviatedDescription() {
-        // Given
-        // 20 x 0123456789 + abc
-        String veryLongDescriptionValue = "";
-        for (int i = 0; i < 21; i++) {
-            veryLongDescriptionValue += "0123456789";
-        }
-        veryLongDescriptionValue += "abc";
-        constructFeedBean(veryLongDescriptionValue, true);
-
-        // When
-        String feedTitle = "feed title";
-        FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle);
-
-        assertEquals(StringUtils.abbreviate(veryLongDescriptionValue, FeedEntryBean.SHORT_EXCERPT_LENGTH),
-                feedEntryBean.getShortExcerpt());
-    }
+    // @Test
+    // public final void shouldConstructAbbreviatedDescription() {
+    // // Given
+    // // 20 x 0123456789 + abc
+    // String veryLongDescriptionValue = "";
+    // for (int i = 0; i < 21; i++) {
+    // veryLongDescriptionValue += "0123456789";
+    // }
+    // veryLongDescriptionValue += "abc";
+    // constructFeedBean(veryLongDescriptionValue, true);
+    //
+    // // When
+    // String feedTitle = "feed title";
+    // FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle);
+    //
+    // assertEquals(StringUtils.abbreviate(veryLongDescriptionValue, FeedEntryBean.SHORT_EXCERPT_LENGTH),
+    // feedEntryBean.getShortExcerpt());
+    // }
 
     @Test
     public final void shouldPutDescriptionInContentIfThereIsNoDescription() {
@@ -125,7 +123,7 @@ public class FeedEntryBeanTest {
         int compareResult = FeedEntryBean.GROUP_BY_SOURCE.compare(feedEntryBeanSample1, feedEntryBeanSample2);
         assertEquals(-1, compareResult);
     }
-    
+
     private void constructFeedBean(String descriptionValue, boolean addContent) {
         // Given
         given(syndEntry.getTitle()).willReturn("title");
