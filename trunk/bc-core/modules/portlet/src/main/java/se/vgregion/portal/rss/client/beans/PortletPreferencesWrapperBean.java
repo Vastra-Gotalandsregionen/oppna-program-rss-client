@@ -41,9 +41,19 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final int DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
 
     /**
-     * The key name to the preference number of items do display.
+     * The key name to the preference number of items to display.
      */
     public static final String NUMBER_OF_ITEMS = "numberOfItems";
+
+    /**
+     * Default number of excerpt rows.
+     */
+    public static final int DEFAULT_NUMBER_OF_EXCERPT_ROWS = 1;
+
+    /**
+     * The key name to the preference number of rows to display in excerpt.
+     */
+    public static final String NUMBER_OF_EXCERPT_ROWS = "numberOfExcerptRows";
 
     /**
      * The key name to the preference for feed urls.
@@ -51,11 +61,13 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
     private String rssFeedLinks;
     private String numberOfItems = String.valueOf(DEFAULT_MAX_NUMBER_OF_ITEMS);
+    private String numberOfExcerptRows = String.valueOf(DEFAULT_NUMBER_OF_EXCERPT_ROWS);
 
     /**
      * Sets the Rss Feed urls. The urls are sparated by comma(,) or new line.
      * 
-     * @param rssFeedLinks the urls
+     * @param rssFeedLinks
+     *            the urls
      */
     public void setRssFeedLinks(String rssFeedLinks) {
         this.rssFeedLinks = rssFeedLinks;
@@ -63,6 +75,10 @@ public class PortletPreferencesWrapperBean implements Serializable {
 
     public void setNumberOfItems(String numberOfItems) {
         this.numberOfItems = numberOfItems;
+    }
+
+    public void setNumberOfExcerptRows(String numberOfExcerptRows) {
+        this.numberOfExcerptRows = numberOfExcerptRows;
     }
 
     public String getRssFeedLinks() {
@@ -73,20 +89,28 @@ public class PortletPreferencesWrapperBean implements Serializable {
         return numberOfItems;
     }
 
+    public String getNumberOfExcerptRows() {
+        return numberOfExcerptRows;
+    }
+
     /**
      * Stores this bean values in the provided PortletPreferences.
      * 
-     * @param preferences the PortletPreference to store the bean values
-     * @throws ReadOnlyException Thrown if the portlet container is unable write the bean values in the
-     *             PortletPreferences
-     * @throws IOException Thrown if the portlet container is unable store the PortletPreferences
-     * @throws ValidatorException Thrown if the portlet container is unable store the PortletPreferences
+     * @param preferences
+     *            the PortletPreference to store the bean values
+     * @throws ReadOnlyException
+     *             Thrown if the portlet container is unable write the bean values in the PortletPreferences
+     * @throws IOException
+     *             Thrown if the portlet container is unable store the PortletPreferences
+     * @throws ValidatorException
+     *             Thrown if the portlet container is unable store the PortletPreferences
      */
     public void store(PortletPreferences preferences) throws ReadOnlyException, ValidatorException, IOException {
         parseAndFixUrls();
 
         preferences.setValue(NUMBER_OF_ITEMS, numberOfItems);
         preferences.setValue(RSS_FEED_LINKS, rssFeedLinks);
+        preferences.setValue(NUMBER_OF_EXCERPT_ROWS, numberOfExcerptRows);
         preferences.store();
     }
 

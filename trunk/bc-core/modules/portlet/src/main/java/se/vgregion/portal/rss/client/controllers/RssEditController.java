@@ -65,11 +65,16 @@ public class RssEditController {
     /**
      * Method handling Render request, fetching portlet preferences for view.
      * 
-     * @param model RSS Client EDIT portlet's ModelMap
-     * @param preferences RSS Client portlet's PortletPreferences
-     * @param preferencesBean Wrapper bean for portlet preferences
-     * @param result Spring object representing the binding of web view element and java object
-     * @throws ReadOnlyException Thrown if portlet container does not succeeds changing the portlet preferences
+     * @param model
+     *            RSS Client EDIT portlet's ModelMap
+     * @param preferences
+     *            RSS Client portlet's PortletPreferences
+     * @param preferencesBean
+     *            Wrapper bean for portlet preferences
+     * @param result
+     *            Spring object representing the binding of web view element and java object
+     * @throws ReadOnlyException
+     *             Thrown if portlet container does not succeeds changing the portlet preferences
      * @return jsp url for view
      */
     @RenderMapping
@@ -85,6 +90,9 @@ public class RssEditController {
 
         preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
                 String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
+        preferencesBean.setNumberOfExcerptRows(preferences.getValue(
+                PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS, String
+                        .valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
         preferencesBean.setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
         model.addAttribute(PREFERENCES, preferencesBean);
         return CONFIG_JSP;
@@ -93,10 +101,14 @@ public class RssEditController {
     /**
      * Method handling Action request, saving portlet preferences.
      * 
-     * @param model RSS Client EDIT portlet's ModelMap
-     * @param preferences RSS Client portlet's PortletPreferences
-     * @param preferencesBean Wrapper bean for portlet preferences
-     * @param result Spring object representing the binding of web view element and java object
+     * @param model
+     *            RSS Client EDIT portlet's ModelMap
+     * @param preferences
+     *            RSS Client portlet's PortletPreferences
+     * @param preferencesBean
+     *            Wrapper bean for portlet preferences
+     * @param result
+     *            Spring object representing the binding of web view element and java object
      */
     @ActionMapping
     public final void savePreferences(final ModelMap model, final PortletPreferences preferences,

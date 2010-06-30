@@ -25,14 +25,19 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<portlet:defineObjects/>
+
 <portlet:actionURL escapeXml="false" var="sortByDate" name="sortByDate" />
 <portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource" />
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
+<script src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
+
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 <script>
   jQuery(document).ready(function() {
+    jQuery("#p_p_id<portlet:namespace/> .news-excerpt").excerpt({lines: ${portletPreferencesValues.numberOfExcerptRows[0]}, end: '...'});
     jQuery("#p_p_id<portlet:namespace/> .news-excerpt").show;
     jQuery("#p_p_id<portlet:namespace/> .news-content").hide;
 
@@ -50,8 +55,10 @@
       var li = jQuery(this).parents("li");
       li.find(".news-excerpt").toggle("medium");
       li.find(".news-content").toggle("medium");
+            
       return false;
     });
+
   });
   
   function updateSorting(sortingUrl) {
@@ -80,30 +87,24 @@
       </c:otherwise>
     </c:choose>
     </div>
-  </c:if>
+  </c:if> 
+  
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
-      <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
-        pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a><a class="source-link" href="${item.link}"></a>
-      <div class="news-excerpt">
-        <p class="news-excerpt">
-          <c:out value="${item.shortExcerpt}" escapeXml="false"/>
-          <!-- 
-          TODO: Short excerpt not handled well at the moment for all feeds, we have to handle HTML tags in
-                description...otherwise we might e.g. cut in the middle of a tag...
-          <c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}">
-            <a class="read-more" href="#">&raquo;</a>
-          </c:if>
-           -->
-        </p>
-      </div>
-      <div class="news-content"><c:out value="${item.contentsString}" escapeXml="false" />
-        <div class="news-actions">
-          <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
-          <a href="#" class="read-less"><fmt:message key="close"/></a>
+        <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
+          pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;<a class="source-link" href="${item.link}"></a>
+        <div class="news-excerpt">
+          <p class="news-excerpt">
+            <c:out value="${item.contentsString}" escapeXml="false"/>
+          </p>
         </div>
-      </div>
+        <div class="news-content"><c:out value="${item.contentsString}" escapeXml="false" />
+          <div class="news-actions">
+            <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
+            <a href="#" class="read-less"><fmt:message key="close"/></a>
+          </div>
+        </div>
       </li>
     </c:forEach>
   </ul>

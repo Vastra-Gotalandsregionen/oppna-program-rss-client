@@ -75,13 +75,18 @@ public class RssViewController {
     /**
      * Shows RSS items for user.
      * 
-     * @param model ModelMap
-     * @param request RenderRequest
-     * @param response RenderResponse
-     * @param preferences RSS client VIEW portlet's PortletPreferences
+     * @param model
+     *            ModelMap
+     * @param request
+     *            RenderRequest
+     * @param response
+     *            RenderResponse
+     * @param preferences
+     *            RSS client VIEW portlet's PortletPreferences
      * @return View name.
      * @throws
-     * @throws IOException If I/O problems occur
+     * @throws IOException
+     *             If I/O problems occur
      */
     @RenderMapping
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
@@ -122,12 +127,17 @@ public class RssViewController {
     /**
      * Prepare to show feed entries view by adding RSS entries sorted by date to model.
      * 
-     * @param model The model
-     * @param request The portlet request
-     * @param response The portlet response
-     * @param preferences The portlet preferences
+     * @param model
+     *            The model
+     * @param request
+     *            The portlet request
+     * @param response
+     *            The portlet response
+     * @param preferences
+     *            The portlet preferences
      * @return The name of the view to display
-     * @throws IOException If I/O problems occur
+     * @throws IOException
+     *             If I/O problems occur
      */
     @ResourceMapping("sortByDate")
     public String viewFeedEntriesByDate(ModelMap model, ResourceRequest request, ResourceResponse response,
@@ -140,12 +150,17 @@ public class RssViewController {
     /**
      * Prepare to show feed entries view by adding RSS entries sorted by feed title to model.
      * 
-     * @param model The model
-     * @param request The portlet request
-     * @param response The portlet response
-     * @param preferences The portlet preferences
+     * @param model
+     *            The model
+     * @param request
+     *            The portlet request
+     * @param response
+     *            The portlet response
+     * @param preferences
+     *            The portlet preferences
      * @return The name of the view to display
-     * @throws IOException If I/O problems occur
+     * @throws IOException
+     *             If I/O problems occur
      */
     @ResourceMapping("groupBySource")
     public String viewFeedEntriesBySource(ModelMap model, ResourceRequest request, ResourceResponse response,
@@ -164,7 +179,8 @@ public class RssViewController {
     /**
      * Set the sort order of the RSS items to date (descending).
      * 
-     * @param model The model
+     * @param model
+     *            The model
      */
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
@@ -174,7 +190,8 @@ public class RssViewController {
     /**
      * Set the sort order of the RSS items to feed title (ascending).
      * 
-     * @param model The model
+     * @param model
+     *            The model
      */
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
@@ -205,10 +222,9 @@ public class RssViewController {
 
     private List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
             List<FeedEntryBean> sortedRssEntries) {
-        sortedRssEntries =
-                sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer.valueOf(preferences
-                        .getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
-                                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+        sortedRssEntries = sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer
+                .valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
+                        .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         return sortedRssEntries;
     }
 
