@@ -84,16 +84,16 @@ textarea.validation-error, input.validation-error {
 .validation-error-message {
   padding-left: 18px;
   margin: 0.3em 0 0 .3em;
-  background: url('/vgr-theme/i/icons/exclamation.png') no-repeat;
+  background: url('../images/exclamation.png') no-repeat;
   display: block; 
 }
 
 .validation-error-message-feed-urls {
-  background: url('/vgr-theme/i/icons/feed_error.png') no-repeat;
+  background: url('../images/feed_error.png') no-repeat;
 }
 
 .source-link {
-  background: url('/vgr-theme/images/external_link_icon.gif') no-repeat right scroll transparent;
+  background: url('../images/external_link_icon.gif') no-repeat right scroll transparent;
   padding-right: 1.3em;
   margin-right: 1.3em;
 }

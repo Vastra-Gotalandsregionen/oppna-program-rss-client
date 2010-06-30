@@ -82,8 +82,10 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     /**
      * Create instance from SyndEntry object and feed title.
      * 
-     * @param syndEntry Rome representation of an news item
-     * @param feedTitle The name of the feed
+     * @param syndEntry
+     *            Rome representation of an news item
+     * @param feedTitle
+     *            The name of the feed
      */
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
@@ -93,12 +95,14 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null) {
             excerpt = escapeText(syndEntry.getDescription().getValue().trim());
         }
-        if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
-                && syndEntry.getDescription().getValue().length() > SHORT_EXCERPT_LENGTH) {
-            shortExcerpt = StringUtils.abbreviate(excerpt, SHORT_EXCERPT_LENGTH);
-        } else {
-            shortExcerpt = excerpt;
-        }
+        // TODO: Short excerpt not handled well at the moment for all feeds, we have to handle HTML tags in
+        // description...otherwise we might e.g. cut in the middle of a tag...
+        // if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
+        // && syndEntry.getDescription().getValue().length() > SHORT_EXCERPT_LENGTH) {
+        // shortExcerpt = StringUtils.abbreviate(excerpt, SHORT_EXCERPT_LENGTH);
+        // } else {
+        // shortExcerpt = excerpt;
+        // }
 
         contents = syndEntry.getContents();
 

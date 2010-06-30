@@ -88,7 +88,14 @@
         pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a><a class="source-link" href="${item.link}"></a>
       <div class="news-excerpt">
         <p class="news-excerpt">
-          <c:out value="${item.shortExcerpt}" escapeXml="false"/><c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}"><a class="read-more" href="#">&raquo;</a></c:if>
+          <c:out value="${item.shortExcerpt}" escapeXml="false"/>
+          <!-- 
+          TODO: Short excerpt not handled well at the moment for all feeds, we have to handle HTML tags in
+                description...otherwise we might e.g. cut in the middle of a tag...
+          <c:if test="${fn:length(item.contentsString) gt 200 or (fn:length(item.contentsString) ne fn:length(item.shortExcerpt))}">
+            <a class="read-more" href="#">&raquo;</a>
+          </c:if>
+           -->
         </p>
       </div>
       <div class="news-content"><c:out value="${item.contentsString}" escapeXml="false" />
