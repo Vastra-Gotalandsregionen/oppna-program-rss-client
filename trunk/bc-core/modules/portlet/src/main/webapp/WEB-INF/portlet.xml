@@ -32,6 +32,26 @@
       <keywords>rss client viewer feeds</keywords>
     </portlet-info>
   </portlet>
+  
+  <portlet>
+    <portlet-name>RssClientMinimal</portlet-name>
+    <display-name>Minimal RSS Client</display-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+    <resource-bundle>se.vgregion.portal.rss.client.rssClient</resource-bundle>
+    <portlet-info>
+      <title>Minimal RSS Client</title>
+      <short-title>Minimal RSS Client</short-title>
+      <keywords>minimal rss client viewer feeds</keywords>
+    </portlet-info>
+  </portlet>
+  
   <default-namespace>http://RssClient/</default-namespace>
 
 </portlet-app>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<%--
 
     Copyright 2010 Västra Götalandsregionen
 
@@ -18,15 +17,15 @@
       Boston, MA 02111-1307  USA
 
 
+--%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
+<style>
+<!--
+    @import url("${pageContext.request.contextPath}/style/style.css");
 -->
-
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
-  <!-- Enables component scanning -->
-  <context:component-scan base-package="se.vgregion.portal.rss.client.beans" />
-
-</beans>
+</style>
+<div id="<portlet:namespace/>-module-news" class="module">
+<div id="<portlet:namespace/>-module-content"><jsp:directive.include file="rssItemsMinimal.jsp" /></div>
+</div>

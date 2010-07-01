@@ -99,7 +99,7 @@ public class RssViewControllerTest {
     @Test
     public void testViewRssItemList() throws Exception {
         // Given
-//        RssViewController rssViewController = new RssViewController();
+//        RssMinimalViewController rssViewController = new RssMinimalViewController();
 //        rssViewController.setPortletConfig(portletConfig);
 //        rssViewController.setRssFetcherService(rssFetcherService);
 //        given(model.get("rssEntries")).willReturn(sortedRssEntries);

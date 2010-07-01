@@ -27,6 +27,10 @@
     <servlet-class>org.springframework.web.servlet.ViewRendererServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>view</servlet-name>
+    <url-pattern>/WEB-INF/servlet/view</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>RssClient</servlet-name>
@@ -37,14 +41,22 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
-
-  <servlet-mapping>
-    <servlet-name>view</servlet-name>
-    <url-pattern>/WEB-INF/servlet/view</url-pattern>
-  </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>RssClient</servlet-name>
     <url-pattern>/RssClient/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RssClientMinimal</servlet-name>
+    <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-class</param-name>
+      <param-value>org.springframework.web.portlet.DispatcherPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RssClientMinimal</servlet-name>
+    <url-pattern>/RssClientMinimal/*</url-pattern>
   </servlet-mapping>
 </web-app>
