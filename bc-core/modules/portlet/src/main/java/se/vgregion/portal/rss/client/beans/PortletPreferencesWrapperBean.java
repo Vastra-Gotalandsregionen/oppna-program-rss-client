@@ -56,12 +56,18 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final String NUMBER_OF_EXCERPT_ROWS = "numberOfExcerptRows";
 
     /**
+     * The key name to the preference number of rows to display in excerpt.
+     */
+    public static final String RSS_STD_CLIENT_LINK = "rssStandardClientPortletLink";
+
+    /**
      * The key name to the preference for feed urls.
      */
     public static final String RSS_FEED_LINKS = "rssFeedLinks";
     private String rssFeedLinks;
     private String numberOfItems = String.valueOf(DEFAULT_MAX_NUMBER_OF_ITEMS);
     private String numberOfExcerptRows = String.valueOf(DEFAULT_NUMBER_OF_EXCERPT_ROWS);
+    private String rssStandardClientPortletLink;
 
     /**
      * Sets the Rss Feed urls. The urls are sparated by comma(,) or new line.
@@ -81,6 +87,10 @@ public class PortletPreferencesWrapperBean implements Serializable {
         this.numberOfExcerptRows = numberOfExcerptRows;
     }
 
+    public void setRssStandardClientPortletLink(String rssStandardClientLink) {
+        this.rssStandardClientPortletLink = rssStandardClientLink;
+    }
+
     public String getRssFeedLinks() {
         return rssFeedLinks;
     }
@@ -91,6 +101,10 @@ public class PortletPreferencesWrapperBean implements Serializable {
 
     public String getNumberOfExcerptRows() {
         return numberOfExcerptRows;
+    }
+
+    public String getRssStandardClientPortletLink() {
+        return rssStandardClientPortletLink;
     }
 
     /**
@@ -111,6 +125,7 @@ public class PortletPreferencesWrapperBean implements Serializable {
         preferences.setValue(NUMBER_OF_ITEMS, numberOfItems);
         preferences.setValue(RSS_FEED_LINKS, rssFeedLinks);
         preferences.setValue(NUMBER_OF_EXCERPT_ROWS, numberOfExcerptRows);
+        preferences.setValue(RSS_STD_CLIENT_LINK, rssStandardClientPortletLink);
         preferences.store();
     }
 

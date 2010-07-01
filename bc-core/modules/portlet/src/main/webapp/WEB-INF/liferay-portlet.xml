@@ -19,4 +19,11 @@
     <!--      <preferences-owned-by-group>false</preferences-owned-by-group>-->
     <instanceable>true</instanceable>
   </portlet>
+  
+  <portlet>
+    <portlet-name>RssClientMinimal</portlet-name>
+    <!--      <preferences-unique-per-layout>false</preferences-unique-per-layout>-->
+    <!--      <preferences-owned-by-group>false</preferences-owned-by-group>-->
+    <instanceable>true</instanceable>
+  </portlet>
 </liferay-portlet-app>

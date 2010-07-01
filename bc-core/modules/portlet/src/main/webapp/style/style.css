@@ -97,6 +97,29 @@ textarea.validation-error, input.validation-error {
   padding-right: 1.3em;
   margin-right: 1.3em;
 }
+
 .news-actions {
   margin-top: 1em;
+}
+
+div.rss-item-container-minimal {
+  width: 250px;
+  border: 1px dotted #CCC;
+}
+
+div.news-title-minimal {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+ul.list-news-minimal {
+  margin-left: 0.4em;
+}
+
+li.news-item-minimal {
+  color: #004597;
+  list-style: none;
+  margin: 0.2em;
+  cursor: pointer;
 }

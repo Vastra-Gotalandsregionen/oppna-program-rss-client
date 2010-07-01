@@ -19,10 +19,25 @@
   <import resource="classpath:serviceContext.xml" />
 
   <!-- Enables component scanning -->
-  <context:component-scan base-package="se.vgregion.portal.rss.client.controllers.standard" />
-  
+  <context:component-scan base-package="se.vgregion.portal.rss.client.controllers.minimal" />
+
   <!-- Enables annotations -->
   <context:annotation-config />
+  
+  <!-- 
+  <bean id="rssMinimalViewController" class="se.vgregion.portal.rss.client.controllers.minimal.RssMinimalViewController"></bean>
+  <bean id="rssMinimalEditController" class="se.vgregion.portal.rss.client.controllers.minimal.RssMinimalEditController"></bean>
+  
+  <bean id="portletModeHandlerMapping"
+      class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+    <property name="portletModeMap">
+        <map>
+            <entry key="view" value-ref="rssMinimalViewController"/>
+            <entry key="edit" value-ref="rssMinimalEditController"/>
+        </map>
+    </property>
+  </bean>
+   -->
 
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="se.vgregion.portal.rss.client.rssClient" />

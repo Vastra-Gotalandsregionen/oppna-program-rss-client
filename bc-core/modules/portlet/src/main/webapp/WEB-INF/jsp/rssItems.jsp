@@ -33,24 +33,30 @@
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
 <script src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
+<script src="${pageContext.request.contextPath}/script/jquery.scrollTo-1.4.2.js"></script>
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
+
 <script>
   jQuery(document).ready(function() {
+    // Excerpt all items, show excerpt and hide content/links
     jQuery("#p_p_id<portlet:namespace/> .news-excerpt").excerpt({lines: '${portletPreferencesValues.numberOfExcerptRows[0]}', end: '...'});
     jQuery("#p_p_id<portlet:namespace/> .news-excerpt").show;
     jQuery("#p_p_id<portlet:namespace/> .news-content").hide;
-
-	jQuery('#p_p_id<portlet:namespace/> #group-by-source').click(function() {
+    
+    // Define function handling sort/group by souce
+    jQuery('#p_p_id<portlet:namespace/> #group-by-source').click(function() {
       updateSorting("${groupBySourceResource}");
       return false;
     });
-    
+
+    // Define function handling sort by date
     jQuery('#p_p_id<portlet:namespace/> #sort-by-date').click(function() {
       updateSorting("${sortByDateResource}");
       return false;
     });
-    
+
+    // Define function handling click on title and "read more"/"read less"
     jQuery('#p_p_id<portlet:namespace/> .read-more, #p_p_id<portlet:namespace/> .read-less, #p_p_id<portlet:namespace/> .news-title').click(function() {
       var li = jQuery(this).parents("li");
       li.find(".news-excerpt").toggle("medium");
@@ -59,6 +65,23 @@
       return false;
     });
 
+    //Lastly on document ready: If we got a pre-selected item title, try to expand that news item
+    if ('${selectedRssItemTitle}' != '') {
+      var titleHref = jQuery("#p_p_id<portlet:namespace/> .news-title:contains('${selectedRssItemTitle}')");
+
+      //titleHref.siblings('div').scrollTo('slow');
+      
+      //jQuery.scrollTo('#14', 800);
+      
+      titleHref.click();
+      
+      //var liElm = titleElm.parent();
+      
+      //var anchorText = '<a href="#scrollTarget"></a>'; 
+      //liElm.before(anchorText);
+
+      //liElm.parent().scrollTo();
+    }
   });
   
   function updateSorting(sortingUrl) {
@@ -91,15 +114,21 @@
   
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
-      <li class="news-item"><span class="news-source"><c:out value="${item.feedTitle}" escapeXml="true" /></span>
-        <span class="news-date"><c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
-          pattern="yyyy-MM-dd hh:mm" /><c:if test="${!empty item.publishedDate}">]</c:if></span> <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;<a class="source-link" href="${item.link}"></a>
+      <li class="news-item">
+        <span class="news-source">
+          <c:out value="${item.feedTitle}" escapeXml="true" />
+        </span>
+        <span class="news-date">
+          <c:if test="${!empty item.publishedDate}">[</c:if><fmt:formatDate value="${item.publishedDate}" type="both"
+          pattern="yyyy-MM-dd HH:mm" />
+          <c:if test="${!empty item.publishedDate}">]</c:if>
+        </span> <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;<a class="source-link" href="${item.link}"></a>
         <div class="news-excerpt">
           <p class="news-excerpt">
             <c:out value="${item.contentsString}" escapeXml="false"/>
           </p>
         </div>
-        <div class="news-content"><c:out value="${item.contentsString}" escapeXml="false" />
+        <div class="news-content" id="${status.index}"><c:out value="${item.contentsString}" escapeXml="false"/>
           <div class="news-actions">
             <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
             <a href="#" class="read-less"><fmt:message key="close"/></a>
