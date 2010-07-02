@@ -41,7 +41,14 @@
 <div id="rss-item-container" class="rss-item-container-minimal">
   <ul id="list-news" class="list-news-minimal">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
-      <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.title}#${item.title}'">
+      <c:choose>
+        <c:when test="${not empty portletPreferencesValues.rssStandardClientPortletLink[0]}">
+          <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.title}#${item.title}'">
+        </c:when>
+        <c:otherwise>
+          <li class="news-item-minimal">
+        </c:otherwise>
+      </c:choose>
         <div class="news-title-minimal" title="(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm" />) ${item.feedTitle}">
           <c:out value="${item.title}" escapeXml="false"/>
         </div>
