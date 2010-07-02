@@ -46,7 +46,7 @@
           <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.title}#${item.title}'">
         </c:when>
         <c:otherwise>
-          <li class="news-item-minimal">
+          <li class="news-item-minimal" onClick="location.href='${item.link}'">
         </c:otherwise>
       </c:choose>
         <div class="news-title-minimal" title="(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm" />) ${item.feedTitle}">
