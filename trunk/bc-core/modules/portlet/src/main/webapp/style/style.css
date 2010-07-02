@@ -48,6 +48,13 @@ fieldset label {
   border: 1px dotted #CCC;
 }
 
+.list-news .active {
+  list-style: none;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border: 1px solid #9C132F;
+}
+
 ul.list-news {
   margin-left: 0em;
 }
