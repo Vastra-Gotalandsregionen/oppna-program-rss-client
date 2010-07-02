@@ -33,7 +33,6 @@
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
 <script src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
-<script src="${pageContext.request.contextPath}/script/jquery.scrollTo-1.4.2.js"></script>
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
@@ -65,22 +64,12 @@
       return false;
     });
 
-    //Lastly on document ready: If we got a pre-selected item title, try to expand that news item
+    // Lastly on document ready: 
+    // If we got a pre-selected item title, try to expand that news item
+    // We also have an anchor for the list item, so it should be scrolled automatically
     if ('${selectedRssItemTitle}' != '') {
       var titleHref = jQuery("#p_p_id<portlet:namespace/> .news-title:contains('${selectedRssItemTitle}')");
-
-      //titleHref.siblings('div').scrollTo('slow');
-      
-      //jQuery.scrollTo('#14', 800);
-      
       titleHref.click();
-      
-      //var liElm = titleElm.parent();
-      
-      //var anchorText = '<a href="#scrollTarget"></a>'; 
-      //liElm.before(anchorText);
-
-      //liElm.parent().scrollTo();
     }
   });
   
@@ -94,7 +83,7 @@
   }
 </script>
 
-<div id="rss-item-container">
+<div id="rss-item-container">  
   <c:if test="${!empty rssEntries}">
     <div class="sort-box">
     <fmt:message key="sorton"/>: 
@@ -114,7 +103,7 @@
   
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
-      <li class="news-item">
+      <li class="news-item" id="${item.title}">
         <span class="news-source">
           <c:out value="${item.feedTitle}" escapeXml="true" />
         </span>
@@ -128,7 +117,8 @@
             <c:out value="${item.contentsString}" escapeXml="false"/>
           </p>
         </div>
-        <div class="news-content" id="${status.index}"><c:out value="${item.contentsString}" escapeXml="false"/>
+        <div class="news-content">
+          <c:out value="${item.contentsString}" escapeXml="false"/>
           <div class="news-actions">
             <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
             <a href="#" class="read-less"><fmt:message key="close"/></a>
