@@ -60,7 +60,9 @@
       var li = jQuery(this).parents("li");
       li.find(".news-excerpt").toggle("medium");
       li.find(".news-content").toggle("medium");
-            
+
+      jQuery(this).parents("li").toggleClass("active");
+      
       return false;
     });
 
