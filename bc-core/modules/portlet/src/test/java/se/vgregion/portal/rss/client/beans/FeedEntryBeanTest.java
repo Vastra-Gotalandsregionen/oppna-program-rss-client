@@ -124,6 +124,27 @@ public class FeedEntryBeanTest {
         assertEquals(-1, compareResult);
     }
 
+    @Test
+    public void compareShouldNotBeEqual() throws Exception {
+        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt");
+        feedEntryBeanStub1.setPublishedDate(new Date());
+        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt");
+        feedEntryBeanStub2.setPublishedDate(new Date(12345678));
+
+        assertEquals(-1, feedEntryBeanStub1.compareTo(feedEntryBeanStub2));
+    }
+
+    @Test
+    public void compareShouldBeEqual() throws Exception {
+        Date testDate = new Date();
+        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt");
+        feedEntryBeanStub1.setPublishedDate(testDate);
+        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt");
+        feedEntryBeanStub2.setPublishedDate(testDate);
+
+        assertEquals(0, feedEntryBeanStub1.compareTo(feedEntryBeanStub2));
+    }
+
     private void constructFeedBean(String descriptionValue, boolean addContent) {
         // Given
         given(syndEntry.getTitle()).willReturn("title");

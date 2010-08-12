@@ -20,18 +20,22 @@
 package se.vgregion.portal.rss.client.service;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 
 /**
  * @author jonas liljenfeldt
@@ -40,29 +44,72 @@ import com.sun.syndication.io.XmlReader;
 @Service
 public class RssFetcherServiceImpl implements RssFetcherService {
 
-    private SyndFeedInput syndFeedInput;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RssFetcherServiceImpl.class);
+
+    private final List<String> feedBlackList;
+
+    private final FeedFetcher feedFetcher;
 
     @Autowired
-    public void setSyndFeedInput(SyndFeedInput syndFeedInput) {
-        this.syndFeedInput = syndFeedInput;
+    public RssFetcherServiceImpl(FeedFetcher feedFetcher) {
+        this.feedFetcher = feedFetcher;
+        feedBlackList = Collections.synchronizedList(new ArrayList<String>());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @throws FetcherException
+     * @throws IllegalArgumentException
+     */
+    @Override
+    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws FeedException, IOException,
+            IllegalArgumentException, FetcherException {
+        List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
+        if (feedUrlsArray != null) {
+            for (String feedLink : feedUrlsArray) {
+                // No feed link?
+                if (StringUtils.isBlank(feedLink)) {
+                    continue;
+                }
+                // Continue if feed is black listed
+                if (feedBlackList.contains(feedLink)) {
+                    continue;
+                }
+
+                try {
+                    // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
+                    URL feedUrl = new URL(feedLink);
+
+                    SyndFeed syndFeed = feedFetcher.retrieveFeed(feedUrl);
+                    syndFeeds.add(syndFeed);
+                } catch (ConnectException e) {
+                    feedBlackList.add(feedLink);
+                    LOGGER.error("Failed to fetch feed [{}], received error [{}]", feedLink, e.getMessage());
+                }
+            }
+        }
+        return syndFeeds;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws FeedException, IOException {
-        List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
-        if (feedUrlsArray != null) {
-            for (String feedLink : feedUrlsArray) {
-                if (!StringUtils.isBlank(feedLink)) {
-                    URL feedUrl = new URL(feedLink);
-                    // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
-                    SyndFeed syndFeed = syndFeedInput.build(new XmlReader(feedUrl));
-                    syndFeeds.add(syndFeed);
-                }
-            }
-        }
-        return syndFeeds;
+    public void clearFeedBlackList() {
+        feedBlackList.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeFromFeedBlackList(String feedLink) {
+        feedBlackList.remove(feedLink);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<String> getFeedBlackList() {
+        return Collections.unmodifiableList(feedBlackList);
     }
 }

@@ -40,6 +40,7 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
 
 /**
@@ -52,7 +53,7 @@ public class RssViewControllerBase {
 
     private Logger logger = LoggerFactory.getLogger(RssViewControllerBase.class);
 
-    protected static final String SORT_ORDER = "sort_order";
+    public static final String SORT_ORDER = "sort_order";
 
     @Autowired
     protected RssFetcherService rssFetcherService = null;
@@ -76,6 +77,12 @@ public class RssViewControllerBase {
         try {
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
         } catch (FeedException e) {
+            logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            e.printStackTrace();
+        } catch (FetcherException e) {
+            logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
             logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
             e.printStackTrace();
         }
@@ -112,9 +119,12 @@ public class RssViewControllerBase {
 
     protected List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
             List<FeedEntryBean> sortedRssEntries) {
-        sortedRssEntries = sortedRssEntries.subList(0, Math.min(sortedRssEntries.size(), Integer
-                .valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, String
-                        .valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+        sortedRssEntries = sortedRssEntries.subList(
+                0,
+                Math.min(
+                        sortedRssEntries.size(),
+                        Integer.valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+                                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         return sortedRssEntries;
     }
 
