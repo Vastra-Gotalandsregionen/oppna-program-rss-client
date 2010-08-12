@@ -127,7 +127,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String escapeText(String input) {
         String output = "";
         output = input.replace("'", "\\'");
-        output = input.replaceAll("\\u000A", "<br/>");
+        output = output.replaceAll("\\u000A", "<br/>");
         return output;
     }
 
@@ -202,6 +202,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE).toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

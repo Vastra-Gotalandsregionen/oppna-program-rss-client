@@ -20,7 +20,6 @@
 package se.vgregion.portal.rss.client.controllers.standard;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -80,9 +79,9 @@ public class RssViewController extends RssViewControllerBase {
             PortletPreferences preferences, @RequestParam(required = false) String selectedRssItemTitle)
             throws IOException {
 
-        List<FeedEntryBean> sortedRssEntries = Collections.emptyList();
         ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
-        sortedRssEntries = getSortedRssEntries(model, preferences);
+
+        List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(model, preferences);
 
         sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
 
