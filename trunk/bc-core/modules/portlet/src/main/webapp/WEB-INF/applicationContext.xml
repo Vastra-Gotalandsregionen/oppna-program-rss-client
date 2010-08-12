@@ -29,4 +29,7 @@
   <!-- Enables component scanning -->
   <context:component-scan base-package="se.vgregion.portal.rss.client.beans" />
 
+  <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
+  <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
+  
 </beans>

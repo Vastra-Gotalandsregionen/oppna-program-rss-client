@@ -30,7 +30,7 @@
   <!-- Enables annotations -->
   <context:annotation-config />  
 
-<!--  <bean id="rssFetcherService" class="se.vgregion.portal.rss.client.service.RssFetcherServiceImpl" />-->
-
-  <bean id="syndFeedInput" class="com.sun.syndication.io.SyndFeedInput" />
+  <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
+  <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
+  
 </beans> 

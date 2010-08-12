@@ -19,6 +19,7 @@
 
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -26,7 +27,10 @@
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
-<portlet:actionURL var="save" escapeXml="false"/>
+<portlet:actionURL var="save" name="save" escapeXml="false"/>
+<portlet:actionURL var="clearFeedBlackList" name="clearFeedBlackList"/>
+<portlet:actionURL var="removeFromFeedBlackList" name="removeFromFeedBlackList"/>
+
 <style>
 <!--
     @import url("${pageContext.request.contextPath}/style/style.css");
@@ -55,5 +59,22 @@
   <fieldset class="submit">
     <input type="submit" value=<fmt:message key="save"/> />
   </fieldset>
+  
+  <c:if test="${not empty portletPreferencesWrapperBean.feedBlackList}">
+    <fieldset>
+      <legend><fmt:message key="blacklistedfeeds"/></legend>
+      <ol>
+        <c:forEach items="${portletPreferencesWrapperBean.feedBlackList}" var="feedLink">
+          <li>
+            <c:out value="${feedLink}"/>&nbsp;&nbsp;<input type="button" value="<fmt:message key="removefromblacklist"/>" onclick="location.href='${removeFromFeedBlackList}&amp;feedLink=<c:out value="${feedLink}"/>';"/>
+          </li>
+        </c:forEach>
+      </ol>
+    </fieldset>
+    <fieldset class="submit">
+      <input type="button" value="<fmt:message key="clearblacklist"/>" onclick="location.href='${clearFeedBlackList}';"/>
+    </fieldset>
+  </c:if>
+  
 </form:form>
 

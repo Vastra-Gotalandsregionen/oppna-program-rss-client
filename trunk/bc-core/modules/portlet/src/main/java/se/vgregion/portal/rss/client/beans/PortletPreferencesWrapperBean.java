@@ -20,6 +20,7 @@ package se.vgregion.portal.rss.client.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
@@ -68,6 +69,22 @@ public class PortletPreferencesWrapperBean implements Serializable {
     private String numberOfItems = String.valueOf(DEFAULT_MAX_NUMBER_OF_ITEMS);
     private String numberOfExcerptRows = String.valueOf(DEFAULT_NUMBER_OF_EXCERPT_ROWS);
     private String rssStandardClientPortletLink;
+    private List<String> feedBlackList;
+
+    /**
+     * @return the feedBlackList
+     */
+    public List<String> getFeedBlackList() {
+        return feedBlackList;
+    }
+
+    /**
+     * @param feedBlackList
+     *            the feedBlackList to set
+     */
+    public void setFeedBlackList(List<String> feedBlackList) {
+        this.feedBlackList = feedBlackList;
+    }
 
     /**
      * Sets the Rss Feed urls. The urls are sparated by comma(,) or new line.
@@ -131,7 +148,7 @@ public class PortletPreferencesWrapperBean implements Serializable {
 
     private void parseAndFixUrls() {
         if (!StringUtils.isBlank(rssFeedLinks)) {
-            rssFeedLinks = rssFeedLinks.replace(" ", "\n");
+            rssFeedLinks = rssFeedLinks.trim().replace(" ", "\n");
         }
     }
 }

@@ -19,11 +19,13 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
+import java.net.ConnectException;
+import java.net.URL;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,14 +34,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
 import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 
 public class RssFetcherServiceImplTest {
 
     @Mock
-    private SyndFeedInput syndFeedInput;
+    private FeedFetcher feedFetcher;
     @Mock
     private SyndFeed syndFeed;
     @Mock
@@ -51,15 +52,14 @@ public class RssFetcherServiceImplTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        rssFetcherService = new RssFetcherServiceImpl();
-        rssFetcherService.setSyndFeedInput(syndFeedInput);
+        rssFetcherService = new RssFetcherServiceImpl(feedFetcher);
         testFeeds = new String[] { "http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek" };
     }
 
     @Test
     public void shouldGetRssFeeds() throws Exception {
         // Given
-        given(syndFeedInput.build(any(XmlReader.class))).willReturn(syndFeed);
+        given(feedFetcher.retrieveFeed(any(URL.class))).willReturn(syndFeed);
 
         // When
         List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
@@ -70,11 +70,10 @@ public class RssFetcherServiceImplTest {
 
     @Test(expected = FeedException.class)
     public void shouldThrowFeedExceptionIfInvalidXml() throws Exception {
-        given(syndFeedInput.build(any(XmlReader.class))).willThrow(feedException);
+        given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(feedException);
 
         // When
         rssFetcherService.getRssFeeds(testFeeds);
-
     }
 
     @Test
@@ -88,5 +87,84 @@ public class RssFetcherServiceImplTest {
         // Then
         assertTrue(syndFeeds.isEmpty());
 
+    }
+
+    @Test
+    public void shouldReturnEmptyFeedListIfEmptyUrlGiven() throws Exception {
+        // Given
+        testFeeds = new String[] { " " };
+
+        // When
+        List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        assertTrue(syndFeeds.isEmpty());
+
+    }
+
+    @Test
+    public void shouldAddUrlToBlackListIfConnectionExceptionThrown() throws Exception {
+        // Given
+        testFeeds = new String[] { "http://url.com" };
+        given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
+
+        // When
+        rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        assertEquals(1, rssFetcherService.getFeedBlackList().size());
+    }
+
+    @Test
+    public void shouldSkipUrlInBlackList() throws Exception {
+        // Given
+        testFeeds = new String[] { "http://url.com" };
+        given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
+        rssFetcherService.getRssFeeds(testFeeds);
+
+        // When
+        rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        verify(feedFetcher, times(1)).retrieveFeed(any(URL.class));
+    }
+
+    @Test
+    public void shouldClearBlackList() throws Exception {
+        // Given
+        testFeeds = new String[] { "http://url.com", "http://url2.com" };
+        given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
+
+        // When
+        rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        assertEquals(2, rssFetcherService.getFeedBlackList().size());
+
+        // When
+        rssFetcherService.clearFeedBlackList();
+
+        // Then
+        assertEquals(0, rssFetcherService.getFeedBlackList().size());
+    }
+
+    @Test
+    public void shouldRemoveUrlFromBlackList() throws Exception {
+        // Given
+        testFeeds = new String[] { "http://url.com", "http://url2.com" };
+        given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
+
+        // When
+        rssFetcherService.getRssFeeds(testFeeds);
+
+        // Then
+        assertEquals(2, rssFetcherService.getFeedBlackList().size());
+
+        // When
+        rssFetcherService.removeFromFeedBlackList("http://url.com");
+
+        // Then
+        assertEquals(1, rssFetcherService.getFeedBlackList().size());
+        assertEquals("http://url2.com", rssFetcherService.getFeedBlackList().get(0));
     }
 }
