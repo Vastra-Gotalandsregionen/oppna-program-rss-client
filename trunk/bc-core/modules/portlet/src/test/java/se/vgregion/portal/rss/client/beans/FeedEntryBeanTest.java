@@ -73,25 +73,6 @@ public class FeedEntryBeanTest {
         assertEquals("link", feedEntryBean.getLink());
     }
 
-    // @Test
-    // public final void shouldConstructAbbreviatedDescription() {
-    // // Given
-    // // 20 x 0123456789 + abc
-    // String veryLongDescriptionValue = "";
-    // for (int i = 0; i < 21; i++) {
-    // veryLongDescriptionValue += "0123456789";
-    // }
-    // veryLongDescriptionValue += "abc";
-    // constructFeedBean(veryLongDescriptionValue, true);
-    //
-    // // When
-    // String feedTitle = "feed title";
-    // FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle);
-    //
-    // assertEquals(StringUtils.abbreviate(veryLongDescriptionValue, FeedEntryBean.SHORT_EXCERPT_LENGTH),
-    // feedEntryBean.getShortExcerpt());
-    // }
-
     @Test
     public final void shouldPutDescriptionInContentIfThereIsNoDescription() {
         // Given
