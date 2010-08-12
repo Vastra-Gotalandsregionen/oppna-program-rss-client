@@ -27,7 +27,7 @@
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
-<portlet:actionURL var="save" escapeXml="false"/>
+<portlet:actionURL var="save" name="save" escapeXml="false"/>
 <portlet:actionURL var="clearFeedBlackList" name="clearFeedBlackList"/>
 <portlet:actionURL var="removeFromFeedBlackList" name="removeFromFeedBlackList"/>
 
