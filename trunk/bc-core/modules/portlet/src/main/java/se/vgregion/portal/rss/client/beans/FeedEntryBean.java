@@ -163,11 +163,11 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     }
 
     public Date getPublishedDate() {
-        return publishedDate;
+        return (publishedDate == null) ? null : (Date) publishedDate.clone();
     }
 
     public void setPublishedDate(Date publishedDate) {
-        this.publishedDate = publishedDate;
+        this.publishedDate = (publishedDate == null) ? null : (Date) publishedDate.clone();
     }
 
     public String getContentsString() {
