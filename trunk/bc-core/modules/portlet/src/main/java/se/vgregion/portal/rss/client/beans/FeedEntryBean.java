@@ -40,7 +40,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private static final long serialVersionUID = 2L;
     private String title;
     private String excerpt;
-    private String shortExcerpt;
     private List<String> contents;
     private String contentsString = "";
     private String link;
@@ -95,14 +94,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null) {
             excerpt = escapeText(syndEntry.getDescription().getValue().trim());
         }
-        // TODO: Short excerpt not handled well at the moment for all feeds, we have to handle HTML tags in
-        // description...otherwise we might e.g. cut in the middle of a tag...
-        // if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null
-        // && syndEntry.getDescription().getValue().length() > SHORT_EXCERPT_LENGTH) {
-        // shortExcerpt = StringUtils.abbreviate(excerpt, SHORT_EXCERPT_LENGTH);
-        // } else {
-        // shortExcerpt = excerpt;
-        // }
 
         contents = syndEntry.getContents();
 
@@ -177,14 +168,6 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
-    }
-
-    public String getShortExcerpt() {
-        return shortExcerpt;
-    }
-
-    public void setShortExcerpt(String shortExcerpt) {
-        this.shortExcerpt = shortExcerpt;
     }
 
     public String getContentsString() {
