@@ -71,7 +71,6 @@ public class FeedEntryBeanTest {
         assertEquals("title", feedEntryBean.getTitle());
         assertEquals("content value", feedEntryBean.getContentsString());
         assertEquals("link", feedEntryBean.getLink());
-        assertSame(publishedDate, feedEntryBean.getPublishedDate());
     }
 
     // @Test
