@@ -20,6 +20,7 @@
 package se.vgregion.portal.rss.client.controllers.standard;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -79,17 +80,22 @@ public class RssViewController extends RssViewControllerBase {
             PortletPreferences preferences, @RequestParam(required = false) String selectedRssItemTitle)
             throws IOException {
 
-        ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
+        // Check for sort order or pre-selection (no fetch on default load, this to avoid "page lock")
+        Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
+        if (sortOrder != null || selectedRssItemTitle != null) {
+            ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
 
-        List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(model, preferences);
+            List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(model, preferences);
 
-        sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
+            sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
 
-        if (bundle != null) {
-            response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
+            if (bundle != null) {
+                response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
+            }
+
+            response.setContentType("text/html");
+            model.addAttribute("rssEntries", sortedRssEntries);
         }
-        response.setContentType("text/html");
-        model.addAttribute("rssEntries", sortedRssEntries);
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
         return "rssFeedView";
     }

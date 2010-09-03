@@ -65,12 +65,15 @@
       
       return false;
     });
-
+    
     // Lastly on document ready: 
-    // If we got a pre-selected item title, try to expand that news item
-    // We also have an anchor for the list item, so it should be scrolled automatically
-    if ('${selectedRssItemTitle}' != '') {
-      var titleHref = jQuery("#p_p_id<portlet:namespace/> .news-title:contains('${selectedRssItemTitle}')");
+    if ('${sort_order}' == '' && '${selectedRssItemTitle}' == '') {
+      // No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
+      updateSorting('${sortByDateResource}');
+    } else if ('${selectedRssItemTitle}' != '') {
+      // If we got a pre-selected item title, try to expand that news item
+      // We also have an anchor for the list item, so it should be scrolled automatically
+      var titleHref = jQuery("#p_p_id<portlet:namespace/> .news-title[@href='${selectedRssItemTitle}']");
       titleHref.click();
     }
   });
@@ -105,7 +108,7 @@
   
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
-      <li class="news-item" id="${item.title}">
+      <li class="news-item" id="${item.link}">
         <span class="news-source">
           <c:out value="${item.feedTitle}" escapeXml="true" />
         </span>
