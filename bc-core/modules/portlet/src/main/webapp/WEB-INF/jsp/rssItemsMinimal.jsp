@@ -43,7 +43,7 @@
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <c:choose>
         <c:when test="${not empty portletPreferencesValues.rssStandardClientPortletLink[0]}">
-          <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.title}#${item.title}'">
+          <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.link}#${item.link}'">
         </c:when>
         <c:otherwise>
           <li class="news-item-minimal" onClick="location.href='${item.link}'">

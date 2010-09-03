@@ -87,13 +87,37 @@ public class RssViewControllerTest {
      * @throws IOException
      */
     @Test
-    public final void testViewRssItemList() throws IOException {
+    public final void testViewRssItemListDefault() throws IOException {
         MockPortletConfig mockPortletConfig = new MockPortletConfig();
         MockRenderRequest mockRenderRequest = new MockRenderRequest();
         MockRenderResponse mockRenderResponse = new MockRenderResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
 
+        rssViewController.setPortletConfig(mockPortletConfig);
+        rssViewController.setRssFetcherService(mockRssFetcherService);
+
+        assertEquals("rssFeedView", rssViewController.viewRssItemList(modelMap, mockRenderRequest,
+                mockRenderResponse, mockPortletPreferences, "TheTitle"));
+        assertEquals("TheTitle", modelMap.get("selectedRssItemTitle"));
+    }
+
+    /**
+     * Test method for
+     * {@link se.vgregion.portal.rss.client.controllers.standard.RssViewController#viewRssItemList(org.springframework.ui.ModelMap, javax.portlet.RenderRequest, javax.portlet.RenderResponse, javax.portlet.PortletPreferences, java.lang.String)}
+     * .
+     * 
+     * @throws IOException
+     */
+    @Test
+    public final void testViewRssItemListSortOrderSet() throws IOException {
+        MockPortletConfig mockPortletConfig = new MockPortletConfig();
+        MockRenderRequest mockRenderRequest = new MockRenderRequest();
+        MockRenderResponse mockRenderResponse = new MockRenderResponse();
+        MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
+        ModelMap modelMap = new ModelMap();
+
+        rssViewController.setSortOrderByDate(modelMap);
         rssViewController.setPortletConfig(mockPortletConfig);
         rssViewController.setRssFetcherService(mockRssFetcherService);
 
