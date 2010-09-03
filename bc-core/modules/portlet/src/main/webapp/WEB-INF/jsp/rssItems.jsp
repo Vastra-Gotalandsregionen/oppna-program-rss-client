@@ -67,10 +67,7 @@
     });
     
     // Lastly on document ready: 
-    if ('${sort_order}' == '' && '${selectedRssItemTitle}' == '') {
-      // No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
-      updateSorting('${sortByDateResource}');
-    } else if ('${selectedRssItemTitle}' != '') {
+    if ('${selectedRssItemTitle}' != '') {
       // If we got a pre-selected item title, try to expand that news item
       // We also have an anchor for the list item, so it should be scrolled automatically
       var titleHref = jQuery("#p_p_id<portlet:namespace/> .news-title[@href='${selectedRssItemTitle}']");
@@ -104,7 +101,7 @@
       </c:otherwise>
     </c:choose>
     </div>
-  </c:if> 
+  </c:if>
   
   <ul id="list-news" class="list-news">
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
@@ -133,3 +130,10 @@
     </c:forEach>
   </ul>
 </div>
+
+<c:if test="${empty sort_order and empty selectedRssItemTitle}">
+  <script>
+    //No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
+    updateSorting('${sortByDateResource}');
+  </script>
+</c:if>
