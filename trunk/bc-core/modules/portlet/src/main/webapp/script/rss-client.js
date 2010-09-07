@@ -63,13 +63,12 @@ function updateSorting(sortingUrl, portletns) {
 
   var ppid = "#p_p_id"+portletns; 
     
-  //Display "loading" block until unblocked, but max 10 seconds
+  //Display "loading" block until unblocked, or for max 10 seconds
   jQuery(ppid + " #blockMe").block({ 
     message: jQuery(ppid + " #blockDisplayMessage"),
-    centerY: 0,
+    centerY: 50,
     centerX: 0,
-    overlayCSS: {backgroundColor: "#EFEFEF" },
-    fadeIn: 500, 
+    overlayCSS: {backgroundColor: "#EFEFEF" }, 
     fadeOut: 500, 
     timeout: 10000
   });

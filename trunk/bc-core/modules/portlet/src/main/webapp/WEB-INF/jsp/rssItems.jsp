@@ -79,7 +79,7 @@
               <c:out value="${item.contentsString}" escapeXml="false"/>
             </p>
           </div>
-          <div class="news-content">
+          <div class="news-content" style="display: none;">
             <c:out value="${item.contentsString}" escapeXml="false"/>
             <div class="news-actions">
               <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
