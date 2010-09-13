@@ -21,11 +21,15 @@ package se.vgregion.portal.rss.client.model;
 
 import se.vgregion.portal.core.domain.patterns.repository.Repository;
 
+import java.util.List;
+
 /**
  * This action do that and that, if it has something special it is.
  * 
  * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
  */
 public interface FeedRepository extends Repository<Feed, String> {
+
+    public List<Feed> findByRole(Role role);
 
 }

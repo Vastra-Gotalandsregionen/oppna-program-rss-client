@@ -17,30 +17,25 @@
  *
  */
 
-package se.vgregion.portal.rss.client.infrastructure;
+package se.vgregion.portal.rss.client.service;
 
-import org.springframework.stereotype.Repository;
-
-import se.vgregion.portal.core.infrastructure.persistence.jpa.JpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import se.vgregion.portal.rss.client.model.Feed;
 import se.vgregion.portal.rss.client.model.FeedRepository;
 import se.vgregion.portal.rss.client.model.Role;
 
-import javax.persistence.Query;
 import java.util.List;
 
-/**
- * Defining standard CRUD operations.
- * 
- * @author <a href="mailto:david.rosell@redpill-linpro.com">David Rosell</a>
- */
-@Repository
-public class JpaFeedRepository extends JpaRepository<Feed, String> implements FeedRepository {
+@Service
+public class FeedUrlServiceImpl implements FeedUrlService {
+
+    @Autowired
+    FeedRepository feedRepository;
 
     @Override
-    public List<Feed> findByRole(Role role) {
-        String queryString = "select f from Feed f join f.roleList r where r.name = :roleName";
-        Query query = entityManager.createQuery(queryString).setParameter("roleName", role.getName());
-        return query.getResultList();
+    public List<Feed> getFeedsByRole(Role role) {
+        return feedRepository.findByRole(role);
     }
+
 }

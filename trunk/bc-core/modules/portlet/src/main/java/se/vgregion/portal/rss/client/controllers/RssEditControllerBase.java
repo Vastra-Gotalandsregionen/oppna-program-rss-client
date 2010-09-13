@@ -19,12 +19,6 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +29,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBeanValidator;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.ReadOnlyException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller base for edit mode.
@@ -148,15 +146,16 @@ public abstract class RssEditControllerBase {
 
         // Don't replace values if we have a binding error from save action
         if (model.get("errors") == null) {
-            preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+            preferencesBean.setNumberOfItems(
+                    preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
                     String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
-            preferencesBean.setNumberOfExcerptRows(preferences.getValue(
-                    PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
+            preferencesBean.setNumberOfExcerptRows(
+                    preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
                     String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
-            preferencesBean
-                    .setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
-            preferencesBean.setRssStandardClientPortletLink(preferences.getValue(
-                    PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
+            preferencesBean.setRssFeedLinks(
+                    preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
+            preferencesBean.setRssStandardClientPortletLink(
+                    preferences.getValue(PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
         } else {
             // Copy binding error from save action
             result.addAllErrors((BindingResult) model.get("errors"));
