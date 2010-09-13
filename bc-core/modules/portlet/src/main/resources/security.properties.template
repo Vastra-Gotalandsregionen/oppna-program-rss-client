@@ -1,0 +1,17 @@
+#====================================================
+# Use for POSTGRESQL database - local
+#====================================================
+database.user=your-user
+database.password=your-password
+
+#====================================================
+# Use for POSTGRESQL database - QA
+#====================================================
+#database.user=your-user
+#database.password=your-password
+
+#====================================================
+# Use for POSTGRESQL database - prod
+#====================================================
+#database.user=your-user
+#database.password=your-password

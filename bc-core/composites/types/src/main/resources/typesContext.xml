@@ -25,14 +25,8 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-  <import resource="classpath:typesContext.xml" />
+  <import resource="classpath*:jpa-infrastructure-configuration.xml" />
 
-  <context:component-scan base-package="se.vgregion.portal.rss.client.service" />
-  
-  <!-- Enables annotations -->
-  <context:annotation-config />  
-
-  <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
-  <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
-  
+  <context:component-scan base-package="se.vgregion.portal.rss.client.infrastructure" />
+ 
 </beans> 

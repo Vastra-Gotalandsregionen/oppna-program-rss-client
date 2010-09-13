@@ -36,6 +36,7 @@ import org.springframework.ui.ModelMap;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.service.FeedUrlService;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -60,6 +61,9 @@ public class RssViewControllerBase {
 
     @Autowired
     protected PortletConfig portletConfig = null;
+
+    @Autowired
+    private FeedUrlService feedRoleService;
 
     protected void setLogger(Logger logger) {
         this.logger = logger;
@@ -102,6 +106,7 @@ public class RssViewControllerBase {
         if (feedUrls != null) {
             feedUrlsArray = feedUrls.split("\n");
         }
+        // FeedUrlService
         return feedUrlsArray;
     }
 
