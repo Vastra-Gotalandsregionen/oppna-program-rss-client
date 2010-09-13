@@ -54,6 +54,9 @@
         <form:textarea id="rss-feed-links" path="rssFeedLinks" cols="100" rows="5" cssErrorClass="validation-error"/>
         <form:errors path="rssFeedLinks" cssClass="validation-error-message validation-error-message-feed-urls"/>
       </li>
+      <li>
+       <form:input path=""/>
+      </li>
     </ol>
   </fieldset>
   <fieldset class="submit">

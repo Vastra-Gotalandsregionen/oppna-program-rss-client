@@ -17,6 +17,7 @@
 
   <modules>
     <module>composites/svc</module>
+    <module>composites/types</module>
     <module>modules/portlet</module>
   </modules>
 
