@@ -22,15 +22,7 @@ package se.vgregion.portal.rss.client.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import se.vgregion.portal.core.domain.patterns.entity.AbstractEntity;
 
@@ -47,7 +39,7 @@ public class Feed extends AbstractEntity<Feed, String> implements Serializable {
     private String feedId;
     @Column(length = 1024)
     private String feedUrl;
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "vgr_feed_role", joinColumns = @JoinColumn(name = "feedPk"), inverseJoinColumns = @JoinColumn(name = "rolePk"))
     private List<Role> roleList;
 

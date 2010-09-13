@@ -19,30 +19,25 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletPreferences;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-
-import se.vgregion.portal.rss.client.beans.FeedEntryBean;
-import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
-import se.vgregion.portal.rss.client.service.FeedUrlService;
-import se.vgregion.portal.rss.client.service.RssFetcherService;
-
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.model.Feed;
+import se.vgregion.portal.rss.client.model.Role;
+import se.vgregion.portal.rss.client.service.FeedUrlService;
+import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletPreferences;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Controller base for view mode, display of RSS items.
@@ -63,7 +58,7 @@ public class RssViewControllerBase {
     protected PortletConfig portletConfig = null;
 
     @Autowired
-    private FeedUrlService feedRoleService;
+    private FeedUrlService feedUrlService;
 
     protected void setLogger(Logger logger) {
         this.logger = logger;
@@ -100,14 +95,27 @@ public class RssViewControllerBase {
     }
 
     protected String[] getFeedUrls(PortletPreferences preferences) {
+        List<String> feedUrlsArray = new ArrayList<String>();
+
         // Get list of URLs for user saved in his/her preferences
         String feedUrls = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
-        String[] feedUrlsArray = null;
         if (feedUrls != null) {
-            feedUrlsArray = feedUrls.split("\n");
+            for (String feedUrl : Arrays.asList(feedUrls.split("\n"))) {
+                feedUrlsArray.add(feedUrl);
+            }
         }
-        // FeedUrlService
-        return feedUrlsArray;
+
+
+        // TODO: get Role from User
+        Role defaultRole = new Role();
+        defaultRole.setName("default");
+
+        List<Feed> feedList = feedUrlService.getFeedsByRole(defaultRole);
+        for (Feed feed: feedList) {
+            feedUrlsArray.add(feed.getFeedUrl());
+
+        }
+        return feedUrlsArray.toArray(new String[]{});
     }
 
     protected List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds) {
