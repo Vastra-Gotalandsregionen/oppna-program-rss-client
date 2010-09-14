@@ -45,6 +45,8 @@ public class RssFetcherServiceImplTest {
     private SyndFeed syndFeed;
     @Mock
     FeedException feedException;
+    @Mock
+    PropertiesUtil propertiesUtil;
 
     private RssFetcherServiceImpl rssFetcherService;
     private String[] testFeeds;
@@ -52,7 +54,7 @@ public class RssFetcherServiceImplTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        rssFetcherService = new RssFetcherServiceImpl(feedFetcher);
+        rssFetcherService = new RssFetcherServiceImpl(feedFetcher, propertiesUtil);
         testFeeds = new String[] { "http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek" };
     }
 
