@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -50,9 +53,12 @@ public class RssFetcherServiceImpl implements RssFetcherService {
 
     private final FeedFetcher feedFetcher;
 
+    private final PropertiesUtil propertiesUtil;
+
     @Autowired
-    public RssFetcherServiceImpl(FeedFetcher feedFetcher) {
+    public RssFetcherServiceImpl(FeedFetcher feedFetcher, PropertiesUtil propertiesUtil) {
         this.feedFetcher = feedFetcher;
+        this.propertiesUtil = propertiesUtil;
         feedBlackList = Collections.synchronizedList(new ArrayList<String>());
     }
 
@@ -69,23 +75,23 @@ public class RssFetcherServiceImpl implements RssFetcherService {
         if (feedUrlsArray != null) {
             for (String feedLink : feedUrlsArray) {
                 // No feed link?
-                if (StringUtils.isBlank(feedLink)) {
-                    continue;
-                }
-                // Continue if feed is black listed
-                if (feedBlackList.contains(feedLink)) {
-                    continue;
-                }
-
-                try {
-                    // TODO Should be handled in cooperation with pubsubhub if URL contains "pubsubhub.vgregion.se"
-                    URL feedUrl = new URL(feedLink);
-
-                    SyndFeed syndFeed = feedFetcher.retrieveFeed(feedUrl);
-                    syndFeeds.add(syndFeed);
-                } catch (ConnectException e) {
-                    feedBlackList.add(feedLink);
-                    LOGGER.error("Failed to fetch feed [{}], received error [{}]", feedLink, e.getMessage());
+                if (!StringUtils.isBlank(feedLink)) {
+                    Set<String> urls = StringTools.replace(feedLink, "${role-query-string}", new HashSet<String>(
+                            Arrays.asList("role1", "role2")), propertiesUtil.getPropertiesMap());
+                    for (String url : urls) {
+                        // Continue if feed is black listed
+                        if (!feedBlackList.contains(url)) {
+                            try {
+                                URL feedUrl = new URL(url);
+                                SyndFeed syndFeed = feedFetcher.retrieveFeed(feedUrl);
+                                syndFeeds.add(syndFeed);
+                            } catch (ConnectException e) {
+                                feedBlackList.add(feedLink);
+                                LOGGER.error("Failed to fetch feed [{}], received error [{}]", feedLink,
+                                        e.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         }
