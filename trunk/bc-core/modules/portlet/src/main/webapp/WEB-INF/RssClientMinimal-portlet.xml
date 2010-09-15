@@ -16,7 +16,6 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
   <import resource="applicationContext.xml" />
-  <import resource="classpath:serviceContext.xml" />
 
   <!-- Enables component scanning -->
   <context:component-scan base-package="se.vgregion.portal.rss.client.controllers.minimal" />

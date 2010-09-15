@@ -1,7 +1,7 @@
 /**
  * 
  */
-package se.vgregion.portal.rss.client;
+package se.vgregion.portal.rss.client.chain;
 
 import java.util.Arrays;
 import java.util.HashMap;

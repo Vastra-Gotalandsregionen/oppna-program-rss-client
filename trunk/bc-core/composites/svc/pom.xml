@@ -77,5 +77,31 @@
       <version>6.0.2</version>
     </dependency>
 
+    <dependency>
+        <groupId>com.liferay</groupId>
+        <artifactId>portal-kernal</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.liferay</groupId>
+        <artifactId>portal-service</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.liferay</groupId>
+        <artifactId>util-java</artifactId>
+        <version>${liferay.version}</version>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>easyconf</groupId>
+        <artifactId>easyconf</artifactId>
+        <version>0.9.5</version>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.liferay</groupId>
+        <artifactId>portal-impl</artifactId>
+        <scope>test</scope>
+    </dependency>
+
   </dependencies>
 </project>
