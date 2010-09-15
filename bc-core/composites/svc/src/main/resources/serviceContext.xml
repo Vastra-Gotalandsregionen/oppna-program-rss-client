@@ -29,4 +29,9 @@
     </property>
   </bean>
 
+  <bean id="userLocalService" class="com.liferay.portal.service.UserLocalServiceUtil" factory-method="getService"/>
+
+  <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"
+        factory-method="getService"/>
+
 </beans> 

@@ -19,31 +19,23 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletPreferences;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-
-import se.vgregion.portal.rss.client.StringTemplatePlaceholderProcessor;
-import se.vgregion.portal.rss.client.beans.FeedEntryBean;
-import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
-import se.vgregion.portal.rss.client.service.RssFetcherService;
-
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
+import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletPreferences;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Controller base for view mode, display of RSS items.
@@ -64,7 +56,7 @@ public class RssViewControllerBase {
     protected PortletConfig portletConfig = null;
 
     @Autowired
-    private StringTemplatePlaceholderProcessor spProcessor = null;
+    private StringTemplatePlaceholderProcessor templateProcessor = null;
 
     protected void setLogger(Logger logger) {
         this.logger = logger;
@@ -108,21 +100,11 @@ public class RssViewControllerBase {
         String feedUrls = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrls.split("\n"))) {
-                Set<String> processedFeedUrls = spProcessor.replacePlaceholders(feedUrl, "vgrId");
+                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, "bruno");
                 feedUrlsArray.addAll(processedFeedUrls);
             }
         }
 
-        //
-        // // TODO: get Role from User
-        // Role defaultRole = new Role();
-        // defaultRole.setName("admin");
-        //
-        // List<Feed> feedList = feedUrlService.getFeedsByRole(defaultRole);
-        // for (Feed feed : feedList) {
-        // feedUrlsArray.add(feed.getFeedUrl());
-        //
-        // }
         System.out.println(feedUrlsArray.toString());
         return feedUrlsArray.toArray(new String[] {});
     }
