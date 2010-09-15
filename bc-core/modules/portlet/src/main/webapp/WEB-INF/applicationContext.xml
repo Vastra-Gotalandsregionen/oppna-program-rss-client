@@ -17,14 +17,12 @@
   <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
   <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
 
-  <!-- bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="ignoreUnresolvablePlaceholders" value="false" />
-    <property name="locations">
-      <list>
-        <value>classpath:datasource.properties</value>
-        <value>classpath:security.properties</value>
-      </list>
-    </property>
-  </bean-->
-
+  <bean id="orgQueryProcessor" class="se.vgregion.portal.rss.client.OrgQueryProcessor" primary="true">
+    <property name="placeholder" value="{user.organization}" />
+    <property name="next" ref="infotypeQueryProcessor" />
+  </bean>
+  
+  <bean id="infotypeQueryProcessor" class="se.vgregion.portal.rss.client.InfotypeQueryProcessor">
+    <property name="placeholder" value="{user.infotype}" />
+  </bean>
 </beans>

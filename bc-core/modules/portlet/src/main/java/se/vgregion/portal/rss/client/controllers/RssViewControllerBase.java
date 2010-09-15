@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
+import se.vgregion.portal.rss.client.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
@@ -61,6 +63,9 @@ public class RssViewControllerBase {
     @Autowired
     protected PortletConfig portletConfig = null;
 
+    @Autowired
+    private StringTemplatePlaceholderProcessor spProcessor = null;
+
     protected void setLogger(Logger logger) {
         this.logger = logger;
     }
@@ -75,6 +80,7 @@ public class RssViewControllerBase {
         String[] feedUrls = getFeedUrls(preferences);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
+
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
@@ -102,7 +108,8 @@ public class RssViewControllerBase {
         String feedUrls = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrls.split("\n"))) {
-                feedUrlsArray.add(feedUrl);
+                Set<String> processedFeedUrls = spProcessor.replacePlaceholders(feedUrl, "vgrId");
+                feedUrlsArray.addAll(processedFeedUrls);
             }
         }
 
@@ -116,6 +123,7 @@ public class RssViewControllerBase {
         // feedUrlsArray.add(feed.getFeedUrl());
         //
         // }
+        System.out.println(feedUrlsArray.toString());
         return feedUrlsArray.toArray(new String[] {});
     }
 
