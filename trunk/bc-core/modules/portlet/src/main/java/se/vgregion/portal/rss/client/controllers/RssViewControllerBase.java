@@ -32,8 +32,7 @@ import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletPreferences;
+import javax.portlet.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -42,6 +41,7 @@ import java.util.*;
  * 
  * @author Jonas Liljenfeldt
  * @author Anders Asplund
+ * @author David Rosell
  */
 public class RssViewControllerBase {
 
@@ -68,8 +68,8 @@ public class RssViewControllerBase {
         return comparator;
     }
 
-    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IOException {
-        Set<String> feedUrls = getFeedUrls(preferences);
+    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model) throws IOException {
+        Set<String> feedUrls = getFeedUrls(preferences, model);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
 
@@ -88,19 +88,23 @@ public class RssViewControllerBase {
     }
 
     protected void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
-        List<FeedEntryBean> feedEntries = getSortedRssEntries(model, preferences);
+        List<FeedEntryBean> feedEntries = getSortedRssEntries(preferences, model);
         feedEntries = getItemsToBeDisplayed(preferences, feedEntries);
         model.addAttribute("rssEntries", feedEntries);
     }
 
-    protected Set<String> getFeedUrls(PortletPreferences preferences) {
+    protected Set<String> getFeedUrls(PortletPreferences preferences, ModelMap model) {
         Set<String> feedUrls = new HashSet<String>();
+
+        for (String key : model.keySet()) {
+            System.out.println("Model key: "+key);
+        }
 
         // Get list of URLs for user saved in his/her preferences
         String feedUrlTemplates = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
-                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, "bruno");
+                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, (String)model.get("uid"));
                 feedUrls.addAll(processedFeedUrls);
             }
         }
@@ -132,9 +136,9 @@ public class RssViewControllerBase {
         return sortedRssEntries;
     }
 
-    protected List<FeedEntryBean> getSortedRssEntries(ModelMap model, PortletPreferences preferences)
+    protected List<FeedEntryBean> getSortedRssEntries(PortletPreferences preferences, ModelMap model)
             throws IOException {
-        List<FeedEntryBean> feedEntries = getRssEntries(preferences);
+        List<FeedEntryBean> feedEntries = getRssEntries(preferences, model);
         Collections.sort(feedEntries, getSortOrder(model));
         return feedEntries;
     }
@@ -149,5 +153,22 @@ public class RssViewControllerBase {
 
     public void setTemplateProcessor(StringTemplatePlaceholderProcessor templateProcessor) {
         this.templateProcessor = templateProcessor;
+    }
+
+    protected void addUserToModel(ModelMap model, PortletRequest request) {
+        String uid = lookupUid(request);
+        model.addAttribute("uid", uid);
+    }
+
+    protected String lookupUid(PortletRequest req) {
+        Map<String, ?> userInfo = (Map<String, ?>) req.getAttribute(PortletRequest.USER_INFO);
+        String userId;
+        if (userInfo != null) {
+            userId = (String) userInfo.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString());
+        } else {
+            userId = (String) "";
+        }
+        System.out.println("uid: "+userId);
+        return userId;
     }
 }

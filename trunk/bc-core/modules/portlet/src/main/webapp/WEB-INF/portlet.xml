@@ -51,7 +51,12 @@
       <keywords>minimal rss client viewer feeds</keywords>
     </portlet-info>
   </portlet>
-  
+
+  <user-attribute>
+    <description>User Login ID</description>
+    <name>user.login.id</name>
+  </user-attribute>
+
   <default-namespace>http://RssClient/</default-namespace>
 
 </portlet-app>
