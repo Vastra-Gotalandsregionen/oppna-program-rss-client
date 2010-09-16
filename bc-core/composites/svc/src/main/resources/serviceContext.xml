@@ -24,7 +24,7 @@
     <property name="ignoreUnresolvablePlaceholders" value="true" />
     <property name="locations">
       <list>
-        <value>classpath:roleQueryMappings.properties</value>
+        <value>classpath:user.organization.properties</value>
       </list>
     </property>
   </bean>
