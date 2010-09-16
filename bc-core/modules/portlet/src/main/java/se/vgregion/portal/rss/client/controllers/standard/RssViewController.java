@@ -19,17 +19,6 @@
 
 package se.vgregion.portal.rss.client.controllers.standard;
 
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,15 +28,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
+
+import javax.portlet.*;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Controller for view mode, display of RSS items.
  * 
  * @author Jonas Liljenfeldt
  * @author anders asplund
+ * @author David Rosell
  */
 @Controller
 @RequestMapping("VIEW")
@@ -80,12 +75,14 @@ public class RssViewController extends RssViewControllerBase {
             PortletPreferences preferences, @RequestParam(required = false) String selectedRssItemTitle)
             throws IOException {
 
+        addUserToModel(model, request);
+
         // Check for sort order or pre-selection (no fetch on default load, this to avoid "page lock")
         Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
         if (sortOrder != null || selectedRssItemTitle != null) {
             ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
 
-            List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(model, preferences);
+            List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(preferences, model);
 
             sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
 
@@ -118,6 +115,9 @@ public class RssViewController extends RssViewControllerBase {
     @ResourceMapping("sortByDate")
     public String viewFeedEntriesByDate(ModelMap model, ResourceRequest request, ResourceResponse response,
             PortletPreferences preferences) throws IOException {
+
+        addUserToModel(model, request);
+
         setSortOrderByDate(model);
         addSortedFeedEntriesToModel(model, preferences);
         return "rssItems";
@@ -141,6 +141,9 @@ public class RssViewController extends RssViewControllerBase {
     @ResourceMapping("groupBySource")
     public String viewFeedEntriesBySource(ModelMap model, ResourceRequest request, ResourceResponse response,
             PortletPreferences preferences) throws IOException {
+
+        addUserToModel(model, request);
+
         setSortOrderByFeedTitle(model);
         addSortedFeedEntriesToModel(model, preferences);
         return "rssItems";

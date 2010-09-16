@@ -18,7 +18,7 @@
  */
 
 /**
- * 
+ *
  */
 package se.vgregion.portal.rss.client.chain;
 
@@ -31,16 +31,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
  * @author Anders Asplund - Callista Enterprise
- * 
+ * @author David Rosell - Redpill-Linpro
  */
 public class UserOrganizationProcessor extends StringTemplatePlaceholderProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserOrganizationProcessor.class);
 
-    private final long companyId = 10112;
+    private long companyId = 10112;
 
     @Autowired
     private UserLocalService userLocalService;
@@ -49,6 +50,8 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
     private OrganizationLocalService organizationLocalService;
 
     private Map<String, String> replaceValues;
+
+    private boolean urlValueEncoding = true;
 
     @Override
     protected Set<String> getKeys(String userId) {
@@ -73,21 +76,27 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     public void setReplaceValues(File mapFile) {
         try {
+            LOGGER.debug("Map: " + mapFile.getAbsolutePath());
             PropertiesConfiguration pc = new PropertiesConfiguration(mapFile);
 
             replaceValues = new HashMap<String, String>();
-            for (Iterator it = pc.getKeys(); it.hasNext(); ) {
-               String key = (String)it.next();
-               String value = pc.getString(key);
+            for (Iterator it = pc.getKeys(); it.hasNext();) {
+                String key = (String) it.next();
+                String value = pc.getString(key);
+                value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
+                LOGGER.debug("Key: {} Value: {}", new Object[]{key, value});
 
-               LOGGER.debug("Key: {} Value: {}", new Object[] {key ,value});
-
-               replaceValues.put(key, value);
+                replaceValues.put(key, value);
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to load replaceValues mapping file ["+ mapFilePathErrorMessage(mapFile)+"]", e);
+            LOGGER.error("Failed to load replaceValues mapping file [" + mapFilePathErrorMessage(mapFile) + "]", e);
         }
     }
+
+    /*
+        http://hitta.vgregion.se/opensearch/search?format=rss&q=%22h%C3%A4lso-+och+sjukv%C3%A5rdskansliet+mariestad%22&1facet_infotype=Nyhet&
+        http://hitta.vgregion.se/opensearch/search?format=rss&q=%22h%C3%A4lso-+och+sjukv%C3%A5rdskansliet+g%C3%B6teborg%22&1facet_infotype=Nyhet&
+     */
 
     private String mapFilePathErrorMessage(File mapFilePath) {
         if (mapFilePath == null) {
@@ -95,5 +104,13 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
         } else {
             return mapFilePath.getAbsolutePath();
         }
+    }
+
+    public void setUrlValueEncoding(Boolean urlValueEncoding) {
+        this.urlValueEncoding = urlValueEncoding;
+    }
+
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
     }
 }
