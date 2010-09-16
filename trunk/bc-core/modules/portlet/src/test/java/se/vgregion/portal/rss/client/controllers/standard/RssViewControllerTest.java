@@ -22,38 +22,30 @@
  */
 package se.vgregion.portal.rss.client.controllers.standard;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.portlet.ReadOnlyException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.mock.web.portlet.MockPortletConfig;
-import org.springframework.mock.web.portlet.MockPortletPreferences;
-import org.springframework.mock.web.portlet.MockRenderRequest;
-import org.springframework.mock.web.portlet.MockRenderResponse;
-import org.springframework.mock.web.portlet.MockResourceRequest;
-import org.springframework.mock.web.portlet.MockResourceResponse;
-import org.springframework.ui.ModelMap;
-
-import se.vgregion.portal.rss.client.beans.FeedEntryBean;
-import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
-import se.vgregion.portal.rss.client.service.RssFetcherService;
-
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.portlet.*;
+import org.springframework.ui.ModelMap;
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
+import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import javax.portlet.ReadOnlyException;
+import java.io.IOException;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.*;
 
 /**
  * @author anders.bergkvist@omegapoint.se
@@ -68,6 +60,10 @@ public class RssViewControllerTest {
 
     @Mock
     private SyndFeed syndFeed;
+
+    @Mock
+    private StringTemplatePlaceholderProcessor mockTemplateProcessor;
+
 
     /**
      * @throws java.lang.Exception
@@ -96,6 +92,7 @@ public class RssViewControllerTest {
 
         rssViewController.setPortletConfig(mockPortletConfig);
         rssViewController.setRssFetcherService(mockRssFetcherService);
+        rssViewController.setTemplateProcessor(mockTemplateProcessor);
 
         assertEquals("rssFeedView", rssViewController.viewRssItemList(modelMap, mockRenderRequest,
                 mockRenderResponse, mockPortletPreferences, "TheTitle"));
@@ -120,6 +117,7 @@ public class RssViewControllerTest {
         rssViewController.setSortOrderByDate(modelMap);
         rssViewController.setPortletConfig(mockPortletConfig);
         rssViewController.setRssFetcherService(mockRssFetcherService);
+        rssViewController.setTemplateProcessor(mockTemplateProcessor);
 
         assertEquals("rssFeedView", rssViewController.viewRssItemList(modelMap, mockRenderRequest,
                 mockRenderResponse, mockPortletPreferences, "TheTitle"));
@@ -168,9 +166,11 @@ public class RssViewControllerTest {
 
         given(syndFeed.getTitle()).willReturn("Title");
         given(syndFeed.getEntries()).willReturn(listEntry);
-        given(mockRssFetcherService.getRssFeeds(new String[] { "http://vgregion.se" })).willReturn(list);
+        given(mockRssFetcherService.getRssFeeds(new HashSet(Arrays.asList("http://vgregion.se")))).willReturn(list);
+        given(mockTemplateProcessor.replacePlaceholders(anyString(), anyString())).willReturn(new HashSet(Arrays.asList(new String[] {"http://vgregion.se"})));
 
         rssViewController.setRssFetcherService(mockRssFetcherService);
+        rssViewController.setTemplateProcessor(mockTemplateProcessor);
 
         rssViewController.viewFeedEntriesByDate(modelMap, mockResourceRequest, mockResourceResponse,
                 mockPortletPreferences);
@@ -206,10 +206,14 @@ public class RssViewControllerTest {
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
 
+        String url1 = "http://vgregion1.se";
+        String url2 = "http://vgregion2.se";
+
         mockPortletPreferences.setValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS,
-                "http://vgregion1.se\nhttp://vgregion2.se");
+                url1+"\n"+url2);
 
         rssViewController.setRssFetcherService(mockRssFetcherService);
+        rssViewController.setTemplateProcessor(mockTemplateProcessor);
 
         SyndFeed syndFeed1 = new SyndFeedImpl();
         syndFeed1.setTitle("FT1");
@@ -234,8 +238,12 @@ public class RssViewControllerTest {
         syndFeed2.getEntries().add(syndEntry2);
         syndFeed1.getEntries().add(syndEntry3);
 
-        given(mockRssFetcherService.getRssFeeds(new String[] { "http://vgregion1.se", "http://vgregion2.se" }))
-                .willReturn(list);
+        Set<String> urls = new HashSet(Arrays.asList(url1, url2));
+
+        given(mockTemplateProcessor.replacePlaceholders(eq(url1), anyString())).willReturn(new HashSet(Arrays.asList(url1)));
+        given(mockTemplateProcessor.replacePlaceholders(eq(url2), anyString())).willReturn(new HashSet(Arrays.asList(url2)));
+
+        given(mockRssFetcherService.getRssFeeds(urls)).willReturn(list);
 
         rssViewController.viewFeedEntriesBySource(modelMap, mockResourceRequest, mockResourceResponse,
                 mockPortletPreferences);

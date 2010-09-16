@@ -69,19 +69,19 @@ public class RssViewControllerBase {
     }
 
     protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences) throws IOException {
-        String[] feedUrls = getFeedUrls(preferences);
+        Set<String> feedUrls = getFeedUrls(preferences);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
 
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
         } catch (FeedException e) {
-            logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
         } catch (FetcherException e) {
-            logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            logger.error("Error when trying to fetch RSS items: " + Arrays.toString(feedUrls), e);
+            logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
         }
         return feedEntries;
@@ -93,20 +93,20 @@ public class RssViewControllerBase {
         model.addAttribute("rssEntries", feedEntries);
     }
 
-    protected String[] getFeedUrls(PortletPreferences preferences) {
-        List<String> feedUrlsArray = new ArrayList<String>();
+    protected Set<String> getFeedUrls(PortletPreferences preferences) {
+        Set<String> feedUrls = new HashSet<String>();
 
         // Get list of URLs for user saved in his/her preferences
-        String feedUrls = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
+        String feedUrlTemplates = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
-            for (String feedUrl : Arrays.asList(feedUrls.split("\n"))) {
+            for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
                 Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, "bruno");
-                feedUrlsArray.addAll(processedFeedUrls);
+                feedUrls.addAll(processedFeedUrls);
             }
         }
 
-        System.out.println(feedUrlsArray.toString());
-        return feedUrlsArray.toArray(new String[] {});
+        System.out.println(feedUrls.toString());
+        return feedUrls;
     }
 
     protected List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds) {
@@ -145,5 +145,9 @@ public class RssViewControllerBase {
 
     public void setRssFetcherService(RssFetcherService rssFetcherService) {
         this.rssFetcherService = rssFetcherService;
+    }
+
+    public void setTemplateProcessor(StringTemplatePlaceholderProcessor templateProcessor) {
+        this.templateProcessor = templateProcessor;
     }
 }

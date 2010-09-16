@@ -22,11 +22,6 @@
  */
 package se.vgregion.portal.rss.client.controllers.minimal;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,9 +31,14 @@ import org.springframework.mock.web.portlet.MockPortletPreferences;
 import org.springframework.mock.web.portlet.MockRenderRequest;
 import org.springframework.mock.web.portlet.MockRenderResponse;
 import org.springframework.ui.ModelMap;
-
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author anders.bergkvist@omegapoint.se
@@ -50,6 +50,9 @@ public class RssMinimalViewControllerTest {
 
     @Mock
     private RssFetcherService mockRssFetcherService;
+
+    @Mock
+    private StringTemplatePlaceholderProcessor mockTemplateProcessor;
 
     /**
      * @throws java.lang.Exception
@@ -76,8 +79,10 @@ public class RssMinimalViewControllerTest {
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
 
+
         rssMinimalViewController.setPortletConfig(mockPortletConfig);
         rssMinimalViewController.setRssFetcherService(mockRssFetcherService);
+        rssMinimalViewController.setTemplateProcessor(mockTemplateProcessor);
 
         assertEquals("rssFeedViewMinimal", rssMinimalViewController.viewRssItemList(modelMap, mockRenderRequest,
                 mockRenderResponse, mockPortletPreferences));
