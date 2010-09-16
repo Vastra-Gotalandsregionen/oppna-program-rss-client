@@ -19,23 +19,21 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import java.net.ConnectException;
-import java.net.URL;
-import java.util.List;
-
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.io.FeedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.io.FeedException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.*;
 
 public class RssFetcherServiceImplTest {
 
@@ -49,13 +47,13 @@ public class RssFetcherServiceImplTest {
     PropertiesUtil propertiesUtil;
 
     private RssFetcherServiceImpl rssFetcherService;
-    private String[] testFeeds;
+    private Set<String> testFeeds;
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
         rssFetcherService = new RssFetcherServiceImpl(feedFetcher, propertiesUtil);
-        testFeeds = new String[] { "http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek" };
+        testFeeds = new HashSet(Arrays.asList("http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek"));
     }
 
     @Test
@@ -67,7 +65,7 @@ public class RssFetcherServiceImplTest {
         List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
 
         // Then
-        assertEquals(testFeeds.length, syndFeeds.size());
+        assertEquals(testFeeds.size(), syndFeeds.size());
     }
 
     @Test(expected = FeedException.class)
@@ -81,7 +79,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldReturnEmptyFeedListIfNoUrlsGiven() throws Exception {
         // Given
-        testFeeds = new String[] {};
+        testFeeds = Collections.emptySet();
 
         // When
         List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
@@ -94,7 +92,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldReturnEmptyFeedListIfEmptyUrlGiven() throws Exception {
         // Given
-        testFeeds = new String[] { " " };
+        testFeeds = new HashSet(Arrays.asList(" "));
 
         // When
         List<SyndFeed> syndFeeds = rssFetcherService.getRssFeeds(testFeeds);
@@ -107,7 +105,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldAddUrlToBlackListIfConnectionExceptionThrown() throws Exception {
         // Given
-        testFeeds = new String[] { "http://url.com" };
+        testFeeds = new HashSet(Arrays.asList("http://url.com"));
         given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
 
         // When
@@ -120,7 +118,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldSkipUrlInBlackList() throws Exception {
         // Given
-        testFeeds = new String[] { "http://url.com" };
+        testFeeds = new HashSet(Arrays.asList("http://url.com"));
         given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
         rssFetcherService.getRssFeeds(testFeeds);
 
@@ -134,7 +132,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldClearBlackList() throws Exception {
         // Given
-        testFeeds = new String[] { "http://url.com", "http://url2.com" };
+        testFeeds = new HashSet(Arrays.asList("http://url.com", "http://url2.com"));
         given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
 
         // When
@@ -153,7 +151,7 @@ public class RssFetcherServiceImplTest {
     @Test
     public void shouldRemoveUrlFromBlackList() throws Exception {
         // Given
-        testFeeds = new String[] { "http://url.com", "http://url2.com" };
+        testFeeds = new HashSet(Arrays.asList("http://url.com", "http://url2.com"));
         given(feedFetcher.retrieveFeed(any(URL.class))).willThrow(new ConnectException("error"));
 
         // When

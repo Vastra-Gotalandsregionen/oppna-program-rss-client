@@ -19,23 +19,23 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author jonas liljenfeldt
@@ -66,11 +66,11 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      * @throws IllegalArgumentException
      */
     @Override
-    public List<SyndFeed> getRssFeeds(String[] feedUrlsArray) throws FeedException, IOException,
+    public List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
             IllegalArgumentException, FetcherException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
-        if (feedUrlsArray != null) {
-            for (String feedLink : feedUrlsArray) {
+        if (feedUrls != null) {
+            for (String feedLink : feedUrls) {
                 // No feed link?
                 if (!StringUtils.isBlank(feedLink)) {
                     // Continue if feed is black listed
