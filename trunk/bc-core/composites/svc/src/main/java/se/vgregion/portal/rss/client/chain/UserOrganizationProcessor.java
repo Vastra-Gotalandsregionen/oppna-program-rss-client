@@ -22,23 +22,18 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
-import java.io.File;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.liferay.portal.model.Organization;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.UserLocalService;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
+import java.io.File;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -91,7 +86,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
                 String value = pc.getString(key);
                 LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
                 System.out.println("Key: " + key + " Value: " + value);
-                if (value != null) {
+                if (!StringUtils.isBlank(value)) {
                     value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
                     key = key.toLowerCase();
                     LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
