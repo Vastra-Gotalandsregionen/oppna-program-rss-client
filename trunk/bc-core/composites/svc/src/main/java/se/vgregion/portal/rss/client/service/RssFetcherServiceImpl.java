@@ -19,16 +19,6 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
@@ -36,6 +26,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
 
 /**
  * @author jonas liljenfeldt
@@ -50,12 +51,9 @@ public class RssFetcherServiceImpl implements RssFetcherService {
 
     private final FeedFetcher feedFetcher;
 
-    private final PropertiesUtil propertiesUtil;
-
     @Autowired
-    public RssFetcherServiceImpl(FeedFetcher feedFetcher, PropertiesUtil propertiesUtil) {
+    public RssFetcherServiceImpl(FeedFetcher feedFetcher) {
         this.feedFetcher = feedFetcher;
-        this.propertiesUtil = propertiesUtil;
         feedBlackList = Collections.synchronizedList(new ArrayList<String>());
     }
 

@@ -20,15 +20,6 @@
   <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
   <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
 
-  <bean id="propertyConfigurer" class="se.vgregion.portal.rss.client.service.PropertiesUtil">
-    <property name="ignoreUnresolvablePlaceholders" value="true" />
-    <property name="locations">
-      <list>
-        <value>classpath:user.organization.properties</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="userLocalService" class="com.liferay.portal.service.UserLocalServiceUtil" factory-method="getService"/>
 
   <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"

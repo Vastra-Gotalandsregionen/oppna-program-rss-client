@@ -22,17 +22,23 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
+import java.io.File;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.net.URLEncoder;
-import java.util.*;
+import com.liferay.portal.model.Organization;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.UserLocalService;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -60,8 +66,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             long uid = userLocalService.getUserIdByScreenName(companyId, userId);
             List<Organization> organizations = organizationLocalService.getUserOrganizations(uid);
             for (Organization org : organizations) {
-                organizationNames.add(org.getName());
-                System.out.println(org.getName());
+                organizationNames.add(org.getName().toLowerCase().replace(' ', '_'));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,27 +81,28 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     public void setReplaceValues(File mapFile) {
         try {
-            LOGGER.debug("Map: " + mapFile.getAbsolutePath());
+            LOGGER.debug("Map: {}", mapFile.getAbsolutePath());
             PropertiesConfiguration pc = new PropertiesConfiguration(mapFile);
 
             replaceValues = new HashMap<String, String>();
-            for (Iterator it = pc.getKeys(); it.hasNext();) {
-                String key = (String) it.next();
+            for (@SuppressWarnings("unchecked")
+            Iterator<String> it = pc.getKeys(); it.hasNext();) {
+                String key = it.next();
                 String value = pc.getString(key);
-                value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
-                LOGGER.debug("Key: {} Value: {}", new Object[]{key, value});
-
-                replaceValues.put(key, value);
+                LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
+                System.out.println("Key: " + key + " Value: " + value);
+                if (value != null) {
+                    value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
+                    key = key.toLowerCase();
+                    LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
+                    replaceValues.put(key, value);
+                }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("Failed to load replaceValues mapping file [" + mapFilePathErrorMessage(mapFile) + "]", e);
         }
     }
-
-    /*
-        http://hitta.vgregion.se/opensearch/search?format=rss&q=%22h%C3%A4lso-+och+sjukv%C3%A5rdskansliet+mariestad%22&1facet_infotype=Nyhet&
-        http://hitta.vgregion.se/opensearch/search?format=rss&q=%22h%C3%A4lso-+och+sjukv%C3%A5rdskansliet+g%C3%B6teborg%22&1facet_infotype=Nyhet&
-     */
 
     private String mapFilePathErrorMessage(File mapFilePath) {
         if (mapFilePath == null) {

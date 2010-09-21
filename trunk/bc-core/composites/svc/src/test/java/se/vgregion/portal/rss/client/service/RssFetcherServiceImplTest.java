@@ -19,21 +19,27 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.io.FeedException;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
+import java.net.ConnectException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.net.ConnectException;
-import java.net.URL;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.*;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.io.FeedException;
 
 public class RssFetcherServiceImplTest {
 
@@ -43,8 +49,6 @@ public class RssFetcherServiceImplTest {
     private SyndFeed syndFeed;
     @Mock
     FeedException feedException;
-    @Mock
-    PropertiesUtil propertiesUtil;
 
     private RssFetcherServiceImpl rssFetcherService;
     private Set<String> testFeeds;
@@ -52,8 +56,9 @@ public class RssFetcherServiceImplTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        rssFetcherService = new RssFetcherServiceImpl(feedFetcher, propertiesUtil);
-        testFeeds = new HashSet(Arrays.asList("http://www.swedroid.se/feed", "http://feeds.feedburner.com/UbuntuGeek"));
+        rssFetcherService = new RssFetcherServiceImpl(feedFetcher);
+        testFeeds = new HashSet(Arrays.asList("http://www.swedroid.se/feed",
+                "http://feeds.feedburner.com/UbuntuGeek"));
     }
 
     @Test
