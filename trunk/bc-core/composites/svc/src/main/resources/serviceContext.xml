@@ -20,9 +20,9 @@
   <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
   <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
 
-  <bean id="userLocalService" class="com.liferay.portal.service.UserLocalServiceUtil" factory-method="getService"/>
+  <bean id="userLocalService" class="com.liferay.portal.service.UserLocalServiceUtil" factory-method="getService" lazy-init="true"/>
 
   <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"
-        factory-method="getService"/>
+        factory-method="getService" lazy-init="true"/>
 
 </beans> 

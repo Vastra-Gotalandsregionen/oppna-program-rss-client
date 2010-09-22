@@ -22,16 +22,6 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,6 +31,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.liferay.portal.model.Organization;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.UserLocalService;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -68,7 +69,8 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             long uid = userLocalService.getUserIdByScreenName(companyId, userId);
             List<Organization> organizations = organizationLocalService.getUserOrganizations(uid);
             for (Organization org : organizations) {
-                organizationNames.add(org.getName().toLowerCase().replace(' ', '_'));
+                String organizationName = org.getName().toLowerCase().replace(' ', '_');
+                organizationNames.add(organizationName);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,19 +93,20 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
     public void setReplaceValues(File mapFile) throws ConfigurationException, UnsupportedEncodingException {
         try {
             LOGGER.debug("Map: {}", mapFile.getAbsolutePath());
-            PropertiesConfiguration pc = new PropertiesConfiguration(mapFile);
+            PropertiesConfiguration pc = new PropertiesConfiguration();
+            pc.setEncoding("UTF-8");
+            pc.load(mapFile);
 
             replaceValues = new HashMap<String, String>();
             for (@SuppressWarnings("unchecked")
             Iterator<String> it = pc.getKeys(); it.hasNext();) {
                 String key = it.next();
                 String value = pc.getString(key);
-                LOGGER.debug("Key: {} Value: {}", new Object[]{key, value});
-                System.out.println("Key: " + key + " Value: " + value);
+                LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
                 if (!StringUtils.isBlank(value)) {
                     value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
                     key = key.toLowerCase();
-                    LOGGER.debug("Key: {} Value: {}", new Object[]{key, value});
+                    LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
                     replaceValues.put(key, value);
                 }
             }
