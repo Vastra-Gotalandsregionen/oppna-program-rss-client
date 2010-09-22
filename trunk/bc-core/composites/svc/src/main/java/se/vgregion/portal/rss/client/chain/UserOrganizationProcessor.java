@@ -48,15 +48,20 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     private long companyId;
 
-    @Autowired
     private UserLocalService userLocalService;
 
-    @Autowired
     private OrganizationLocalService organizationLocalService;
 
     private Map<String, String> replaceValues;
     private boolean urlValueEncoding = true;
     private static final String ENCODING = "UTF-8";
+
+    @Autowired
+    public UserOrganizationProcessor(UserLocalService userLocalService,
+                                     OrganizationLocalService organizationLocalService) {
+        this.userLocalService = userLocalService;
+        this.organizationLocalService = organizationLocalService;
+    }
 
     @Override
     protected Set<String> getKeys(String userId) {
