@@ -35,12 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -48,6 +43,8 @@ import java.util.Set;
  */
 public class UserOrganizationProcessor extends StringTemplatePlaceholderProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserOrganizationProcessor.class);
+
+    private static final Locale LOCALE = new Locale("SV", "SE");
 
     private long companyId;
 
@@ -58,8 +55,8 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
     private OrganizationLocalService organizationLocalService;
 
     private Map<String, String> replaceValues;
-
     private boolean urlValueEncoding = true;
+    private static final String ENCODING = "UTF-8";
 
     @Override
     protected Set<String> getKeys(String userId) {
@@ -68,7 +65,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             long uid = userLocalService.getUserIdByScreenName(companyId, userId);
             List<Organization> organizations = organizationLocalService.getUserOrganizations(uid);
             for (Organization org : organizations) {
-                String organizationName = org.getName().toLowerCase().replace(' ', '_');
+                String organizationName = org.getName().toLowerCase(LOCALE).replace(' ', '_');
                 organizationNames.add(organizationName);
             }
         } catch (Exception e) {
@@ -93,7 +90,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
         try {
             LOGGER.debug("Map: {}", mapFile.getAbsolutePath());
             PropertiesConfiguration pc = new PropertiesConfiguration();
-            pc.setEncoding("UTF-8");
+            pc.setEncoding(ENCODING);
             pc.load(mapFile);
 
             replaceValues = new HashMap<String, String>();
@@ -102,10 +99,10 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
                 String key = it.next();
                 String value = pc.getString(key);
                 LOGGER.debug("Key: {} Value: {}", new Object[] {key, value });
+
                 if (!StringUtils.isBlank(value)) {
-                    value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
-                    key = key.toLowerCase();
-                    LOGGER.debug("Key: {} Value: {}", new Object[] {key, value });
+                    value = (urlValueEncoding) ? URLEncoder.encode(value, ENCODING) : value;
+                    key = key.toLowerCase(LOCALE);
                     replaceValues.put(key, value);
                 }
             }
