@@ -35,7 +35,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -44,7 +49,7 @@ import java.util.*;
 public class UserOrganizationProcessor extends StringTemplatePlaceholderProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserOrganizationProcessor.class);
 
-    private long companyId = 10112;
+    private long companyId;
 
     @Autowired
     private UserLocalService userLocalService;
