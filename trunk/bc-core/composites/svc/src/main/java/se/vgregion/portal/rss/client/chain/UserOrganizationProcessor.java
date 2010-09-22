@@ -63,7 +63,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             long uid = userLocalService.getUserIdByScreenName(companyId, userId);
             List<Organization> organizations = organizationLocalService.getUserOrganizations(uid);
             for (Organization org : organizations) {
-                organizationNames.add(org.getName().toUpperCase().replace(' ', '_'));
+                organizationNames.add(org.getName().toLowerCase().replace(' ', '_'));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
                 System.out.println("Key: " + key + " Value: " + value);
                 if (!StringUtils.isBlank(value)) {
                     value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
-                    key = key.toUpperCase();
+                    key = key.toLowerCase();
                     LOGGER.debug("Key: {} Value: {}", new Object[]{key, value});
                     replaceValues.put(key, value);
                 }
