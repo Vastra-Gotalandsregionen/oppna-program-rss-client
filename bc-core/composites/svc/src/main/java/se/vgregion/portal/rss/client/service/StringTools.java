@@ -22,11 +22,11 @@
  */
 package se.vgregion.portal.rss.client.service;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -34,6 +34,17 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class StringTools {
 
+    private StringTools() {}
+
+    /**
+     * General purpose string replacement utility.
+     *
+     * @param text - template to be worked upon.
+     * @param searchString - placeholder.
+     * @param replaceKeys - keys to resolve.
+     * @param replaceValues - map of resolution possibilities.
+     * @return a set of resolved strings, one for each key. 
+     */
     public static Set<String> replace(String text, String searchString, Set<String> replaceKeys,
             Map<String, String> replaceValues) {
 

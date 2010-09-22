@@ -81,6 +81,13 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
         return replaceValues;
     }
 
+    /**
+     * Load the replace value map.
+     *
+     * @param mapFile - File reference to the replace value property file.
+     * @throws ConfigurationException
+     * @throws UnsupportedEncodingException
+     */
     public void setReplaceValues(File mapFile) throws ConfigurationException, UnsupportedEncodingException {
         try {
             LOGGER.debug("Map: {}", mapFile.getAbsolutePath());
@@ -101,9 +108,11 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Encoding failure in mapping file [" + mapFilePathErrorMessage(mapFile) + "]", e);
+            String msg = "Encoding failure in mapping";
+            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapFile) + "]", e);
         } catch (ConfigurationException e) {
-            LOGGER.error("Failed to load replaceValues mapping file [" + mapFilePathErrorMessage(mapFile) + "]", e);
+            String msg = "Failed to load replaceValues mapping";
+            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapFile) + "]", e);
         }
     }
 
