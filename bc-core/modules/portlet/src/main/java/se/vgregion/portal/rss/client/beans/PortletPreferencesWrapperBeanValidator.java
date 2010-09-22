@@ -19,27 +19,31 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.ParsingFeedException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.ParsingFeedException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Component
 public class PortletPreferencesWrapperBeanValidator implements Validator {
 
     private final FeedFetcher feedFetcher;
 
+    /**
+     * Validator must have a FeedFetcher to work.
+     * 
+     * @param feedFetcher
+     */
     @Autowired
     public PortletPreferencesWrapperBeanValidator(FeedFetcher feedFetcher) {
         this.feedFetcher = feedFetcher;
@@ -80,25 +84,25 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
 
                 } catch (MalformedURLException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (IllegalArgumentException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (ParsingFeedException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (FeedException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (FetcherException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (ConnectException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 } catch (IOException e) {
                     errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] { url }, "Ogiltig adress");
+                            new Object[] {url }, "Ogiltig adress");
                 }
             }
         }

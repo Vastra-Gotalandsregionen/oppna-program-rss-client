@@ -39,6 +39,11 @@ public class RssEditController extends RssEditControllerBase {
      */
     public static final String CONFIG_JSP = "preferencesConfig";
 
+    /**
+     * Controller for standard edit view.
+     * 
+     * @param rssFetcherService
+     */
     @Autowired
     public RssEditController(RssFetcherService rssFetcherService) {
         super(rssFetcherService);

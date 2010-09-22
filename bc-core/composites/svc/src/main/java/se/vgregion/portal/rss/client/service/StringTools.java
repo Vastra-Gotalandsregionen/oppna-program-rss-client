@@ -34,7 +34,7 @@ import java.util.Set;
  */
 public final class StringTools {
 
-    private StringTools() {}
+    private StringTools() { }
 
     /**
      * General purpose string replacement utility.
