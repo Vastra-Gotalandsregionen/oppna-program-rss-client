@@ -61,11 +61,17 @@ public class RssViewControllerBase {
      */
     public static final String SORT_ORDER = "sort_order";
 
+    /**
+     * RssFetcherService.
+     */
     @Autowired
-    protected RssFetcherService rssFetcherService = null;
+    private RssFetcherService rssFetcherService = null;
 
+    /**
+     * PortletConfig.
+     */
     @Autowired
-    protected PortletConfig portletConfig = null;
+    private PortletConfig portletConfig = null;
 
     @Autowired
     private StringTemplatePlaceholderProcessor templateProcessor = null;
@@ -161,12 +167,24 @@ public class RssViewControllerBase {
         this.portletConfig = portletConfig;
     }
 
+    public PortletConfig getPortletConfig() {
+        return portletConfig;
+    }
+
     public void setRssFetcherService(RssFetcherService rssFetcherService) {
         this.rssFetcherService = rssFetcherService;
     }
 
+    public RssFetcherService getRssFetcherService() {
+        return rssFetcherService;
+    }
+
     public void setTemplateProcessor(StringTemplatePlaceholderProcessor templateProcessor) {
         this.templateProcessor = templateProcessor;
+    }
+
+    public StringTemplatePlaceholderProcessor getTemplateProcessor() {
+        return templateProcessor;
     }
 
     protected void addUserToModel(ModelMap model, PortletRequest request) {

@@ -39,6 +39,11 @@ public class RssMinimalEditController extends RssEditControllerBase {
      */
     public static final String CONFIG_JSP = "preferencesConfigMinimal";
 
+    /**
+     * Edit controller for the minimal view rss portlet.
+     *
+     * @param rssFetcherService RssFetcherService
+     */
     @Autowired
     public RssMinimalEditController(RssFetcherService rssFetcherService) {
         super(rssFetcherService);

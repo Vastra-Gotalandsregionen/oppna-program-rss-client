@@ -53,7 +53,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
     /**
      * This RssFetcher service keeps track of a feed fetcher and a blacklist.
      * 
-     * @param feedFetcher
+     * @param feedFetcher  the FeedFetcher
      */
     @Autowired
     public RssFetcherServiceImpl(FeedFetcher feedFetcher) {

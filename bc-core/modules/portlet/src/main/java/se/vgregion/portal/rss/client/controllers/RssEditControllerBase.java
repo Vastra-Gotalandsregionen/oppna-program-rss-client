@@ -42,10 +42,15 @@ import java.util.List;
  * Controller base for edit mode.
  */
 public abstract class RssEditControllerBase {
-    protected Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
+    private Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
 
-    protected RssFetcherService rssFetcherService;
+    private RssFetcherService rssFetcherService;
 
+    /**
+     * Edit controller.
+     *
+     * @param rssFetcherService the ReeFetcher service
+     */
     public RssEditControllerBase(RssFetcherService rssFetcherService) {
         this.rssFetcherService = rssFetcherService;
     }
@@ -61,7 +66,7 @@ public abstract class RssEditControllerBase {
     public static final String PREFERENCES = "portletPreferencesWrapperBean";
 
     @Autowired
-    protected PortletPreferencesWrapperBeanValidator validator;
+    private PortletPreferencesWrapperBeanValidator validator;
 
     protected void setLogger(Logger logger) {
         this.logger = logger;
@@ -101,6 +106,12 @@ public abstract class RssEditControllerBase {
         }
     }
 
+    /**
+     * Blacklist action method.
+     * Remove all url's from blacklist.
+     *
+     * @param preferences PortletPreferences
+     */
     @ActionMapping("clearFeedBlackList")
     public void clearFeedBlackList(final PortletPreferences preferences) {
         String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
@@ -111,6 +122,12 @@ public abstract class RssEditControllerBase {
         }
     }
 
+    /**
+     * Blacklist action method.
+     * Remove one feedlink from blacklist.
+     *
+     * @param feedLink Feed link
+     */
     @ActionMapping("removeFromFeedBlackList")
     public void removeFromFeedBlackList(@RequestParam("feedLink") String feedLink) {
         rssFetcherService.removeFromFeedBlackList(feedLink);

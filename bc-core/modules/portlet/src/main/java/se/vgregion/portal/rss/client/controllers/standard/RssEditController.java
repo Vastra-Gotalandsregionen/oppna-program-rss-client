@@ -42,7 +42,7 @@ public class RssEditController extends RssEditControllerBase {
     /**
      * Controller for standard edit view.
      * 
-     * @param rssFetcherService
+     * @param rssFetcherService the RssFetcherService
      */
     @Autowired
     public RssEditController(RssFetcherService rssFetcherService) {

@@ -54,6 +54,9 @@ public class RssViewController extends RssViewControllerBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
 
+    /**
+     * Standard Rss portlet view controller.
+     */
     public RssViewController() {
         super.setLogger(LOGGER);
     }
@@ -69,6 +72,7 @@ public class RssViewController extends RssViewControllerBase {
      *            RenderResponse
      * @param preferences
      *            RSS client VIEW portlet's PortletPreferences
+     * @param selectedRssItemTitle selectedRssItemTitle
      * @return View name.
      * @throws
      * @throws IOException
@@ -84,7 +88,7 @@ public class RssViewController extends RssViewControllerBase {
         // Check for sort order or pre-selection (no fetch on default load, this to avoid "page lock")
         Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
         if (sortOrder != null || selectedRssItemTitle != null) {
-            ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
+            ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
             List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(preferences, model);
 
