@@ -19,18 +19,17 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndEntry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndEntry;
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     /**
@@ -186,5 +185,25 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FeedEntryBean)) return false;
+
+        FeedEntryBean that = (FeedEntryBean) o;
+
+        if (feedTitle != null ? !feedTitle.equals(that.feedTitle) : that.feedTitle != null) return false;
+        if (!link.equals(that.link)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = link.hashCode();
+        result = 31 * result + (feedTitle != null ? feedTitle.hashCode() : 0);
+        return result;
     }
 }
