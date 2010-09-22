@@ -22,6 +22,16 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
+import com.liferay.portal.model.Organization;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.UserLocalService;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,17 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -87,8 +86,8 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
      * Load the replace value map.
      *
      * @param mapFile - File reference to the replace value property file.
-     * @throws ConfigurationException
-     * @throws UnsupportedEncodingException
+     * @throws ConfigurationException            an ConfigurationException has occurred
+     * @throws UnsupportedEncodingException      an UnsupportedEncodingException has occurred
      */
     public void setReplaceValues(File mapFile) throws ConfigurationException, UnsupportedEncodingException {
         try {
@@ -102,11 +101,11 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             Iterator<String> it = pc.getKeys(); it.hasNext();) {
                 String key = it.next();
                 String value = pc.getString(key);
-                LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
+                LOGGER.debug("Key: {} Value: {}", new Object[] {key, value });
                 if (!StringUtils.isBlank(value)) {
                     value = (urlValueEncoding) ? URLEncoder.encode(value, "utf-8") : value;
                     key = key.toLowerCase();
-                    LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
+                    LOGGER.debug("Key: {} Value: {}", new Object[] {key, value });
                     replaceValues.put(key, value);
                 }
             }

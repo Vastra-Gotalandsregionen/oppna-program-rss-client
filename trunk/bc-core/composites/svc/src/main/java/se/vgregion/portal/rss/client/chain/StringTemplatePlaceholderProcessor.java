@@ -98,7 +98,7 @@ public abstract class StringTemplatePlaceholderProcessor {
         if (text.contains(placeholder)) {
             for (String key : replaceKeys) {
                 String replacement = replaceValues.get(key);
-                LOGGER.debug("Key: {}, Replacement; {}", new Object[] { key, replacement });
+                LOGGER.debug("Key: {}, Replacement; {}", new Object[] {key, replacement });
                 if (replacement != null) {
                     String result = text.replace(placeholder, StringUtils.trimToEmpty(replacement));
                     results.add(result);

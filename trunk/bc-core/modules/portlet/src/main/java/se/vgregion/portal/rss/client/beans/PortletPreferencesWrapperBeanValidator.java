@@ -42,7 +42,7 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
     /**
      * Validator must have a FeedFetcher to work.
      * 
-     * @param feedFetcher
+     * @param feedFetcher  the FeedFetcher
      */
     @Autowired
     public PortletPreferencesWrapperBeanValidator(FeedFetcher feedFetcher) {

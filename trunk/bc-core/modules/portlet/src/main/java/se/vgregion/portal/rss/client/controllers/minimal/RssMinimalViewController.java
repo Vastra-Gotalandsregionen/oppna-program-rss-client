@@ -77,7 +77,7 @@ public class RssMinimalViewController extends RssViewControllerBase {
 
         addUserToModel(model, request);
 
-        ResourceBundle bundle = portletConfig.getResourceBundle(response.getLocale());
+        ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
         List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(preferences, model);
 
