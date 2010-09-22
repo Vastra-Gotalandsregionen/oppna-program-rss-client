@@ -22,30 +22,31 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Anders Asplund - Callista Enterprise
  * @author David Rosell - Redpill-Linpro
  */
 public abstract class StringTemplatePlaceholderProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StringTemplatePlaceholderProcessor.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(StringTemplatePlaceholderProcessor.class);
 
     // The next element in the chain of responsibility
     private StringTemplatePlaceholderProcessor next;
     private String placeholder;
 
     /**
-     * Next processor to be called in the chain. If not set processing will terminate.
+     * Next processor to be called in the chain.
+     * If not set processing will terminate.
      * 
-     * @param spp
-     *            - next template processor.
+     * @param spp - next template processor.
      */
     public void setNext(StringTemplatePlaceholderProcessor spp) {
         next = spp;
@@ -58,8 +59,9 @@ public abstract class StringTemplatePlaceholderProcessor {
     /**
      * Main method to be called.
      * <p/>
-     * Call this method on the first processor in the chain. The template will be resolved to a Set of strings
-     * where every placeholder combination for the user context is realized.
+     * Call this method on the first processor in the chain. The template
+     * will be resolved to a Set of strings where every placeholder
+     * combination for the user context is realized.
      * 
      * @param text
      *            - template to be operated upon.
