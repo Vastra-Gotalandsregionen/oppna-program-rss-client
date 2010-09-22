@@ -52,9 +52,9 @@ public abstract class StringTemplatePlaceholderProcessor {
         next = spp;
     }
 
-    abstract protected Set<String> getKeys(String userId);
+    protected abstract Set<String> getKeys(String userId);
 
-    abstract protected Map<String, String> getReplaceValues();
+    protected abstract Map<String, String> getReplaceValues();
 
     /**
      * Main method to be called.
