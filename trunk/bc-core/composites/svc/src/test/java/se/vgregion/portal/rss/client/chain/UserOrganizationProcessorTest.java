@@ -5,9 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -22,19 +20,19 @@ public class UserOrganizationProcessorTest {
     UserOrganizationProcessor proc;
 
     File propertiesFile;
-    FileWriter fw;
+    Writer w;
 
     @Before
     public void setup() throws IOException {
         propertiesFile = File.createTempFile("tmp", ".properties");
-        fw = new FileWriter(propertiesFile);
+        w = new OutputStreamWriter(new FileOutputStream(propertiesFile), "UTF-8");
 
         proc = new UserOrganizationProcessor(); 
     }
 
     @After
     public void tearDown() throws IOException {
-        fw.close();
+        w.close();
     }
 
 
@@ -103,7 +101,7 @@ public class UserOrganizationProcessorTest {
     }
 
     private void writeToFile(String key, String value) throws IOException, ConfigurationException {
-        fw.append(key).append("=").append(value);
-        fw.flush();
+        w.append(key).append("=").append(value);
+        w.flush();
     }
 }
