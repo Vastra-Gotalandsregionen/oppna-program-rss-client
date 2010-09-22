@@ -42,7 +42,7 @@ import java.util.List;
  * Controller base for edit mode.
  */
 public abstract class RssEditControllerBase {
-    protected Logger LOGGER = LoggerFactory.getLogger(RssEditControllerBase.class);
+    protected Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
 
     protected RssFetcherService rssFetcherService;
 
@@ -64,7 +64,7 @@ public abstract class RssEditControllerBase {
     protected PortletPreferencesWrapperBeanValidator validator;
 
     protected void setLogger(Logger logger) {
-        this.LOGGER = logger;
+        this.logger = logger;
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class RssEditControllerBase {
                 // response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was
                 // opened initially every time.
             } catch (Exception e) {
-                LOGGER.error("Error when trying to store RSS Client preferences.", e);
+                logger.error("Error when trying to store RSS Client preferences.", e);
                 model.addAttribute("saveError", "true");
             }
         } else {
@@ -137,7 +137,7 @@ public abstract class RssEditControllerBase {
             throws ReadOnlyException {
         // Check if save action rendered an error
         if ("true".equals(model.get("saveError"))) {
-            LOGGER.error("Save action rendered an error");
+            logger.error("Save action rendered an error");
             return ERROR_JSP;
         }
 

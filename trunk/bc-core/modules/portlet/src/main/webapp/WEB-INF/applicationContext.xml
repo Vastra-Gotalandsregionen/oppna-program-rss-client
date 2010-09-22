@@ -16,9 +16,6 @@
   <!-- Enables component scanning -->
   <context:component-scan base-package="se.vgregion.portal.rss.client.beans" />
 
-  <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
-  <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
-
   <!-- rssFeedUrl placeholder replacement chain -->
   <bean id="userOrganizationProcessor" class="se.vgregion.portal.rss.client.chain.UserOrganizationProcessor" primary="true" lazy-init="true">
     <property name="companyId" value="10112" />

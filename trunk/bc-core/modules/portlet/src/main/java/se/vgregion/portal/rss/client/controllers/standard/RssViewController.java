@@ -31,7 +31,11 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
-import javax.portlet.*;
+import javax.portlet.PortletPreferences;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;

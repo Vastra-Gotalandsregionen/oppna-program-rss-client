@@ -48,6 +48,9 @@ public class RssMinimalViewController extends RssViewControllerBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RssMinimalViewController.class);
 
+    /**
+     * Controller for minimal view portlet.
+     */
     public RssMinimalViewController() {
         super.setLogger(LOGGER);
     }

@@ -32,9 +32,18 @@ import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
-import javax.portlet.*;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Controller base for view mode, display of RSS items.
@@ -47,6 +56,9 @@ public class RssViewControllerBase {
 
     private Logger logger = LoggerFactory.getLogger(RssViewControllerBase.class);
 
+    /**
+     * Placeholder.
+     */
     public static final String SORT_ORDER = "sort_order";
 
     @Autowired
@@ -68,7 +80,8 @@ public class RssViewControllerBase {
         return comparator;
     }
 
-    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model) throws IOException {
+    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model)
+            throws IOException {
         Set<String> feedUrls = getFeedUrls(preferences, model);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         try {
@@ -97,14 +110,15 @@ public class RssViewControllerBase {
         Set<String> feedUrls = new HashSet<String>();
 
         for (String key : model.keySet()) {
-            System.out.println("Model key: "+key);
+            logger.debug("Model key: " + key);
         }
 
         // Get list of URLs for user saved in his/her preferences
         String feedUrlTemplates = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
-                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, (String)model.get("uid"));
+                Set<String> processedFeedUrls =
+                        templateProcessor.replacePlaceholders(feedUrl, (String) model.get("uid"));
                 feedUrls.addAll(processedFeedUrls);
             }
         }
@@ -168,7 +182,7 @@ public class RssViewControllerBase {
         } else {
             userId = (String) "";
         }
-        System.out.println("uid: "+userId);
+        logger.debug("uid: {}", userId);
         return userId;
     }
 }
