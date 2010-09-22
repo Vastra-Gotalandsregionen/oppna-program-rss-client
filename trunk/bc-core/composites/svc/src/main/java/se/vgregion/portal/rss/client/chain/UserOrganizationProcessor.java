@@ -35,7 +35,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -56,6 +62,12 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
     private boolean urlValueEncoding = true;
     private static final String ENCODING = "UTF-8";
 
+    /**
+     * Constructor for UserOrganizationProcessor.
+     *
+     * @param userLocalService           Liferay service
+     * @param organizationLocalService   Liferay service
+     */
     @Autowired
     public UserOrganizationProcessor(UserLocalService userLocalService,
                                      OrganizationLocalService organizationLocalService) {
