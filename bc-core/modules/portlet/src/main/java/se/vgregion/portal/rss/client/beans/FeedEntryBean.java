@@ -22,9 +22,7 @@ package se.vgregion.portal.rss.client.beans;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.*;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -194,16 +192,11 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
         FeedEntryBean that = (FeedEntryBean) o;
 
-        if (feedTitle != null ? !feedTitle.equals(that.feedTitle) : that.feedTitle != null) return false;
-        if (!link.equals(that.link)) return false;
-
-        return true;
+        return new EqualsBuilder().append(title, that.title).append(link, that.link).isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = link.hashCode();
-        result = 31 * result + (feedTitle != null ? feedTitle.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder().append(title).append(link).hashCode();
     }
 }
