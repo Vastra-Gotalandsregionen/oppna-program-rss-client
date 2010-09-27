@@ -12,7 +12,6 @@
     <version>2.9</version>
   </parent>
 
-  
 <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-system</artifactId>
   <packaging>pom</packaging>

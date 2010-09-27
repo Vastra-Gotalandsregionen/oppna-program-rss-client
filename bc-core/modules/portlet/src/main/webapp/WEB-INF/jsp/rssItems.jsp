@@ -51,13 +51,13 @@
       <fmt:message key="sorton"/>: 
       <c:choose>
         <c:when test="${sort_order == 'SORT_BY_NAME'}">
-            <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
+            <span id="sort-by-date-selected"><a id="group-by-source" href="#"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
         </c:when>
         <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
-            <span id="group-by-source-selected"><strong><fmt:message key="source"/></strong> | <a id="sort-by-date" href="${sortByDate}"><fmt:message key="date"/></a></span>
+            <span id="group-by-source-selected"><strong><fmt:message key="source"/></strong> | <a id="sort-by-date" href="#"><fmt:message key="date"/></a></span>
         </c:when>
         <c:otherwise>
-            <span id="sort-by-date-selected"><a id="group-by-source" href="${groupBySource}"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
+            <span id="sort-by-date-selected"><a id="group-by-source" href="#"><fmt:message key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
         </c:otherwise>
       </c:choose>
       </div>
@@ -96,6 +96,7 @@
   <h1>&nbsp;Laddar källa...&nbsp;</h1> 
 </div> 
 
+${sort_order}
 <c:if test="${empty sort_order and empty selectedRssItemTitle}">
   <script>
     //No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
