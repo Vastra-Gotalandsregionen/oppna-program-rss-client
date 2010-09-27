@@ -40,7 +40,7 @@
 
 <script>
   jQuery(document).ready(function() {
-      initRss('<portlet:namespace/>', '${selectedRssItemTitle}');
+      initRss('<portlet:namespace/>', '${sortByDateResource}', '${groupBySourceResource}', '${selectedRssItemTitle}');
   });
 </script>
 
@@ -96,7 +96,6 @@
   <h1>&nbsp;Laddar källa...&nbsp;</h1> 
 </div> 
 
-${sort_order}
 <c:if test="${empty sort_order and empty selectedRssItemTitle}">
   <script>
     //No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")

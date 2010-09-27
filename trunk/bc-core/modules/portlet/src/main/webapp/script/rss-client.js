@@ -17,8 +17,8 @@
  *
  */
 
-
-function initRss(portletns, selectedRssItemTitle) {
+// Initialize jQuery functions like excerpt, sorting and expansion of selected entry.
+function initRss(portletns, sortByDateResource, groupBySourceResource, selectedRssItemTitle) {
     
   var ppid = "#p_p_id"+portletns;
 
@@ -29,13 +29,13 @@ function initRss(portletns, selectedRssItemTitle) {
 
   // Define function handling sort/group by souce
   jQuery(ppid+" #group-by-source").click(function() {
-    updateSorting("${groupBySourceResource}", portletns);
+    updateSorting(groupBySourceResource, portletns);
     return false;
   });
 
   // Define function handling sort by date
   jQuery(ppid+" #sort-by-date").click(function() {
-    updateSorting("${sortByDateResource}", portletns);
+    updateSorting(sortByDateResource, portletns);
     return false;
   });
 
@@ -59,6 +59,7 @@ function initRss(portletns, selectedRssItemTitle) {
   }
 }
   
+// Make ajax request to fetch sorted entries, show "loading" block during fetch
 function updateSorting(sortingUrl, portletns) {
 
   var ppid = "#p_p_id"+portletns; 
@@ -81,4 +82,6 @@ function updateSorting(sortingUrl, portletns) {
       jQuery(ppid + " #blockMe").unblock();
      }
   });
+  
+  return false;
 }
