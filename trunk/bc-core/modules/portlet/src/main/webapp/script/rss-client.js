@@ -29,13 +29,13 @@ function initRss(portletns, selectedRssItemTitle) {
 
   // Define function handling sort/group by souce
   jQuery(ppid+" #group-by-source").click(function() {
-    updateSorting("${groupBySourceResource}");
+    updateSorting("${groupBySourceResource}", portletns);
     return false;
   });
 
   // Define function handling sort by date
   jQuery(ppid+" #sort-by-date").click(function() {
-    updateSorting("${sortByDateResource}");
+    updateSorting("${sortByDateResource}", portletns);
     return false;
   });
 
