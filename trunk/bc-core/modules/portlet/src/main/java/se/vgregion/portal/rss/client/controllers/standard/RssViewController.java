@@ -19,17 +19,6 @@
 
 package se.vgregion.portal.rss.client.controllers.standard;
 
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,9 +28,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
+
+import javax.portlet.*;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Controller for view mode, display of RSS items.
@@ -83,7 +77,8 @@ public class RssViewController extends RssViewControllerBase {
      */
     @RenderMapping
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
-            PortletPreferences preferences, @RequestParam(required = false) String selectedRssItemTitle)
+            PortletPreferences preferences,
+            @RequestParam(value = "selectedRssItemTitle", required = false) String selectedRssItemTitle)
             throws IOException {
 
         addUserToModel(model, request);
