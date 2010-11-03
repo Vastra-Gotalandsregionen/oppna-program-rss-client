@@ -103,7 +103,7 @@
       <groupId>easyconf</groupId>
       <artifactId>easyconf</artifactId>
       <version>0.9.5</version>
-      <scope>provided</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.liferay.portal</groupId>
