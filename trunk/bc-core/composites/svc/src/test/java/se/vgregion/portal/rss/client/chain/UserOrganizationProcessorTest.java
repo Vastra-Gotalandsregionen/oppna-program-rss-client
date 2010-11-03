@@ -1,7 +1,7 @@
 package se.vgregion.portal.rss.client.chain;
 
-import com.liferay.portal.PortalException;
-import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.OrganizationLocalService;
 import com.liferay.portal.service.UserLocalService;

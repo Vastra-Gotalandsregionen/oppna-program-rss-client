@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <!-- This is the Service-composite Maven POM. Template version: 1.4 Generation time : 2010-05-13 10:52:30 CEST -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>se.vgregion.rss-client</groupId>
     <artifactId>rss-client-bc-core</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
   </parent>
   <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-bc-core-composite-svc</artifactId>
@@ -82,30 +83,33 @@
       <version>1.6</version>
     </dependency>
 
+    <!--dependency>
+        <groupId>com.liferay.portal</groupId>
+        <artifactId>portal-kernel</artifactId>
+    </dependency-->
     <dependency>
-        <groupId>com.liferay</groupId>
-        <artifactId>portal-kernal</artifactId>
+      <groupId>com.liferay.portal</groupId>
+      <artifactId>portal-service</artifactId>
+      <version>6.0.5</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>com.liferay</groupId>
-        <artifactId>portal-service</artifactId>
+      <groupId>com.liferay.portal</groupId>
+      <artifactId>util-java</artifactId>
+      <version>6.0.5</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>com.liferay</groupId>
-        <artifactId>util-java</artifactId>
-        <version>${liferay.version}</version>
-        <scope>runtime</scope>
+      <groupId>easyconf</groupId>
+      <artifactId>easyconf</artifactId>
+      <version>0.9.5</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>easyconf</groupId>
-        <artifactId>easyconf</artifactId>
-        <version>0.9.5</version>
-        <scope>runtime</scope>
-    </dependency>
-    <dependency>
-        <groupId>com.liferay</groupId>
-        <artifactId>portal-impl</artifactId>
-        <scope>test</scope>
+      <groupId>com.liferay.portal</groupId>
+      <artifactId>portal-impl</artifactId>
+      <version>6.0.5</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -117,7 +121,6 @@
       <artifactId>portlet-api</artifactId>
       <scope>test</scope>
     </dependency>
-    
 
   </dependencies>
 </project>
