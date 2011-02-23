@@ -27,8 +27,6 @@
 
 <portlet:defineObjects/>
 
-<script src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
-
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
 <%-- 
