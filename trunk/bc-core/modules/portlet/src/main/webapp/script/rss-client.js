@@ -17,6 +17,11 @@
  *
  */
 
+function initRss(portletns, sortByDateResource, groupBySourceResource, selectedRssItemTitle) {}
+
+function updateSorting(sortingUrl, portletns) {}
+
+/*
 // Initialize jQuery functions like excerpt, sorting and expansion of selected entry.
 function initRss(portletns, sortByDateResource, groupBySourceResource, selectedRssItemTitle) {
     
@@ -85,3 +90,4 @@ function updateSorting(sortingUrl, portletns) {
   
   return false;
 }
+*/
