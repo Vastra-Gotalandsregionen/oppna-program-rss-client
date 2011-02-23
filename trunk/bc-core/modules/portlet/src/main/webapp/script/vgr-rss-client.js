@@ -71,8 +71,6 @@ AUI().add('vgr-rss-client',function(A) {
 					renderUI: function() {
 						var instance = this;
 						
-						A.log('VgrRssClient is rendering');
-						
 						instance._setupRssContainer();
 					},
 	

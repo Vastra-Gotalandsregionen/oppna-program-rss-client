@@ -93,7 +93,7 @@
 <c:if test="${empty sort_order and empty selectedRssItemTitle}">
   <script>
     //No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
-    updateSorting('${sortByDateResource}', '<portlet:namespace/>');
+    //updateSorting('${sortByDateResource}', '<portlet:namespace/>');
   </script>
 </c:if>
 
