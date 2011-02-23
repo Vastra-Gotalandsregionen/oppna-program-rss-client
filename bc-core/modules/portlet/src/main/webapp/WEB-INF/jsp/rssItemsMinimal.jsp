@@ -31,11 +31,13 @@
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
+<%-- 
 <script>
-  jQuery(document).ready(function() {
-      jQuery("#p_p_id<portlet:namespace/> .news-title-minimal").excerpt({lines: '${portletPreferencesValues.numberOfExcerptRows[0]}', end: '...'});
-  });
+	jQuery(document).ready(function() {
+	    jQuery("#p_p_id<portlet:namespace/> .news-title-minimal").excerpt({lines: '${portletPreferencesValues.numberOfExcerptRows[0]}', end: '...'});
+	});
 </script>
+--%>
 
 <div id="rss-item-container" class="rss-item-container-minimal">
   <ul id="list-news" class="list-news-minimal">

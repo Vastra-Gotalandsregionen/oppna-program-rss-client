@@ -32,19 +32,9 @@
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource" />
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource" />
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/jquery.blockUI.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/rss-client.js"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/vgr-rss-client.js"></script>
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
-
-<script>
-  jQuery(document).ready(function() {
-      initRss('<portlet:namespace/>', '${sortByDateResource}', '${groupBySourceResource}', '${selectedRssItemTitle}');
-  });
-</script>
 
 <div id="blockMe">
   <div id="rss-item-container" style="min-height: 100px;">  
