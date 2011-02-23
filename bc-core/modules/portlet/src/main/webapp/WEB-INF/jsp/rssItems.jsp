@@ -36,6 +36,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/jquery.excerpt.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/rss-client.js"></script>
 
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/vgr-rss-client.js"></script>
+
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
 <script>
@@ -92,9 +94,11 @@
   </div>
 </div>
 
+<%-- 
 <div id="blockDisplayMessage" style="display:none"> 
   <h1>&nbsp;Laddar källa...&nbsp;</h1> 
 </div> 
+--%>
 
 <c:if test="${empty sort_order and empty selectedRssItemTitle}">
   <script>
@@ -102,3 +106,19 @@
     updateSorting('${sortByDateResource}', '<portlet:namespace/>');
   </script>
 </c:if>
+
+
+<script type="text/javascript">
+
+	AUI().ready(
+		'vgr-rss-client',
+		function(A) {
+		    var rssClient = new A.VgrRssClient({
+		    	portletNamespace: '<portlet:namespace/>',
+		    	selectedRssItemTitle: '${selectedRssItemTitle}',
+		    	urlGroupBySource: '${groupBySourceResource}',
+		    	urlSortByDate: '${sortByDateResource}'
+		    }).render();
+		}
+	);
+</script>
