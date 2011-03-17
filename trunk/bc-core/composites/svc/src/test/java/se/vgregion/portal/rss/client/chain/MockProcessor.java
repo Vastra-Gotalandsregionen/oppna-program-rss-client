@@ -23,24 +23,19 @@ import java.util.*;
 
 public class MockProcessor extends StringTemplatePlaceholderProcessor {
 
-    protected Set<String> getKeys(String userId) {
-        if (userId.equals(0L)) {
+    @Override
+    protected Set<String> getKeys(long userId) {
+        if (userId == 0L) {
             return new HashSet<String>(Arrays.asList("key1"));
-        } else if (userId.equals(1L)) {
+        } else if (userId == 1L) {
             return new HashSet<String>(Arrays.asList("key1", "key2"));
-        } else if (userId.equals(2L)) {
+        } else if (userId == 2L) {
             return new HashSet<String>(Arrays.asList("key1", "key2", "key3"));
-        } else if (userId.equals(3L)) {
+        } else if (userId == 3L) {
                 return new HashSet<String>(Arrays.asList("nokey"));
         } else {
             return new HashSet<String>();
         }
-
-    }
-
-    @Override
-    protected Set<String> getKeys(long userId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

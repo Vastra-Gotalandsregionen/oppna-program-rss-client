@@ -22,6 +22,8 @@
  */
 package se.vgregion.portal.rss.client.controllers.standard;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -64,6 +66,9 @@ public class RssViewControllerTest {
     @Mock
     private StringTemplatePlaceholderProcessor mockTemplateProcessor;
 
+    @Mock
+    ThemeDisplay mockThemeDisplay;
+
 
     /**
      * @throws java.lang.Exception
@@ -86,6 +91,7 @@ public class RssViewControllerTest {
     public final void testViewRssItemListDefault() throws IOException {
         MockPortletConfig mockPortletConfig = new MockPortletConfig();
         MockRenderRequest mockRenderRequest = new MockRenderRequest();
+        mockRenderRequest.setAttribute(WebKeys.THEME_DISPLAY, mockThemeDisplay);
         MockRenderResponse mockRenderResponse = new MockRenderResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
@@ -110,6 +116,7 @@ public class RssViewControllerTest {
     public final void testViewRssItemListSortOrderSet() throws IOException {
         MockPortletConfig mockPortletConfig = new MockPortletConfig();
         MockRenderRequest mockRenderRequest = new MockRenderRequest();
+        mockRenderRequest.setAttribute(WebKeys.THEME_DISPLAY, mockThemeDisplay);
         MockRenderResponse mockRenderResponse = new MockRenderResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
@@ -140,6 +147,7 @@ public class RssViewControllerTest {
     public final void testViewFeedEntriesByDate() throws IOException, ReadOnlyException, FeedException,
             IllegalArgumentException, FetcherException {
         MockResourceRequest mockResourceRequest = new MockResourceRequest();
+        mockResourceRequest.setAttribute(WebKeys.THEME_DISPLAY, mockThemeDisplay);
         MockResourceResponse mockResourceResponse = new MockResourceResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
@@ -167,7 +175,7 @@ public class RssViewControllerTest {
         given(syndFeed.getTitle()).willReturn("Title");
         given(syndFeed.getEntries()).willReturn(listEntry);
         given(mockRssFetcherService.getRssFeeds(new HashSet(Arrays.asList("http://vgregion.se")))).willReturn(list);
-//        given(mockTemplateProcessor.replacePlaceholders(anyString(), anyString())).willReturn(new HashSet(Arrays.asList(new String[] {"http://vgregion.se"})));
+        given(mockTemplateProcessor.replacePlaceholders(anyString(), anyLong())).willReturn(new HashSet(Arrays.asList(new String[] {"http://vgregion.se"})));
 
         rssViewController.setRssFetcherService(mockRssFetcherService);
         rssViewController.setTemplateProcessor(mockTemplateProcessor);
@@ -202,6 +210,7 @@ public class RssViewControllerTest {
     public final void testViewFeedEntriesBySource() throws IOException, FeedException, ReadOnlyException,
             IllegalArgumentException, FetcherException {
         MockResourceRequest mockResourceRequest = new MockResourceRequest();
+        mockResourceRequest.setAttribute(WebKeys.THEME_DISPLAY, mockThemeDisplay);
         MockResourceResponse mockResourceResponse = new MockResourceResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
@@ -240,8 +249,8 @@ public class RssViewControllerTest {
 
         Set<String> urls = new HashSet(Arrays.asList(url1, url2));
 
-//        given(mockTemplateProcessor.replacePlaceholders(eq(url1), anyString())).willReturn(new HashSet(Arrays.asList(url1)));
-//        given(mockTemplateProcessor.replacePlaceholders(eq(url2), anyString())).willReturn(new HashSet(Arrays.asList(url2)));
+        given(mockTemplateProcessor.replacePlaceholders(eq(url1), anyLong())).willReturn(new HashSet(Arrays.asList(url1)));
+        given(mockTemplateProcessor.replacePlaceholders(eq(url2), anyLong())).willReturn(new HashSet(Arrays.asList(url2)));
 
         given(mockRssFetcherService.getRssFeeds(urls)).willReturn(list);
 

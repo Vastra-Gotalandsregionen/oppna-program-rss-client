@@ -22,6 +22,8 @@
  */
 package se.vgregion.portal.rss.client.controllers.minimal;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -54,6 +56,9 @@ public class RssMinimalViewControllerTest {
     @Mock
     private StringTemplatePlaceholderProcessor mockTemplateProcessor;
 
+    @Mock
+    private ThemeDisplay mockThemeDisplay;
+
     /**
      * @throws java.lang.Exception
      */
@@ -75,10 +80,11 @@ public class RssMinimalViewControllerTest {
     public final void testViewRssItemList() throws IOException {
         MockPortletConfig mockPortletConfig = new MockPortletConfig();
         MockRenderRequest mockRenderRequest = new MockRenderRequest();
+        mockRenderRequest.setAttribute(WebKeys.THEME_DISPLAY, mockThemeDisplay);
+
         MockRenderResponse mockRenderResponse = new MockRenderResponse();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         ModelMap modelMap = new ModelMap();
-
 
         rssMinimalViewController.setPortletConfig(mockPortletConfig);
         rssMinimalViewController.setRssFetcherService(mockRssFetcherService);
