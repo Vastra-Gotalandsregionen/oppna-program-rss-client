@@ -35,7 +35,7 @@ import java.util.Set;
 public class InfotypeQueryProcessor extends StringTemplatePlaceholderProcessor {
 
     @Override
-    protected Set<String> getKeys(String userId) {
+    protected Set<String> getKeys(long userId) {
         return new HashSet<String>(Arrays.asList("role1", "role2"));
     }
 
