@@ -50,7 +50,7 @@
         <form:input id="excerpt-rows" path="numberOfExcerptRows" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfExcerptRows"/>
       </li>
       <li>
-        <label for="portlet-link"><fmt:message key="rssstandardslientportletlink" />:</label>
+        <label for="portlet-link"><fmt:message key="rssstandardclientportletlink" />:</label>
         <form:input id="portlet-link" size="100" path="rssStandardClientPortletLink" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="rssStandardClientPortletLink"/>
       </li>
       <li>
