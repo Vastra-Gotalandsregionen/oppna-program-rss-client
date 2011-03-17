@@ -22,16 +22,6 @@
  */
 package se.vgregion.portal.rss.client.chain;
 
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -43,6 +33,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.liferay.portal.model.Organization;
+import com.liferay.portal.service.OrganizationLocalService;
+
 /**
  * @author Anders Asplund - Callista Enterprise
  * @author David Rosell - Redpill-Linpro
@@ -52,10 +52,6 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     private static final Locale LOCALE = new Locale("SV", "SE");
 
-    private long companyId;
-
-    private UserLocalService userLocalService;
-
     private OrganizationLocalService organizationLocalService;
 
     private Map<String, String> replaceValues;
@@ -64,23 +60,20 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     /**
      * Constructor for UserOrganizationProcessor.
-     *
-     * @param userLocalService           Liferay service
-     * @param organizationLocalService   Liferay service
+     * 
+     * @param organizationLocalService
+     *            Liferay service
      */
     @Autowired
-    public UserOrganizationProcessor(UserLocalService userLocalService,
-                                     OrganizationLocalService organizationLocalService) {
-        this.userLocalService = userLocalService;
+    public UserOrganizationProcessor(OrganizationLocalService organizationLocalService) {
         this.organizationLocalService = organizationLocalService;
     }
 
     @Override
-    protected Set<String> getKeys(String userId) {
+    protected Set<String> getKeys(long userId) {
         Set<String> organizationNames = new HashSet<String>();
         try {
-            long uid = userLocalService.getUserIdByScreenName(companyId, userId);
-            List<Organization> organizations = organizationLocalService.getUserOrganizations(uid);
+            List<Organization> organizations = organizationLocalService.getUserOrganizations(userId);
             for (Organization org : organizations) {
                 String organizationName = org.getName().toLowerCase(LOCALE).replace(' ', '_');
                 organizationNames.add(organizationName);
@@ -98,10 +91,13 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     /**
      * Load the replace value map.
-     *
-     * @param mapFile - File reference to the replace value property file.
-     * @throws ConfigurationException            an ConfigurationException has occurred
-     * @throws UnsupportedEncodingException      an UnsupportedEncodingException has occurred
+     * 
+     * @param mapFile
+     *            - File reference to the replace value property file.
+     * @throws ConfigurationException
+     *             an ConfigurationException has occurred
+     * @throws UnsupportedEncodingException
+     *             an UnsupportedEncodingException has occurred
      */
     public void setReplaceValues(File mapFile) throws ConfigurationException, UnsupportedEncodingException {
         try {
@@ -115,7 +111,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             Iterator<String> it = pc.getKeys(); it.hasNext();) {
                 String key = it.next();
                 String value = pc.getString(key);
-                LOGGER.debug("Key: {} Value: {}", new Object[] {key, value });
+                LOGGER.debug("Key: {} Value: {}", new Object[] { key, value });
 
                 if (!StringUtils.isBlank(value)) {
                     value = (urlValueEncoding) ? URLEncoder.encode(value, ENCODING) : value;
@@ -142,9 +138,5 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     public void setUrlValueEncoding(Boolean urlValueEncoding) {
         this.urlValueEncoding = urlValueEncoding;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
     }
 }

@@ -18,7 +18,6 @@
 
   <!-- rssFeedUrl placeholder replacement chain -->
   <bean id="userOrganizationProcessor" class="se.vgregion.portal.rss.client.chain.UserOrganizationProcessor" primary="true" lazy-init="true">
-    <property name="companyId" value="10132" />
     <property name="placeholder" value="{user.organization}" />
     <property name="replaceValues" value="classpath:user.organization.properties" />
     <property name="next" ref="infotypeQueryProcessor" />
