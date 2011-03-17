@@ -26,6 +26,6 @@
     @import url("${pageContext.request.contextPath}/style/style.css");
 -->
 </style>
-<div id="<portlet:namespace/>-module-news" class="module">
+<div id="<portlet:namespace/>-module-news" class="module rss-client">
 <div id="<portlet:namespace/>-module-content"><jsp:directive.include file="rssItemsMinimal.jsp" /></div>
 </div>
