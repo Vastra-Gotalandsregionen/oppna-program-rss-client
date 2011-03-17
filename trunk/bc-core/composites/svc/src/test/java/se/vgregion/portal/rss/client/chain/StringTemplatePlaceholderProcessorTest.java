@@ -54,23 +54,23 @@ public class StringTemplatePlaceholderProcessorTest {
     public void testReplaceNoPlaceholders() throws Exception {
         String text = "http://static.org?rss.xml";
 
-        Set<String> result = noProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = noProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains(text));
 
-        result = noProc.replacePlaceholders(text, "TwoKey");
+        result = noProc.replacePlaceholders(text, 1L);
         assertEquals(1, result.size());
         assertTrue(result.contains(text));
 
-        result = noProc.replacePlaceholders(text, "ThreeKey");
+        result = noProc.replacePlaceholders(text, 2L);
         assertEquals(1, result.size());
         assertTrue(result.contains(text));
 
-        result = noProc.replacePlaceholders(text, "NoKey");
+        result = noProc.replacePlaceholders(text, 3L);
         assertEquals(1, result.size());
         assertTrue(result.contains(text));
 
-        result = noProc.replacePlaceholders(text, "Nobody");
+        result = noProc.replacePlaceholders(text, 4L);
         assertEquals(1, result.size());
         assertTrue(result.contains(text));
     }
@@ -79,25 +79,25 @@ public class StringTemplatePlaceholderProcessorTest {
     public void testReplaceOnePlaceholdersOneProcessor() throws Exception {
         String text = "http://static.org?{mock.placeholder}&rss.xml";
 
-        Set<String> result = startProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = startProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "TwoKey");
+        result = startProc.replacePlaceholders(text, 1L);
         assertEquals(2, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "ThreeKey");
+        result = startProc.replacePlaceholders(text, 2L);
         assertEquals(3, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&rss.xml"));
         assertTrue(result.contains("http://static.org?value3&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "NoKey");
+        result = startProc.replacePlaceholders(text, 3L);
         assertEquals(0, result.size());
 
-        result = startProc.replacePlaceholders(text, "Nobody");
+        result = startProc.replacePlaceholders(text, 4L);
         assertEquals(0, result.size());
     }
 
@@ -107,25 +107,25 @@ public class StringTemplatePlaceholderProcessorTest {
 
         String text = "http://static.org?{mock.placeholder}&rss.xml";
 
-        Set<String> result = startProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = startProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "TwoKey");
+        result = startProc.replacePlaceholders(text, 1L);
         assertEquals(2, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "ThreeKey");
+        result = startProc.replacePlaceholders(text, 2L);
         assertEquals(3, result.size());
         assertTrue(result.contains("http://static.org?value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&rss.xml"));
         assertTrue(result.contains("http://static.org?value3&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "NoKey");
+        result = startProc.replacePlaceholders(text, 3L);
         assertEquals(0, result.size());
 
-        result = startProc.replacePlaceholders(text, "Nobody");
+        result = startProc.replacePlaceholders(text, 4L);
         assertEquals(0, result.size());
     }
 
@@ -133,25 +133,25 @@ public class StringTemplatePlaceholderProcessorTest {
     public void testReplaceTwoPlaceholdersChainOneProcessor() throws Exception {
         String text = "http://static.org?{mock.placeholder}&{other.mock.placeholder}&rss.xml";
 
-        Set<String> result = startProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = startProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains("http://static.org?value1&{other.mock.placeholder}&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "TwoKey");
+        result = startProc.replacePlaceholders(text, 1L);
         assertEquals(2, result.size());
         assertTrue(result.contains("http://static.org?value1&{other.mock.placeholder}&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&{other.mock.placeholder}&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "ThreeKey");
+        result = startProc.replacePlaceholders(text, 2L);
         assertEquals(3, result.size());
         assertTrue(result.contains("http://static.org?value1&{other.mock.placeholder}&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&{other.mock.placeholder}&rss.xml"));
         assertTrue(result.contains("http://static.org?value3&{other.mock.placeholder}&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "NoKey");
+        result = startProc.replacePlaceholders(text, 3L);
         assertEquals(0, result.size());
 
-        result = startProc.replacePlaceholders(text, "Nobody");
+        result = startProc.replacePlaceholders(text, 4L);
         assertEquals(0, result.size());
     }
 
@@ -161,18 +161,18 @@ public class StringTemplatePlaceholderProcessorTest {
 
         String text = "http://static.org?{mock.placeholder}&{other.mock.placeholder}&rss.xml";
 
-        Set<String> result = startProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = startProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "TwoKey");
+        result = startProc.replacePlaceholders(text, 1L);
         assertEquals(4, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value1&value2&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value2&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "ThreeKey");
+        result = startProc.replacePlaceholders(text, 2L);
         assertEquals(9, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value1&rss.xml"));
@@ -184,10 +184,10 @@ public class StringTemplatePlaceholderProcessorTest {
         assertTrue(result.contains("http://static.org?value2&value3&rss.xml"));
         assertTrue(result.contains("http://static.org?value3&value3&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "NoKey");
+        result = startProc.replacePlaceholders(text, 3L);
         assertEquals(0, result.size());
 
-        result = startProc.replacePlaceholders(text, "Nobody");
+        result = startProc.replacePlaceholders(text, 4L);
         assertEquals(0, result.size());
     }
 
@@ -198,18 +198,18 @@ public class StringTemplatePlaceholderProcessorTest {
 
         String text = "http://static.org?{mock.placeholder}&{other.mock.placeholder}&rss.xml";
 
-        Set<String> result = startProc.replacePlaceholders(text, "OneKey");
+        Set<String> result = startProc.replacePlaceholders(text, 0L);
         assertEquals(1, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "TwoKey");
+        result = startProc.replacePlaceholders(text, 1L);
         assertEquals(4, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value1&value2&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value2&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "ThreeKey");
+        result = startProc.replacePlaceholders(text, 2L);
         assertEquals(9, result.size());
         assertTrue(result.contains("http://static.org?value1&value1&rss.xml"));
         assertTrue(result.contains("http://static.org?value2&value1&rss.xml"));
@@ -221,10 +221,10 @@ public class StringTemplatePlaceholderProcessorTest {
         assertTrue(result.contains("http://static.org?value2&value3&rss.xml"));
         assertTrue(result.contains("http://static.org?value3&value3&rss.xml"));
 
-        result = startProc.replacePlaceholders(text, "NoKey");
+        result = startProc.replacePlaceholders(text, 3L);
         assertEquals(0, result.size());
 
-        result = startProc.replacePlaceholders(text, "Nobody");
+        result = startProc.replacePlaceholders(text, 4L);
         assertEquals(0, result.size());
     }
 }

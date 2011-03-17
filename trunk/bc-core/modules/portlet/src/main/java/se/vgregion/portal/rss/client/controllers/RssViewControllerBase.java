@@ -26,13 +26,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ import com.sun.syndication.io.FeedException;
 
 /**
  * Controller base for view mode, display of RSS items.
- * 
+ *
  * @author Jonas Liljenfeldt
  * @author Anders Asplund
  * @author David Rosell
@@ -125,9 +126,9 @@ public class RssViewControllerBase {
         String feedUrlTemplates = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
-                // long uid = userLocalService.getUserIdByScreenName(companyId, userId);
+                Long uid = (Long)model.get("uid");
+                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, uid.longValue());
 
-                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, model.get("uid"));
                 feedUrls.addAll(processedFeedUrls);
             }
         }
@@ -149,13 +150,11 @@ public class RssViewControllerBase {
     }
 
     protected List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
-            List<FeedEntryBean> sortedRssEntries) {
-        sortedRssEntries = sortedRssEntries.subList(
-                0,
-                Math.min(
-                        sortedRssEntries.size(),
-                        Integer.valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
-                                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+                                                        List<FeedEntryBean> sortedRssEntries) {
+        sortedRssEntries = sortedRssEntries.subList(0,
+                                                    Math.min(sortedRssEntries.size(),
+                                                    Integer.valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+                                                                                         String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         return sortedRssEntries;
     }
 
@@ -191,19 +190,12 @@ public class RssViewControllerBase {
     }
 
     protected void addUserToModel(ModelMap model, PortletRequest request) {
-        String uid = lookupUid(request);
+        long uid = lookupUid(request);
         model.addAttribute("uid", uid);
     }
 
-    protected String lookupUid(PortletRequest req) {
-        Map<String, ?> userInfo = (Map<String, ?>) req.getAttribute(PortletRequest.USER_INFO);
-        String userId;
-        if (userInfo != null) {
-            userId = (String) userInfo.get(PortletRequest.P3PUserInfos.USER_LOGIN_ID.toString());
-        } else {
-            userId = "";
-        }
-        logger.debug("uid: {}", userId);
-        return userId;
+    protected long lookupUid(PortletRequest req) {
+        ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
+        return themeDisplay.getUserId();
     }
 }
