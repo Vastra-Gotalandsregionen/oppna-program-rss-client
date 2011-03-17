@@ -55,7 +55,7 @@ public class UserOrganizationProcessorTest {
         propertiesFile = File.createTempFile("tmp", ".properties");
         w = new OutputStreamWriter(new FileOutputStream(propertiesFile), "UTF-8");
 
-        proc = new UserOrganizationProcessor(userLocalServiceMock, organizationLocalServiceMock);
+        proc = new UserOrganizationProcessor(organizationLocalServiceMock);
     }
 
 
@@ -150,7 +150,7 @@ public class UserOrganizationProcessorTest {
         given(organizationLocalServiceMock.getUserOrganizations(anyLong())).willReturn(orgList);
         given(orgMock.getName()).willReturn(orgName);
 
-        Set<String> result = proc.getKeys("user");
+        Set<String> result = proc.getKeys(0L);
 
         assertEquals(result.size(), 1);
         assertEquals(orgName.toLowerCase().replace(' ', '_'), result.iterator().next());

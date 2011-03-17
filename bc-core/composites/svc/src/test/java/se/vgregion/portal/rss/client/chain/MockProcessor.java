@@ -22,20 +22,25 @@ package se.vgregion.portal.rss.client.chain;
 import java.util.*;
 
 public class MockProcessor extends StringTemplatePlaceholderProcessor {
-    @Override
+
     protected Set<String> getKeys(String userId) {
-        if (userId.equals("OneKey")) {
+        if (userId.equals(0L)) {
             return new HashSet<String>(Arrays.asList("key1"));
-        } else if (userId.equals("TwoKey")) {
+        } else if (userId.equals(1L)) {
             return new HashSet<String>(Arrays.asList("key1", "key2"));
-        } else if (userId.equals("ThreeKey")) {
+        } else if (userId.equals(2L)) {
             return new HashSet<String>(Arrays.asList("key1", "key2", "key3"));
-        } else if (userId.equals("NoKey")) {
+        } else if (userId.equals(3L)) {
                 return new HashSet<String>(Arrays.asList("nokey"));
         } else {
             return new HashSet<String>();
         }
 
+    }
+
+    @Override
+    protected Set<String> getKeys(long userId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

@@ -167,7 +167,7 @@ public class RssViewControllerTest {
         given(syndFeed.getTitle()).willReturn("Title");
         given(syndFeed.getEntries()).willReturn(listEntry);
         given(mockRssFetcherService.getRssFeeds(new HashSet(Arrays.asList("http://vgregion.se")))).willReturn(list);
-        given(mockTemplateProcessor.replacePlaceholders(anyString(), anyString())).willReturn(new HashSet(Arrays.asList(new String[] {"http://vgregion.se"})));
+//        given(mockTemplateProcessor.replacePlaceholders(anyString(), anyString())).willReturn(new HashSet(Arrays.asList(new String[] {"http://vgregion.se"})));
 
         rssViewController.setRssFetcherService(mockRssFetcherService);
         rssViewController.setTemplateProcessor(mockTemplateProcessor);
@@ -240,8 +240,8 @@ public class RssViewControllerTest {
 
         Set<String> urls = new HashSet(Arrays.asList(url1, url2));
 
-        given(mockTemplateProcessor.replacePlaceholders(eq(url1), anyString())).willReturn(new HashSet(Arrays.asList(url1)));
-        given(mockTemplateProcessor.replacePlaceholders(eq(url2), anyString())).willReturn(new HashSet(Arrays.asList(url2)));
+//        given(mockTemplateProcessor.replacePlaceholders(eq(url1), anyString())).willReturn(new HashSet(Arrays.asList(url1)));
+//        given(mockTemplateProcessor.replacePlaceholders(eq(url2), anyString())).willReturn(new HashSet(Arrays.asList(url2)));
 
         given(mockRssFetcherService.getRssFeeds(urls)).willReturn(list);
 
