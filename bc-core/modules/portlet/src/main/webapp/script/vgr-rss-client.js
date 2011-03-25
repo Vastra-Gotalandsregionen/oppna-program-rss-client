@@ -219,6 +219,7 @@ AUI().add('vgr-rss-client',function(A) {
 	},1, {
 		requires: [
 			'aui-base',
+			'aui-io-request',
 	    	'anim',
 			'aui-component',
 			'aui-node-fx'
