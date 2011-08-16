@@ -113,10 +113,18 @@ AUI().add('vgr-rss-client',function(A) {
 						
 						var data = xhr.responseText;
 
-						//instance.nodeResults.html(data);
+						var tempNode = A.Node.create(data);
+						var content = tempNode.one('#blockMe').html();
+						tempNode.remove();
 						
-						var nodeResultsParent = instance.nodeResults.ancestor();
-						nodeResultsParent.html(data);
+						var contentWrap = instance.nodeResults.ancestor('#blockMe');
+						contentWrap.purge();
+						contentWrap.empty(true);
+						contentWrap.append(content);
+						
+						// Update reference to nodeResults
+						var ppid = '#p_p_id' + instance.get(PORTLET_NAMESPACE);
+						instance.nodeResults = A.one(ppid + ' #' + instance.get(NODE_ID_RESULTS_CONTAINER));
 						
 						instance._rebindRssContainer();
 					},
