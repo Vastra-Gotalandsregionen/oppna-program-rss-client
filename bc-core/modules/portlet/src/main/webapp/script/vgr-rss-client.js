@@ -113,7 +113,11 @@ AUI().add('vgr-rss-client',function(A) {
 						
 						var data = xhr.responseText;
 
-						instance.nodeResults.html(data);
+						//instance.nodeResults.html(data);
+						
+						var nodeResultsParent = instance.nodeResults.ancestor();
+						nodeResultsParent.html(data);
+						
 						instance._rebindRssContainer();
 					},
 					
