@@ -11,8 +11,8 @@ AUI().add('vgr-rss-client',function(A) {
 			return Array.prototype.slice.call(arguments).join(SPACE);
 		},
 		
-		NAME = 'labs-search-results',
-		NS = 'labs-search-results',
+		NAME = 'vgr-rss-client',
+		NS = 'vgr-rss-client',
 		
 		NODE_ID_RESULTS_CONTAINER = 'nodeIdResultsContainer',
 		NODE_ID_GROUP_BY_SOURCE = 'nodeIdGroupBySource',
