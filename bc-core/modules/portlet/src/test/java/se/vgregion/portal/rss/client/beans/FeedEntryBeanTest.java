@@ -63,7 +63,7 @@ public class FeedEntryBeanTest {
 
         // When
         String feedTitle = "feed title";
-        FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle);
+        FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle, 80);
 
         // Then
         assertEquals("description value", feedEntryBean.getExcerpt());
@@ -80,7 +80,7 @@ public class FeedEntryBeanTest {
 
         // When
         String feedTitle = "feed title";
-        FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle);
+        FeedEntryBean feedEntryBean = new FeedEntryBean(syndEntry, feedTitle, 80);
 
         // Then
         assertEquals("description value", feedEntryBean.getContentsString());
@@ -106,9 +106,9 @@ public class FeedEntryBeanTest {
 
     @Test
     public void compareShouldNotBeEqual() throws Exception {
-        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt");
+        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt", 80);
         feedEntryBeanStub1.setPublishedDate(new Date());
-        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt");
+        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt", 80);
         feedEntryBeanStub2.setPublishedDate(new Date(12345678));
 
         assertEquals(-1, feedEntryBeanStub1.compareTo(feedEntryBeanStub2));
@@ -117,9 +117,9 @@ public class FeedEntryBeanTest {
     @Test
     public void compareShouldBeEqual() throws Exception {
         Date testDate = new Date();
-        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt");
+        FeedEntryBean feedEntryBeanStub1 = new FeedEntryBean(syndEntry, "FeedIt", 80);
         feedEntryBeanStub1.setPublishedDate(testDate);
-        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt");
+        FeedEntryBean feedEntryBeanStub2 = new FeedEntryBean(syndEntry, "FeedIt", 80);
         feedEntryBeanStub2.setPublishedDate(testDate);
 
         assertEquals(0, feedEntryBeanStub1.compareTo(feedEntryBeanStub2));
