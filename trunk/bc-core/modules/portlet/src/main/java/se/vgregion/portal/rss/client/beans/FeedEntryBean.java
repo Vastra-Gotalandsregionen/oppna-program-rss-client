@@ -106,7 +106,11 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
                 }
             }
         } else {
-            contentsString = removeTags(syndEntry.getDescription().getValue().trim());
+            if (syndEntry.getDescription() != null) {
+                contentsString = removeTags(syndEntry.getDescription().getValue().trim());
+            } else {
+                contentsString = "";
+            }
         }
 
         if (syndEntry.getLink() != null) {
