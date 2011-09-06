@@ -93,9 +93,11 @@ public class RssViewControllerBase {
     protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model) throws IOException {
         Set<String> feedUrls = getFeedUrls(preferences, model);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
+        int noOfRows = Integer.parseInt(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
+                                  String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
         try {
 
-            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls));
+            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows*80);
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
@@ -137,13 +139,13 @@ public class RssViewControllerBase {
         return feedUrls;
     }
 
-    protected List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds) {
+    protected List<FeedEntryBean> getFeedEntries(List<SyndFeed> rssFeeds, int excerptLen) {
         List<FeedEntryBean> feedEntryBeans = new ArrayList<FeedEntryBean>();
         for (int j = 0; j < rssFeeds.size(); j++) {
             SyndFeed syndFeed = rssFeeds.get(j);
             for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
                 feedEntryBeans
-                        .add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed.getTitle()));
+                        .add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed.getTitle(), excerptLen));
             }
         }
         return feedEntryBeans;

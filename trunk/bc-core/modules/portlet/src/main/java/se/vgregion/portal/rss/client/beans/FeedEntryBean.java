@@ -88,12 +88,12 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
      *            The name of the feed
      */
     @SuppressWarnings("unchecked")
-    public FeedEntryBean(SyndEntry syndEntry, String feedTitle) {
+    public FeedEntryBean(SyndEntry syndEntry, String feedTitle, int excerptLen) {
         if (syndEntry.getTitle() != null) {
             title = escapeText(syndEntry.getTitle().trim());
         }
         if (syndEntry.getDescription() != null && syndEntry.getDescription().getValue() != null) {
-            excerpt = escapeText(syndEntry.getDescription().getValue().trim());
+            excerpt = calculateExcerpt(syndEntry.getDescription().getValue().trim(), excerptLen);
         }
 
         contents = syndEntry.getContents();
@@ -106,7 +106,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
                 }
             }
         } else {
-            contentsString = excerpt;
+            contentsString = removeTags(syndEntry.getDescription().getValue().trim());
         }
 
         if (syndEntry.getLink() != null) {
@@ -114,6 +114,25 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         }
         publishedDate = syndEntry.getPublishedDate();
         this.feedTitle = escapeText(feedTitle);
+    }
+
+    private String removeTags(String input) {
+        return input.replaceAll("\\<[^>]*>","");
+    }
+
+    private String calculateExcerpt(String input, int excerptLen) {
+        String text = removeTags(input);
+
+        String suffix = "";
+        int cut = excerptLen;
+        if (text.length() > cut) {
+            suffix = "...";
+            text = text.substring(0,cut);
+            cut = text.lastIndexOf(" ");
+            text = text.substring(0,cut);
+        }
+
+        return text+suffix;
     }
 
     private String escapeText(String input) {

@@ -61,21 +61,23 @@
         <ul id="list-news" class="list-news">
             <c:forEach items="${rssEntries}" var="item" varStatus="status">
                 <li class="news-item" id="${item.link}">
-          <span class="news-source">
-            <c:out value="${item.feedTitle}" escapeXml="true"/>
-          </span>
-          <span class="news-date">
-            <c:if test="${!empty item.publishedDate}">
-                [<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd"/>
-                <span class="news-time">&nbsp;<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm"/></span>]
-            </c:if>
-          </span> <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;<a class="source-link"
-                                                                                      href="${item.link}"></a>
+                    <span class="news-source">
+                      <c:out value="${item.feedTitle}" escapeXml="true"/>
+                    </span>
+                    <span class="news-date">
+                      <c:if test="${!empty item.publishedDate}">
+                          [<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd"/>
+                          <span class="news-time">&nbsp;<fmt:formatDate value="${item.publishedDate}" type="both"
+                                                                        pattern="HH:mm"/></span>]
+                      </c:if>
+                    </span>
+                    <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;
+                    <a class="source-link" href="${item.link}"></a>
 
                     <div class="news-excerpt">
-                        <p class="news-excerpt">
-                            <c:out value="${item.contentsString}" escapeXml="false"/>
-                        </p>
+                            <p class="news-excerpt">
+                            <c:out value="${item.excerpt}" escapeXml="false"/>
+                            </p>
                     </div>
                     <div class="news-content" style="display: none;">
                         <c:out value="${item.contentsString}" escapeXml="false"/>
@@ -110,11 +112,11 @@
             'vgr-rss-client',
             function(A) {
                 var rssClient = new A.VgrRssClient({
-                                                       portletNamespace: '<portlet:namespace/>',
-                                                       selectedRssItemTitle: '${selectedRssItemTitle}',
-                                                       urlGroupBySource: '${groupBySourceResource}',
-                                                       urlSortByDate: '${sortByDateResource}'
-                                                   }).render();
+                    portletNamespace: '<portlet:namespace/>',
+                    selectedRssItemTitle: '${selectedRssItemTitle}',
+                    urlGroupBySource: '${groupBySourceResource}',
+                    urlSortByDate: '${sortByDateResource}'
+                }).render();
             }
-            );
+    );
 </script>
