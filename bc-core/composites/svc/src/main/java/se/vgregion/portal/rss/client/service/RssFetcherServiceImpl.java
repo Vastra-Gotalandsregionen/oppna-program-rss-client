@@ -19,23 +19,25 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import se.vgregion.portal.rss.blacklist.BlackList;
+
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
 
 /**
  * @author jonas liljenfeldt
@@ -46,7 +48,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RssFetcherServiceImpl.class);
 
-    private final List<String> feedBlackList;
+    private final BlackList<String> feedBlackList;
 
     private final FeedFetcher feedFetcher;
 
@@ -56,9 +58,9 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      * @param feedFetcher  the FeedFetcher
      */
     @Autowired
-    public RssFetcherServiceImpl(FeedFetcher feedFetcher) {
+    public RssFetcherServiceImpl(FeedFetcher feedFetcher, BlackList<String> blackList) {
         this.feedFetcher = feedFetcher;
-        feedBlackList = Collections.synchronizedList(new ArrayList<String>());
+        feedBlackList = blackList;
     }
 
     /**
@@ -68,7 +70,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      */
     @Override
     public List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
-            FetcherException {
+    FetcherException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
         if (feedUrls != null) {
             for (String feedLink : feedUrls) {
@@ -90,26 +92,5 @@ public class RssFetcherServiceImpl implements RssFetcherService {
             }
         }
         return syndFeeds;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clearFeedBlackList() {
-        feedBlackList.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeFromFeedBlackList(String feedLink) {
-        feedBlackList.remove(feedLink);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<String> getFeedBlackList() {
-        return Collections.unmodifiableList(feedBlackList);
     }
 }

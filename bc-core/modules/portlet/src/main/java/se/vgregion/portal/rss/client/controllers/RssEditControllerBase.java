@@ -19,6 +19,12 @@
 
 package se.vgregion.portal.rss.client.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.ReadOnlyException;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +35,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import se.vgregion.portal.rss.blacklist.BlackList;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBeanValidator;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller base for edit mode.
@@ -45,11 +48,13 @@ public abstract class RssEditControllerBase {
     private Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
 
     private RssFetcherService rssFetcherService;
+    private BlackList<String> blackList;
 
     /**
      * Edit controller.
-     *
-     * @param rssFetcherService the ReeFetcher service
+     * 
+     * @param rssFetcherService
+     *            the ReeFetcher service
      */
     public RssEditControllerBase(RssFetcherService rssFetcherService) {
         this.rssFetcherService = rssFetcherService;
@@ -107,30 +112,31 @@ public abstract class RssEditControllerBase {
     }
 
     /**
-     * Blacklist action method.
-     * Remove all url's from blacklist.
-     *
-     * @param preferences PortletPreferences
+     * Blacklist action method. Remove all url's from blacklist.
+     * 
+     * @param preferences
+     *            PortletPreferences
      */
     @ActionMapping("clearFeedBlackList")
     public void clearFeedBlackList(final PortletPreferences preferences) {
-        String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
-        if (!StringUtils.isBlank(feedLinks)) {
-            for (String url : feedLinks.split("\n")) {
-                rssFetcherService.removeFromFeedBlackList(url);
-            }
-        }
+        blackList.clear();
+        //        String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
+        //        if (!StringUtils.isBlank(feedLinks)) {
+        //            for (String url : feedLinks.split("\n")) {
+        //                blackList.remove(url);
+        //            }
+        //        }
     }
 
     /**
-     * Blacklist action method.
-     * Remove one feedlink from blacklist.
-     *
-     * @param feedLink Feed link
+     * Blacklist action method. Remove one feedlink from blacklist.
+     * 
+     * @param feedLink
+     *            Feed link
      */
     @ActionMapping("removeFromFeedBlackList")
     public void removeFromFeedBlackList(@RequestParam("feedLink") String feedLink) {
-        rssFetcherService.removeFromFeedBlackList(feedLink);
+        blackList.remove(feedLink);
     }
 
     /**
@@ -151,7 +157,7 @@ public abstract class RssEditControllerBase {
     @RenderMapping
     public final String showPreferences(final ModelMap model, PortletPreferences preferences,
             @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result)
-            throws ReadOnlyException {
+                    throws ReadOnlyException {
         // Check if save action rendered an error
         if ("true".equals(model.get("saveError"))) {
             logger.error("Save action rendered an error");
@@ -163,16 +169,15 @@ public abstract class RssEditControllerBase {
 
         // Don't replace values if we have a binding error from save action
         if (model.get("errors") == null) {
-            preferencesBean.setNumberOfItems(
-                    preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+            preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
                     String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
-            preferencesBean.setNumberOfExcerptRows(
-                    preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
+            preferencesBean.setNumberOfExcerptRows(preferences.getValue(
+                    PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
                     String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
-            preferencesBean.setRssFeedLinks(
-                    preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
-            preferencesBean.setRssStandardClientPortletLink(
-                    preferences.getValue(PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
+            preferencesBean
+            .setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
+            preferencesBean.setRssStandardClientPortletLink(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
         } else {
             // Copy binding error from save action
             result.addAllErrors((BindingResult) model.get("errors"));
@@ -184,10 +189,14 @@ public abstract class RssEditControllerBase {
 
     protected abstract String getConfigJsp();
 
+    @Autowired
+    public void setBlackList(BlackList<String> blackList) {
+        this.blackList = blackList;
+    }
+
     private List<String> getFilteredFeedBlackList(final PortletPreferences preferences) {
         List<String> returnList = new ArrayList<String>();
         String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
-        List<String> blackList = rssFetcherService.getFeedBlackList();
 
         if (!StringUtils.isBlank(feedLinks)) {
             for (String url : feedLinks.split("\n")) {

@@ -19,13 +19,13 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
 
 /**
  * @author jonas liljenfeldt
@@ -43,24 +43,6 @@ public interface RssFetcherService {
      * @throws FetcherException         an FetcherException has occurred
      */
     List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
-            FetcherException;
+    FetcherException;
 
-    /**
-     * Clear list containing black listed feed links.
-     */
-    void clearFeedBlackList();
-
-    /**
-     * Remove feed link from feed black list.
-     *
-     * @param feedLink Link to remove from black list
-     */
-    void removeFromFeedBlackList(String feedLink);
-
-    /**
-     * Get current feed black list.
-     *
-     * @return List with black listed feed links
-     */
-    List<String> getFeedBlackList();
 }

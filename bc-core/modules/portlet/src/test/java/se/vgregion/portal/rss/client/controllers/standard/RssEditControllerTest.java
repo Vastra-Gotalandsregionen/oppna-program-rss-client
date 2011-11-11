@@ -26,7 +26,6 @@ import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
@@ -120,24 +119,24 @@ public class RssEditControllerTest {
                 .getArguments()[0]);
     }
 
-    @Test
-    public final void testShowPreferencesInBlackList() throws ReadOnlyException {
-        ModelMap modelMap = new ModelMap();
-        MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
-        mockPortletPreferences.setValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "link1\nlink2");
-        PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
-        BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
-
-        given(rssFetcherService.getFeedBlackList()).willReturn(Arrays.asList("link1", "link3"));
-
-        rssEditController.showPreferences(modelMap, mockPortletPreferences, preferencesBean, bindingResult);
-
-        PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
-                .get(RssEditController.PREFERENCES);
-
-        assertEquals(1, pb.getFeedBlackList().size());
-        assertEquals("link1", pb.getFeedBlackList().get(0));
-    }
+    //    @Test
+    //    public final void testShowPreferencesInBlackList() throws ReadOnlyException {
+    //        ModelMap modelMap = new ModelMap();
+    //        MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
+    //        mockPortletPreferences.setValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "link1\nlink2");
+    //        PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
+    //        BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
+    //
+    //        given(rssFetcherService.getFeedBlackList()).willReturn(Arrays.asList("link1", "link3"));
+    //
+    //        rssEditController.showPreferences(modelMap, mockPortletPreferences, preferencesBean, bindingResult);
+    //
+    //        PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
+    //                .get(RssEditController.PREFERENCES);
+    //
+    //        assertEquals(1, pb.getFeedBlackList().size());
+    //        assertEquals("link1", pb.getFeedBlackList().get(0));
+    //    }
 
     @Test
     public final void testShowPreferencesException() throws ReadOnlyException {
@@ -184,7 +183,7 @@ public class RssEditControllerTest {
 
     @Test
     public final void testSavePreferencesStoreException() throws ReadOnlyException, ValidatorException,
-            IOException {
+    IOException {
         ModelMap modelMap = new ModelMap();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         BindingResult bindingResult = new BeanPropertyBindingResult(mockPreferencesBean, "command");
