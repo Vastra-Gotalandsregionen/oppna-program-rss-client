@@ -69,21 +69,21 @@ public class PortletPreferencesWrapperBean implements Serializable {
     private String numberOfItems = String.valueOf(DEFAULT_MAX_NUMBER_OF_ITEMS);
     private String numberOfExcerptRows = String.valueOf(DEFAULT_NUMBER_OF_EXCERPT_ROWS);
     private String rssStandardClientPortletLink;
-    private List<String> feedBlackList;
+    private List<String> filteredBlackList;
 
     /**
      * @return the feedBlackList
      */
     public List<String> getFeedBlackList() {
-        return feedBlackList;
+        return filteredBlackList;
     }
 
     /**
      * @param feedBlackList
      *            the feedBlackList to set
      */
-    public void setFeedBlackList(List<String> feedBlackList) {
-        this.feedBlackList = feedBlackList;
+    public void setFeedBlackList(List<String> filteredBlackList) {
+        this.filteredBlackList = filteredBlackList;
     }
 
     /**

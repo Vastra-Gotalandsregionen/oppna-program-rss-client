@@ -21,6 +21,8 @@
   <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
 
   <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"
-        factory-method="getService" lazy-init="true"/>
+    factory-method="getService" lazy-init="true" />
+
+  <bean id="blackList" class="se.vgregion.portal.rss.blacklist.ConcurrentBlackList" />
 
 </beans> 

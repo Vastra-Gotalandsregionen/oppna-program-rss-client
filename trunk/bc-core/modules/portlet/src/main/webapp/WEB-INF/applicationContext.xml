@@ -17,14 +17,26 @@
   <context:component-scan base-package="se.vgregion.portal.rss.client.beans" />
 
   <!-- rssFeedUrl placeholder replacement chain -->
-  <bean id="userOrganizationProcessor" class="se.vgregion.portal.rss.client.chain.UserOrganizationProcessor" primary="true" lazy-init="true">
+  <bean id="userOrganizationProcessor" class="se.vgregion.portal.rss.client.chain.UserOrganizationProcessor"
+    primary="true" lazy-init="true">
     <property name="placeholder" value="{user.organization}" />
     <property name="replaceValues" value="classpath:user.organization.properties" />
     <property name="next" ref="infotypeQueryProcessor" />
   </bean>
-  
+
   <bean id="infotypeQueryProcessor" class="se.vgregion.portal.rss.client.chain.InfotypeQueryProcessor">
     <property name="placeholder" value="{user.infotype}" />
+  </bean>
+
+
+  <bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+    <!-- wait 1 hour before starting repeated execution -->
+    <property name="delay" value="3600000" />
+    <!-- run every hour -->
+    <property name="period" value="3600000" />
+    <property name="timerTask">
+      <bean class="se.vgregion.portal.rss.blacklist.FeedBlackListCleaner" />
+    </property>
   </bean>
 
 </beans>
