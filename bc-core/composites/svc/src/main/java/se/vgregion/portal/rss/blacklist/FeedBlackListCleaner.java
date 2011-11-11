@@ -6,7 +6,6 @@ import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sun.syndication.fetcher.FeedFetcher;
 
@@ -30,7 +29,6 @@ public class FeedBlackListCleaner extends TimerTask {
      * @param feedFetcher
      * @param blackList
      */
-    @Autowired
     public FeedBlackListCleaner(FeedFetcher feedFetcher, BlackList<String> blackList) {
         this.feedFetcher = feedFetcher;
         this.blackList = blackList;
