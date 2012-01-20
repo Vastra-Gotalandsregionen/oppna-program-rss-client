@@ -64,10 +64,6 @@ Generation time : 2010-05-13 10:52:30 CEST
       <version>1.5.3</version>
     </dependency>
     <dependency>
-      <groupId>com.sun.portal</groupId>
-      <artifactId>portlet-container</artifactId>
-    </dependency>
-    <dependency>
       <groupId>se.vgregion.javg</groupId>
       <artifactId>javg-rt-support</artifactId>
       <version>${javg.version}</version>
@@ -121,12 +117,16 @@ Generation time : 2010-05-13 10:52:30 CEST
       <artifactId>servlet-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.powermock.modules</groupId>
+      <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
+      <version>1.4.11</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.powermock.api</groupId>
+      <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito</artifactId>
+      <version>1.4.11</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
