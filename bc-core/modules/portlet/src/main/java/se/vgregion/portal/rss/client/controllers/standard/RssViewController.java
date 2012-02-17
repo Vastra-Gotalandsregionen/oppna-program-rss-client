@@ -19,6 +19,16 @@
 
 package se.vgregion.portal.rss.client.controllers.standard;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,14 +38,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import se.vgregion.portal.rss.client.beans.FeedEntryBean;
-import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
-import javax.portlet.*;
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
 /**
  * Controller for view mode, display of RSS items.
@@ -49,6 +55,7 @@ import java.util.ResourceBundle;
 public class RssViewController extends RssViewControllerBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
+    private static final String FEED = "feed";
 
     /**
      * Standard Rss portlet view controller.
@@ -84,23 +91,105 @@ public class RssViewController extends RssViewControllerBase {
         addUserToModel(model, request);
 
         // Check for sort order or pre-selection (no fetch on default load, this to avoid "page lock")
-        Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
-        if (sortOrder != null || selectedRssItemTitle != null) {
-            ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
+        // Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
+        // if (sortOrder != null || selectedRssItemTitle != null) {
+        ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
-            List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(preferences, model);
+        List<FeedEntryBean> sortedRssEntries =
+                getSortedRssEntries(preferences, model, getRssFeedPref(request));
 
-            sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
+        sortedRssEntries =
+                getItemsToBeDisplayed(preferences, sortedRssEntries, getRssFeedNumberOfItemsPref(request));
 
-            if (bundle != null) {
-                response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
-            }
-
-            response.setContentType("text/html");
-            model.addAttribute("rssEntries", sortedRssEntries);
+        if (bundle != null) {
+            response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
         }
+
+        addTabStateToModel(model, request, preferences);
+
+        response.setContentType("text/html");
+        model.addAttribute("rssEntries", sortedRssEntries);
+        model.addAttribute("rssFeedLink", preferences.getValue(getRssFeedPref(request), ""));
+        model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
+
+        // }
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
         return "rssFeedView";
+    }
+
+    /**
+     * @param model
+     * @param request
+     */
+    private void addTabStateToModel(ModelMap model, RenderRequest request, PortletPreferences preferences) {
+
+        boolean isTab1Active = false;
+        boolean isTab2Active = false;
+        boolean isTab3Active = false;
+        boolean isTab4Active = false;
+
+        String rssFeedLink1 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, "");
+        String rssFeedLink2 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_2, "");
+        String rssFeedLink3 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_3, "");
+        String rssFeedLink4 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_4, "");
+
+        if (rssFeedLink1 != null && !rssFeedLink1.equals("")) {
+            isTab1Active = true;
+        }
+        if (rssFeedLink2 != null && !rssFeedLink2.equals("")) {
+            isTab2Active = true;
+        }
+        if (rssFeedLink3 != null && !rssFeedLink3.equals("")) {
+            isTab3Active = true;
+        }
+        if (rssFeedLink4 != null && !rssFeedLink4.equals("")) {
+            isTab4Active = true;
+        }
+
+        model.addAttribute("isTab1Active", isTab1Active);
+        model.addAttribute("isTab2Active", isTab2Active);
+        model.addAttribute("isTab3Active", isTab3Active);
+        model.addAttribute("isTab4Active", isTab4Active);
+    }
+
+    /**
+     * @param request
+     * @return
+     */
+    private String getRssFeedPref(RenderRequest request) {
+        String feed = request.getParameter(FEED);
+        if (feed != null) {
+            if (feed.equals("2")) {
+                return PortletPreferencesWrapperBean.RSS_FEED_LINK_2;
+            }
+            if (feed.equals("3")) {
+                return PortletPreferencesWrapperBean.RSS_FEED_LINK_3;
+            }
+            if (feed.equals("4")) {
+                return PortletPreferencesWrapperBean.RSS_FEED_LINK_4;
+            }
+        }
+        return PortletPreferencesWrapperBean.RSS_FEED_LINK_1;
+    }
+
+    /**
+     * @param request
+     * @return
+     */
+    private String getRssFeedNumberOfItemsPref(RenderRequest request) {
+        String feed = request.getParameter(FEED);
+        if (feed != null) {
+            if (feed.equals("2")) {
+                return PortletPreferencesWrapperBean.NUMBER_OF_ITEM_2;
+            }
+            if (feed.equals("3")) {
+                return PortletPreferencesWrapperBean.NUMBER_OF_ITEM_3;
+            }
+            if (feed.equals("4")) {
+                return PortletPreferencesWrapperBean.NUMBER_OF_ITEM_4;
+            }
+        }
+        return PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1;
     }
 
     /**
@@ -125,7 +214,8 @@ public class RssViewController extends RssViewControllerBase {
         addUserToModel(model, request);
 
         setSortOrderByDate(model);
-        addSortedFeedEntriesToModel(model, preferences);
+        // addSortedFeedEntriesToModel(model, preferences, PortletPreferencesWrapperBean.RSS_FEED_LINK_1,
+        // PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
         return "rssItems";
     }
 
@@ -151,7 +241,8 @@ public class RssViewController extends RssViewControllerBase {
         addUserToModel(model, request);
 
         setSortOrderByFeedTitle(model);
-        addSortedFeedEntriesToModel(model, preferences);
+        // addSortedFeedEntriesToModel(model, preferences, PortletPreferencesWrapperBean.RSS_FEED_LINK_1,
+        // PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
         return "rssItems";
     }
 
@@ -163,7 +254,7 @@ public class RssViewController extends RssViewControllerBase {
      */
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
-        System.out.println("RssViewController.setSortOrderByDate()");
+        // System.out.println("RssViewController.setSortOrderByDate()");
         model.addAttribute(SORT_ORDER, FeedEntryBean.SORT_BY_DATE);
     }
 
@@ -175,7 +266,7 @@ public class RssViewController extends RssViewControllerBase {
      */
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
-        System.out.println("RssViewController.setSortOrderBySource()");
+        // System.out.println("RssViewController.setSortOrderBySource()");
         model.addAttribute(SORT_ORDER, FeedEntryBean.GROUP_BY_SOURCE);
     }
 }

@@ -19,21 +19,24 @@
 
 package se.vgregion.portal.rss.client.controllers.minimal;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.portlet.PortletPreferences;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import se.vgregion.portal.rss.client.beans.FeedEntryBean;
-import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle;
+import se.vgregion.portal.rss.client.beans.FeedEntryBean;
+import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
+import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
 /**
  * Controller for view mode, display of RSS items.
@@ -79,9 +82,12 @@ public class RssMinimalViewController extends RssViewControllerBase {
 
         ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
-        List<FeedEntryBean> sortedRssEntries = getSortedRssEntries(preferences, model);
+        List<FeedEntryBean> sortedRssEntries =
+                getSortedRssEntries(preferences, model, PortletPreferencesWrapperBean.RSS_FEED_LINK_1);
 
-        sortedRssEntries = getItemsToBeDisplayed(preferences, sortedRssEntries);
+        sortedRssEntries =
+                getItemsToBeDisplayed(preferences, sortedRssEntries,
+                        PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
 
         if (bundle != null) {
             response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
