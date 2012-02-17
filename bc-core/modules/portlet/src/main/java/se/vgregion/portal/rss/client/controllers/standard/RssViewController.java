@@ -49,6 +49,7 @@ import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
  * @author Jonas Liljenfeldt
  * @author anders asplund
  * @author David Rosell
+ * @author Simon Göransson - Monator Technologies AB
  */
 @Controller
 @RequestMapping("VIEW")
@@ -106,6 +107,7 @@ public class RssViewController extends RssViewControllerBase {
         }
 
         addTabStateToModel(model, request, preferences);
+        addTabTitleToModel(model, request, preferences);
 
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
@@ -115,6 +117,22 @@ public class RssViewController extends RssViewControllerBase {
         // }
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
         return "rssFeedView";
+    }
+
+    /**
+     * @param model
+     * @param request
+     * @param preferences
+     */
+    private void addTabTitleToModel(ModelMap model, RenderRequest request, PortletPreferences preferences) {
+        model.addAttribute("rssFeedTitle1",
+                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_1, ""));
+        model.addAttribute("rssFeedTitle2",
+                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_2, ""));
+        model.addAttribute("rssFeedTitle3",
+                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_3, ""));
+        model.addAttribute("rssFeedTitle4",
+                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_4, ""));
     }
 
     /**
