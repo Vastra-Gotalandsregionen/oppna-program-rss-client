@@ -43,6 +43,8 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 /**
  * Controller base for edit mode.
+ * 
+ * @author Simon Göransson - Monator Technologies AB
  */
 public abstract class RssEditControllerBase {
     private Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
@@ -191,6 +193,14 @@ public abstract class RssEditControllerBase {
                     PortletPreferencesWrapperBean.RSS_FEED_LINK_4, ""));
             preferencesBean.setRssStandardClientPortletLink(preferences.getValue(
                     PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
+            preferencesBean.setRssFeedTitle1(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_TITLE_1, ""));
+            preferencesBean.setRssFeedTitle2(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_TITLE_2, ""));
+            preferencesBean.setRssFeedTitle3(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_TITLE_3, ""));
+            preferencesBean.setRssFeedTitle4(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_TITLE_4, ""));
         } else {
             // Copy binding error from save action
             result.addAllErrors((BindingResult) model.get("errors"));

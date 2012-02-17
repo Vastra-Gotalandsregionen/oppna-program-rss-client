@@ -29,6 +29,9 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 /**
  * Controller for edit mode.
+ * 
+ * @author Simon Göransson - Monator Technologies AB
+ * 
  */
 @Controller
 @RequestMapping("EDIT")
@@ -42,7 +45,8 @@ public class RssEditController extends RssEditControllerBase {
     /**
      * Controller for standard edit view.
      * 
-     * @param rssFetcherService the RssFetcherService
+     * @param rssFetcherService
+     *            the RssFetcherService
      */
     @Autowired
     public RssEditController(RssFetcherService rssFetcherService) {

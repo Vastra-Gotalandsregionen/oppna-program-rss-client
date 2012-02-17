@@ -34,6 +34,13 @@ import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.ParsingFeedException;
 
+/**
+ * Validating the WrapperBean.
+ * 
+ * @author Simon Göransson - Monator Technologies AB
+ * 
+ */
+
 @Component
 public class PortletPreferencesWrapperBeanValidator implements Validator {
 

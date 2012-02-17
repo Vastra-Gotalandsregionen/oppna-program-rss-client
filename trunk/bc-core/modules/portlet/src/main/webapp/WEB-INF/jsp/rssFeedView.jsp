@@ -41,22 +41,22 @@
     <ul class="rss-tabs-nav">
         <c:if test="${isTab1Active}">        
             <li>
-              <a href="${feedURL1}">tab1</a>
+              <a href="${feedURL1}">${rssFeedTitle1}</a>
             </li>
         </c:if>
         <c:if test="${isTab2Active}">        
             <li>
-              <a href="${feedURL2}">tab2</a>
+              <a href="${feedURL2}">${rssFeedTitle2}</a>
             </li>
         </c:if>
         <c:if test="${isTab3Active}">        
             <li>
-              <a href="${feedURL3}">tab3</a>
+              <a href="${feedURL3}">${rssFeedTitle3}</a>
             </li>
         </c:if>
         <c:if test="${isTab4Active}">        
             <li>
-              <a href="${feedURL4}">tab4</a>
+              <a href="${feedURL4}">${rssFeedTitle4}</a>
             </li>
         </c:if>
     </<ul>

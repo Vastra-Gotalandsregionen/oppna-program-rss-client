@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  * @author Anders Asplund - Callista Enterprise
  * @author Jonas Liljenfeldt - Know IT
+ * @author Simon Göransson - Monator Technologies AB
  */
 public class PortletPreferencesWrapperBean implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -71,6 +72,14 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public static final String RSS_FEED_LINK_2 = "rssFeedLink2";
     public static final String RSS_FEED_LINK_3 = "rssFeedLink3";
     public static final String RSS_FEED_LINK_4 = "rssFeedLink4";
+
+    /**
+     * The key name to the preference for feed titels.
+     */
+    public static final String RSS_FEED_TITLE_1 = "rssFeedtitle1";
+    public static final String RSS_FEED_TITLE_2 = "rssFeedtitle2";
+    public static final String RSS_FEED_TITLE_3 = "rssFeedtitle3";
+    public static final String RSS_FEED_TITLE_4 = "rssFeedtitle4";
 
     private String rssFeedLink1;
     private String rssFeedLink2;
@@ -233,6 +242,11 @@ public class PortletPreferencesWrapperBean implements Serializable {
         preferences.setValue(RSS_FEED_LINK_2, rssFeedLink2);
         preferences.setValue(RSS_FEED_LINK_3, rssFeedLink3);
         preferences.setValue(RSS_FEED_LINK_4, rssFeedLink4);
+        preferences.setValue(RSS_FEED_TITLE_1, rssFeedTitle1);
+        preferences.setValue(RSS_FEED_TITLE_2, rssFeedTitle2);
+        preferences.setValue(RSS_FEED_TITLE_3, rssFeedTitle3);
+        preferences.setValue(RSS_FEED_TITLE_4, rssFeedTitle4);
+
         preferences.setValue(RSS_STD_CLIENT_LINK, rssStandardClientPortletLink);
         preferences.store();
     }

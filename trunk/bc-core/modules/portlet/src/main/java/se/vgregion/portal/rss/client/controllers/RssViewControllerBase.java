@@ -55,6 +55,7 @@ import com.sun.syndication.io.FeedException;
  * @author Jonas Liljenfeldt
  * @author Anders Asplund
  * @author David Rosell
+ * @author Simon Göransson - Monator Technologies AB
  */
 public class RssViewControllerBase {
 
