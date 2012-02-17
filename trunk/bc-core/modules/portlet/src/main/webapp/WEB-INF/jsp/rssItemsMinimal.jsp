@@ -42,16 +42,17 @@
     <c:forEach items="${rssEntries}" var="item" varStatus="status">
       <c:choose>
         <c:when test="${not empty portletPreferencesValues.rssStandardClientPortletLink[0]}">
-          <li class="news-item-minimal" onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.link}#${item.link}'">
+          <li class="news-item-minimal" 
+              onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.link}#${item.link}'">
         </c:when>
         <c:otherwise>
           <li class="news-item-minimal" onClick="location.href='${item.link}'">
         </c:otherwise>
       </c:choose>
-        <div class="news-title-minimal" title="(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm" />) ${item.feedTitle}">
-          <c:out value="${item.title}" escapeXml="false"/>
-        </div>
-      </li>
+      <div class="news-title-minimal" 
+          title="(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm" />) ${item.feedTitle}">
+        <c:out value="${item.title}" escapeXml="false"/>
+      </div>
     </c:forEach>
   </ul>
 </div>

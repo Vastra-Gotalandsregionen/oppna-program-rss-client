@@ -90,6 +90,7 @@
             </c:forEach>
         </ul>
     </div>
+    <a href="${rssFeedLink}" target="_blank"><fmt:message key="readmore"/>: ${rssFeedTitle}</a>
 </div>
 
 <%-- 
@@ -97,6 +98,8 @@
   <h1>&nbsp;Laddar källa...&nbsp;</h1> 
 </div> 
 --%>
+
+<%-- 
 
 <c:if test="${empty sort_order and empty selectedRssItemTitle}">
     <script>
@@ -120,3 +123,5 @@
             }
     );
 </script>
+
+--%>

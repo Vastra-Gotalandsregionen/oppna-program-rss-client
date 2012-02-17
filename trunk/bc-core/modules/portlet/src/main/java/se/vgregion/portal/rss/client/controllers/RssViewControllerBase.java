@@ -32,8 +32,6 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,8 @@ import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FetcherException;
@@ -51,7 +51,7 @@ import com.sun.syndication.io.FeedException;
 
 /**
  * Controller base for view mode, display of RSS items.
- *
+ * 
  * @author Jonas Liljenfeldt
  * @author Anders Asplund
  * @author David Rosell
@@ -90,14 +90,16 @@ public class RssViewControllerBase {
         return comparator;
     }
 
-    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model) throws IOException {
-        Set<String> feedUrls = getFeedUrls(preferences, model);
+    protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model,
+            String rssFeedPref) throws IOException {
+        Set<String> feedUrls = getFeedUrls(preferences, model, rssFeedPref);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
-        int noOfRows = Integer.parseInt(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
-                                  String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
+        int noOfRows =
+                Integer.parseInt(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
+                        String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
         try {
 
-            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows*80);
+            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * 80);
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
@@ -111,13 +113,14 @@ public class RssViewControllerBase {
         return feedEntries;
     }
 
-    protected void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences) throws IOException {
-        List<FeedEntryBean> feedEntries = getSortedRssEntries(preferences, model);
-        feedEntries = getItemsToBeDisplayed(preferences, feedEntries);
+    protected void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences,
+            String rssFeedPref, String rssFeedNumberOfItemsPref) throws IOException {
+        List<FeedEntryBean> feedEntries = getSortedRssEntries(preferences, model, rssFeedPref);
+        feedEntries = getItemsToBeDisplayed(preferences, feedEntries, rssFeedNumberOfItemsPref);
         model.addAttribute("rssEntries", feedEntries);
     }
 
-    protected Set<String> getFeedUrls(PortletPreferences preferences, ModelMap model) {
+    protected Set<String> getFeedUrls(PortletPreferences preferences, ModelMap model, String rssFeedPref) {
         Set<String> feedUrls = new HashSet<String>();
 
         for (String key : model.keySet()) {
@@ -125,17 +128,18 @@ public class RssViewControllerBase {
         }
 
         // Get list of URLs for user saved in his/her preferences
-        String feedUrlTemplates = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
+        String feedUrlTemplates = preferences.getValue(rssFeedPref, "");
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
-                Long uid = (Long)model.get("uid");
-                Set<String> processedFeedUrls = templateProcessor.replacePlaceholders(feedUrl, uid.longValue());
+                Long uid = (Long) model.get("uid");
+                Set<String> processedFeedUrls =
+                        templateProcessor.replacePlaceholders(feedUrl, uid.longValue());
 
                 feedUrls.addAll(processedFeedUrls);
             }
         }
 
-        System.out.println(feedUrls.toString());
+        // System.out.println(feedUrls.toString());
         return feedUrls;
     }
 
@@ -144,25 +148,26 @@ public class RssViewControllerBase {
         for (int j = 0; j < rssFeeds.size(); j++) {
             SyndFeed syndFeed = rssFeeds.get(j);
             for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
-                feedEntryBeans
-                        .add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed.getTitle(), excerptLen));
+                feedEntryBeans.add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed
+                        .getTitle(), excerptLen));
             }
         }
         return feedEntryBeans;
     }
 
     protected List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
-                                                        List<FeedEntryBean> sortedRssEntries) {
-        sortedRssEntries = sortedRssEntries.subList(0,
-                                                    Math.min(sortedRssEntries.size(),
-                                                    Integer.valueOf(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
-                                                                                         String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
+            List<FeedEntryBean> sortedRssEntries, String rssFeedNumberOfItemsPref) {
+        sortedRssEntries =
+                sortedRssEntries.subList(0, Math.min(
+                        sortedRssEntries.size(),
+                        Integer.valueOf(preferences.getValue(rssFeedNumberOfItemsPref,
+                                String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)))));
         return sortedRssEntries;
     }
 
-    protected List<FeedEntryBean> getSortedRssEntries(PortletPreferences preferences, ModelMap model)
-            throws IOException {
-        List<FeedEntryBean> feedEntries = getRssEntries(preferences, model);
+    protected List<FeedEntryBean> getSortedRssEntries(PortletPreferences preferences, ModelMap model,
+            String rssFeedPref) throws IOException {
+        List<FeedEntryBean> feedEntries = getRssEntries(preferences, model, rssFeedPref);
         Collections.sort(feedEntries, getSortOrder(model));
         return feedEntries;
     }

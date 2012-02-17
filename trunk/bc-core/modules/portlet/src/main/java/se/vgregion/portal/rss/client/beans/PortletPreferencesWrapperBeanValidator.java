@@ -19,20 +19,20 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.ParsingFeedException;
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.ParsingFeedException;
 
 @Component
 public class PortletPreferencesWrapperBeanValidator implements Validator {
@@ -42,7 +42,8 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
     /**
      * Validator must have a FeedFetcher to work.
      * 
-     * @param feedFetcher  the FeedFetcher
+     * @param feedFetcher
+     *            the FeedFetcher
      */
     @Autowired
     public PortletPreferencesWrapperBeanValidator(FeedFetcher feedFetcher) {
@@ -69,40 +70,56 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PortletPreferencesWrapperBean bean = (PortletPreferencesWrapperBean) target;
 
-        if (bean.getNumberOfItems() == null || !bean.getNumberOfItems().matches("^\\d+")) {
-            errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, "invalidnoofitems",
+        if (bean.getNumberOfItems1() == null || !bean.getNumberOfItems1().matches("^\\d+")) {
+            errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1, "invalidnoofitems",
+                    "Antalet inlägg måste vara större än noll");
+        }
+        if (bean.getNumberOfItems2() == null || !bean.getNumberOfItems2().matches("^\\d+")) {
+            errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_2, "invalidnoofitems",
+                    "Antalet inlägg måste vara större än noll");
+        }
+        if (bean.getNumberOfItems3() == null || !bean.getNumberOfItems3().matches("^\\d+")) {
+            errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_3, "invalidnoofitems",
+                    "Antalet inlägg måste vara större än noll");
+        }
+        if (bean.getNumberOfItems4() == null || !bean.getNumberOfItems4().matches("^\\d+")) {
+            errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_4, "invalidnoofitems",
                     "Antalet inlägg måste vara större än noll");
         }
 
-        URL feedUrl = null;
-        if (!StringUtils.isBlank(bean.getRssFeedLinks())) {
-            for (String url : bean.getRssFeedLinks().split("\n")) {
+        validateUrl(errors, bean.getRssFeedLink1(), PortletPreferencesWrapperBean.RSS_FEED_LINK_1);
+        validateUrl(errors, bean.getRssFeedLink2(), PortletPreferencesWrapperBean.RSS_FEED_LINK_2);
+        validateUrl(errors, bean.getRssFeedLink3(), PortletPreferencesWrapperBean.RSS_FEED_LINK_3);
+        validateUrl(errors, bean.getRssFeedLink4(), PortletPreferencesWrapperBean.RSS_FEED_LINK_4);
+
+    }
+
+    private void validateUrl(Errors errors, String urls, String field) {
+        URL feedUrl;
+
+        System.out.println("urls = " + urls);
+
+        if (urls != null) {
+            for (String url : urls.split("\n")) {
                 try {
                     feedUrl = new URL(url);
                     // As validation, try to fetch feed
                     feedFetcher.retrieveFeed(feedUrl);
 
                 } catch (MalformedURLException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidurl", new Object[]{url}, "Ogiltig adress");
                 } catch (IllegalArgumentException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidurl", new Object[]{url}, "Ogiltig adress");
                 } catch (ParsingFeedException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidrssurl", new Object[]{url}, "Ogiltig adress");
                 } catch (FeedException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidrssurl", new Object[]{url}, "Ogiltig adress");
                 } catch (FetcherException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidrssurl", new Object[]{url}, "Ogiltig adress");
                 } catch (ConnectException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidrssurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidrssurl", new Object[]{url}, "Ogiltig adress");
                 } catch (IOException e) {
-                    errors.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                            new Object[] {url }, "Ogiltig adress");
+                    errors.rejectValue(field, "invalidurl", new Object[]{url}, "Ogiltig adress");
                 }
             }
         }

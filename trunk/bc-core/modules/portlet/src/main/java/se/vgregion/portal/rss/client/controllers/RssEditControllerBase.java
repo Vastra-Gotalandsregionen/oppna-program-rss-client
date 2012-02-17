@@ -47,7 +47,7 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 public abstract class RssEditControllerBase {
     private Logger logger = LoggerFactory.getLogger(RssEditControllerBase.class);
 
-    private RssFetcherService rssFetcherService;
+    private final RssFetcherService rssFetcherService;
     private BlackList<String> blackList;
 
     /**
@@ -120,12 +120,12 @@ public abstract class RssEditControllerBase {
     @ActionMapping("clearFeedBlackList")
     public void clearFeedBlackList(final PortletPreferences preferences) {
         blackList.clear();
-        //        String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
-        //        if (!StringUtils.isBlank(feedLinks)) {
-        //            for (String url : feedLinks.split("\n")) {
-        //                blackList.remove(url);
-        //            }
-        //        }
+        // String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
+        // if (!StringUtils.isBlank(feedLinks)) {
+        // for (String url : feedLinks.split("\n")) {
+        // blackList.remove(url);
+        // }
+        // }
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class RssEditControllerBase {
     @RenderMapping
     public final String showPreferences(final ModelMap model, PortletPreferences preferences,
             @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result)
-                    throws ReadOnlyException {
+            throws ReadOnlyException {
         // Check if save action rendered an error
         if ("true".equals(model.get("saveError"))) {
             logger.error("Save action rendered an error");
@@ -169,13 +169,26 @@ public abstract class RssEditControllerBase {
 
         // Don't replace values if we have a binding error from save action
         if (model.get("errors") == null) {
-            preferencesBean.setNumberOfItems(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS,
+            preferencesBean.setNumberOfItems1(preferences.getValue(
+                    PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1,
                     String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
-            preferencesBean.setNumberOfExcerptRows(preferences.getValue(
-                    PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
-                    String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
-            preferencesBean
-            .setRssFeedLinks(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
+            preferencesBean.setNumberOfItems2(preferences.getValue(
+                    PortletPreferencesWrapperBean.NUMBER_OF_ITEM_2,
+                    String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
+            preferencesBean.setNumberOfItems3(preferences.getValue(
+                    PortletPreferencesWrapperBean.NUMBER_OF_ITEM_3,
+                    String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
+            preferencesBean.setNumberOfItems4(preferences.getValue(
+                    PortletPreferencesWrapperBean.NUMBER_OF_ITEM_4,
+                    String.valueOf(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS)));
+            preferencesBean.setRssFeedLink1(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_LINK_1, ""));
+            preferencesBean.setRssFeedLink2(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_LINK_2, ""));
+            preferencesBean.setRssFeedLink3(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_LINK_3, ""));
+            preferencesBean.setRssFeedLink4(preferences.getValue(
+                    PortletPreferencesWrapperBean.RSS_FEED_LINK_4, ""));
             preferencesBean.setRssStandardClientPortletLink(preferences.getValue(
                     PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
         } else {
@@ -196,15 +209,35 @@ public abstract class RssEditControllerBase {
 
     private List<String> getFilteredFeedBlackList(final PortletPreferences preferences) {
         List<String> returnList = new ArrayList<String>();
-        String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
 
-        if (!StringUtils.isBlank(feedLinks)) {
-            for (String url : feedLinks.split("\n")) {
-                if (blackList.contains(url)) {
-                    returnList.add(url);
-                }
+        String url1 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, "");
+        if (!StringUtils.isBlank(url1)) {
+            if (blackList.contains(url1)) {
+                returnList.add(url1);
             }
         }
+
+        String url2 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_2, "");
+        if (!StringUtils.isBlank(url2)) {
+            if (blackList.contains(url2)) {
+                returnList.add(url2);
+            }
+        }
+
+        String url3 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_3, "");
+        if (!StringUtils.isBlank(url3)) {
+            if (blackList.contains(url3)) {
+                returnList.add(url3);
+            }
+        }
+
+        String url4 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_4, "");
+        if (!StringUtils.isBlank(url4)) {
+            if (blackList.contains(url4)) {
+                returnList.add(url4);
+            }
+        }
+
         return returnList;
     }
 }

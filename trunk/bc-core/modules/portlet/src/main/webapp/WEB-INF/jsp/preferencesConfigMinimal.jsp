@@ -43,20 +43,16 @@
     <ol>
       <li>
         <label for="maximum-items"><fmt:message key="numberofitems" />:</label>
-        <form:input id="maximum-items" path="numberOfItems" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfItems"/>
-      </li>
-      <li>
-        <label for="excerpt-rows"><fmt:message key="numberofexcerptrows" />:</label>
-        <form:input id="excerpt-rows" path="numberOfExcerptRows" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfExcerptRows"/>
+        <form:input id="maximum-items" path="numberOfItems1" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="numberOfItems1"/>
       </li>
       <li>
         <label for="portlet-link"><fmt:message key="rssstandardclientportletlink" />:</label>
         <form:input id="portlet-link" size="100" path="rssStandardClientPortletLink" cssErrorClass="validation-error"/> <form:errors cssClass="validation-error-message" path="rssStandardClientPortletLink"/>
       </li>
       <li>
-        <label for="rss-feed-links"><fmt:message key="feeds" />:</label> 
-        <form:textarea id="rss-feed-links" path="rssFeedLinks" cols="100" rows="5" cssErrorClass="validation-error"/>
-        <form:errors path="rssFeedLinks" cssClass="validation-error-message validation-error-message-feed-urls"/>
+        <label for="rss-feed-link1"><fmt:message key="feeds" />:</label> 
+        <form:textarea id="rss-feed-link" path="rssFeedLink1" cols="100" rows="5" cssErrorClass="validation-error"/>
+        <form:errors path="rssFeedLink1" cssClass="validation-error-message validation-error-message-feed-urls"/>
       </li>
     </ol>
   </fieldset>

@@ -29,21 +29,6 @@ Generation time : 2010-05-13 10:52:30 CEST
           <wtpContextName>${project.artifactId}</wtpContextName>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.zeroturnaround</groupId>
-        <artifactId>jrebel-maven-plugin</artifactId>
-        <version>1.0.7</version>
-        <executions>
-          <execution>
-            <id>generate-rebel-xml</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
