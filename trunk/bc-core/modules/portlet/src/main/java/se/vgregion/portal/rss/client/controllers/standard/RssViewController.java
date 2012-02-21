@@ -108,11 +108,26 @@ public class RssViewController extends RssViewControllerBase {
 
         addTabStateToModel(model, request, preferences);
         addTabTitleToModel(model, request, preferences);
+        
+        String rssFeedTitle = "RSS";
+        
+        System.out.println("FLAG - sortedRssEntries is null: " + (sortedRssEntries == null));
+        System.out.println("FLAG - sortedRssEntries size: " + sortedRssEntries.size());
+        
+        if(sortedRssEntries.size() > 0) {
+        	rssFeedTitle = sortedRssEntries.get(0).getFeedTitle();
+        }
+        
+        /*
+        if(sortedRssEntries.size() > 0) {
+        	rssFeedTitle = sortedRssEntries.get(0).getFeedTitle();
+        }
+        */
 
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
         model.addAttribute("rssFeedLink", preferences.getValue(getRssFeedPref(request), ""));
-        model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
+        model.addAttribute("rssFeedTitle", rssFeedTitle);
 
         // }
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
