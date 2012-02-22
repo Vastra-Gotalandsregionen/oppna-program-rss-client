@@ -37,30 +37,54 @@
   <portlet:param name="feed" value="4" />
 </portlet:renderURL>
 
-<div class="rss-tabs-wrap">
-    <ul class="rss-tabs-nav">
+<div class="rss-tabs-wrap vgr-tabs" id="<portlet:namespace />rssTabsWrap">
+    <ul class="rss-tabs-nav aui-tabview-list aui-widget-hd" id="<portlet:namespace />rssTabsList">
         <c:if test="${isTab1Active}">        
-            <li>
-              <a href="${feedURL1}">${rssFeedTitle1}</a>
+            <li class="aui-tab">
+              <a class="aui-tab-label" href="${feedURL1}">${rssFeedTitle1}</a>
             </li>
         </c:if>
         <c:if test="${isTab2Active}">        
-            <li>
-              <a href="${feedURL2}">${rssFeedTitle2}</a>
+            <li class="aui-tab">
+              <a class="aui-tab-label" href="${feedURL2}">${rssFeedTitle2}</a>
             </li>
         </c:if>
         <c:if test="${isTab3Active}">        
-            <li>
-              <a href="${feedURL3}">${rssFeedTitle3}</a>
+            <li class="aui-tab">
+              <a class="aui-tab-label" href="${feedURL3}">${rssFeedTitle3}</a>
             </li>
         </c:if>
         <c:if test="${isTab4Active}">        
-            <li>
-              <a href="${feedURL4}">${rssFeedTitle4}</a>
+            <li class="aui-tab">
+              <a class="aui-tab-label" href="${feedURL4}">${rssFeedTitle4}</a>
             </li>
         </c:if>
-    </<ul>
+    </ul>
+	
+	<%--  
+    <div class="aui-tabview-content aui-widget-bd" id="<portlet:namespace />rssTabsContent">
+    	<jsp:directive.include file="rssItems.jsp" />
+    </div>
+    --%>
+    
+    <div class="vgr-tabs-content-wrap" id="<portlet:namespace />rssTabsContent">
+    	<jsp:directive.include file="rssItems.jsp" />
+    </div>
+    
+    
+    <%-- 
     <div class="rss-tabs-content-wrap">
         <jsp:directive.include file="rssItems.jsp" />
     </div>
+    --%>
 </div>
+
+<script type="text/javascript">
+AUI().ready('vgr-rss-client', function(A) {
+	var vgrRssClient = new A.VgrRssClient({
+		tabsBoundingBox: '#<portlet:namespace />rssTabsWrap',
+		tabsListNode: '#<portlet:namespace />rssTabsList',
+		tabsContentNode: '#<portlet:namespace />rssTabsContent'
+	}).render();			
+});
+</script>

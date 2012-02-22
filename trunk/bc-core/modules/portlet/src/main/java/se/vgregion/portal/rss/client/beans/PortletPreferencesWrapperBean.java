@@ -233,6 +233,8 @@ public class PortletPreferencesWrapperBean implements Serializable {
     public void store(PortletPreferences preferences) throws ReadOnlyException, ValidatorException,
             IOException {
         parseAndFixUrls();
+        
+        System.out.println("PortletPreferencesWrapperBean - store.");
 
         preferences.setValue(NUMBER_OF_ITEM_1, numberOfItems1);
         preferences.setValue(NUMBER_OF_ITEM_2, numberOfItems2);
