@@ -54,7 +54,6 @@
 						<c:out value="${item.contentsString}" escapeXml="false"/>
 						<div class="news-actions">
 							<a class="source-link" href="${item.link}" target="_BLANK"><fmt:message key="goToSource"/></a>
-							<a href="#" class="read-less"><fmt:message key="minimize"/></a>
 						</div>
 					</div>
 				</span>

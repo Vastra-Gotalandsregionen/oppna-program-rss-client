@@ -58,8 +58,6 @@ AUI().add('vgr-rss-client',function(A) {
 						var tabsContentNode = instance.get(TABS_CONTENT_NODE);
 						
 						tabsContentNode.delegate('click', instance._onNewsTitleClick, 'a.news-title', instance);
-						
-						tabsContentNode.delegate('click', instance._onNewsMinimizeClick, 'a.read-less', instance);
 					},
 					
 					syncUI: function() {
@@ -138,20 +136,6 @@ AUI().add('vgr-rss-client',function(A) {
 						instance.get(TABS_BOUNDING_BOX).loadingmask.show();
 						
 						tabIO.start();
-					},
-					
-					_onNewsMinimizeClick: function(e) {
-						var instance = this;
-						
-						e.halt();
-						
-						var currentTarget = e.currentTarget;
-						
-						var newsItemNode = currentTarget.ancestor('.news-item');
-						
-						var newsContentNode = newsItemNode.one('.news-content');
-						
-						newsContentNode.hide();
 					},
 					
 					_onNewsTitleClick: function(e) {
