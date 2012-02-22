@@ -37,7 +37,13 @@
 <div class="aui-tabview-content-item">
 	<ul id="list-news" class="list-news">
 		<c:forEach items="${rssEntries}" var="item" varStatus="status">
-			<li class="news-item clearfix" id="${item.link}">
+		
+			<c:set var="hasDateCssClass" value="" scope="page" />
+			<c:if test="${empty item.publishedDate}">
+				<c:set var="hasDateCssClass" value="news-item-no-date" scope="page" />
+			</c:if>
+		
+			<li class="news-item clearfix ${hasDateCssClass}" id="${item.link}">
 				<span class="news-date">
 					<c:choose>
 						<c:when test="${not empty item.publishedDate}">
