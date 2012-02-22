@@ -94,7 +94,7 @@ public abstract class RssEditControllerBase {
     @ActionMapping("save")
     public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
             @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result) {
-
+    	
         validator.validate(preferencesBean, result);
 
         if (!result.hasErrors()) {

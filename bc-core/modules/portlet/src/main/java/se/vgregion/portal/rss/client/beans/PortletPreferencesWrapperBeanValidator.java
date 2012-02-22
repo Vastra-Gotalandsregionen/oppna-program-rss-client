@@ -109,9 +109,11 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
         if (urls != null) {
             for (String url : urls.split("\n")) {
                 try {
-                    feedUrl = new URL(url);
-                    // As validation, try to fetch feed
-                    feedFetcher.retrieveFeed(feedUrl);
+                	if(!url.equals("")) {
+                        feedUrl = new URL(url);
+                        // As validation, try to fetch feed
+                        feedFetcher.retrieveFeed(feedUrl);
+                	}
 
                 } catch (MalformedURLException e) {
                     errors.rejectValue(field, "invalidurl", new Object[]{url}, "Ogiltig adress");

@@ -32,10 +32,48 @@
 <portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource"/>
 <portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource"/>
 
+<%-- 
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/vgr-rss-client.js"></script>
+--%>
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
+<div class="aui-tabview-content-item">
+	<ul id="list-news" class="list-news">
+	    <c:forEach items="${rssEntries}" var="item" varStatus="status">
+	        <li class="news-item" id="${item.link}">
+	            <span class="news-source">
+	              <c:out value="${item.feedTitle}" escapeXml="true"/>
+	            </span>
+	            <span class="news-date">
+	              <c:if test="${!empty item.publishedDate}">
+	                  [<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd"/>
+	                  <span class="news-time">&nbsp;<fmt:formatDate value="${item.publishedDate}" type="both"
+	                                                                pattern="HH:mm"/></span>]
+	              </c:if>
+	            </span>
+	            <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;
+	            <a class="source-link" href="${item.link}"></a>
+	
+	            <div class="news-excerpt">
+	                    <p class="news-excerpt">
+	                    <c:out value="${item.excerpt}" escapeXml="false"/>
+	                    </p>
+	            </div>
+	            <div class="news-content" style="display: none;">
+	                <c:out value="${item.contentsString}" escapeXml="false"/>
+	                <div class="news-actions">
+	                    <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
+	                    <a href="#" class="read-less"><fmt:message key="close"/></a>
+	                </div>
+	            </div>
+	        </li>
+	    </c:forEach>
+	      </ul>
+	<a href="${rssFeedLink}" target="_blank"><fmt:message key="readmore"/>: ${rssFeedTitle}</a>
+</div>
+
+<%-- 
 <div id="blockMe">
     <div id="rss-item-container" style="min-height: 100px;">
         <c:if test="${!empty rssEntries}">
@@ -92,6 +130,7 @@
     </div>
     <a href="${rssFeedLink}" target="_blank"><fmt:message key="readmore"/>: ${rssFeedTitle}</a>
 </div>
+--%>
 
 <%-- 
 <div id="blockDisplayMessage" style="display:none"> 
