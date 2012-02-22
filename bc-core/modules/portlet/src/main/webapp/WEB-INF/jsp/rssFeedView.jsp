@@ -23,7 +23,6 @@
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <portlet:renderURL var="feedURL1">
   <portlet:param name="feed" value="1" />
 </portlet:renderURL>
@@ -61,25 +60,13 @@
         </c:if>
     </ul>
 	
-	<%--  
-    <div class="aui-tabview-content aui-widget-bd" id="<portlet:namespace />rssTabsContent">
-    	<jsp:directive.include file="rssItems.jsp" />
-    </div>
-    --%>
-    
     <div class="vgr-tabs-content-wrap" id="<portlet:namespace />rssTabsContent">
     	<jsp:directive.include file="rssItems.jsp" />
     </div>
-    
-    
-    <%-- 
-    <div class="rss-tabs-content-wrap">
-        <jsp:directive.include file="rssItems.jsp" />
-    </div>
-    --%>
 </div>
 
 <script type="text/javascript">
+
 AUI().ready('vgr-rss-client', function(A) {
 	var vgrRssClient = new A.VgrRssClient({
 		tabsBoundingBox: '#<portlet:namespace />rssTabsWrap',
@@ -87,4 +74,5 @@ AUI().ready('vgr-rss-client', function(A) {
 		tabsContentNode: '#<portlet:namespace />rssTabsContent'
 	}).render();			
 });
+
 </script>

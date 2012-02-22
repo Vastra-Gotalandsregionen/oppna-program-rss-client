@@ -54,10 +54,21 @@ AUI().add('vgr-rss-client',function(A) {
 	
 					bindUI: function() {
 						var instance = this;
+						
+						var tabsContentNode = instance.get(TABS_CONTENT_NODE);
+						
+						tabsContentNode.delegate('click', instance._onNewsTitleClick, 'a.news-title', instance);
+						
+						tabsContentNode.delegate('click', instance._onNewsMinimizeClick, 'a.read-less', instance);
 					},
 					
 					syncUI: function() {
 						var instance = this;
+					},
+					
+					getFloff: function() {
+						var instance = this;
+						return 'floff';
 					},
 
 					initConsole: function() {
@@ -96,6 +107,11 @@ AUI().add('vgr-rss-client',function(A) {
 						var tab = instance.tabs.get('activeTab');
 						var tabIndex = instance.tabs.getTabIndex(tab);
 						
+						// If tab is not don't continue
+						if(isNull(tab) || isUndefined(tab) ) {
+							return;
+						}
+						
 						var tabContentNode = tab.get(CONTENT_NODE);
 						var tabContentHtml = tabContentNode.html();
 						
@@ -122,6 +138,34 @@ AUI().add('vgr-rss-client',function(A) {
 						instance.get(TABS_BOUNDING_BOX).loadingmask.show();
 						
 						tabIO.start();
+					},
+					
+					_onNewsMinimizeClick: function(e) {
+						var instance = this;
+						
+						e.halt();
+						
+						var currentTarget = e.currentTarget;
+						
+						var newsItemNode = currentTarget.ancestor('.news-item');
+						
+						var newsContentNode = newsItemNode.one('.news-content');
+						
+						newsContentNode.hide();
+					},
+					
+					_onNewsTitleClick: function(e) {
+						var instance = this;
+						
+						e.halt();
+						
+						var titleLinkNode = e.currentTarget;
+						
+						var newsItemNode = titleLinkNode.ancestor('.news-item');
+						
+						var newsContentNode = newsItemNode.one('.news-content');
+						
+						newsContentNode.toggle();
 					},
 					
 					_onUpdateSuccess: function(e, id, xhr, attr) {
@@ -158,6 +202,8 @@ AUI().add('vgr-rss-client',function(A) {
 			'aui-loading-mask',
 			'aui-tabs',
 			'console',
+			'event-delegate',
+			'node-event-delegate',
 			'substitute'
       ]
 	}
