@@ -18,7 +18,7 @@
     <!--      <preferences-unique-per-layout>false</preferences-unique-per-layout>-->
     <!--      <preferences-owned-by-group>false</preferences-owned-by-group>-->
     <instanceable>true</instanceable>
-    <footer-portlet-javascript>/script/vgr-rss-client.js</footer-portlet-javascript>
+    <header-portlet-javascript>/script/vgr-rss-client.js</header-portlet-javascript>
   </portlet>
   
   <portlet>
