@@ -127,7 +127,9 @@ public class RssViewController extends RssViewControllerBase {
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
         model.addAttribute("rssFeedLink", preferences.getValue(getRssFeedPref(request), ""));
-        model.addAttribute("rssFeedTitle", rssFeedTitle);
+        if (!sortedRssEntries.isEmpty()) {
+            model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
+        }
 
         // }
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
