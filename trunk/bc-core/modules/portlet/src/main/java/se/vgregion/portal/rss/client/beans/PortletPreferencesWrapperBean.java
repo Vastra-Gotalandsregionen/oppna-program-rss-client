@@ -45,10 +45,10 @@ public class PortletPreferencesWrapperBean implements Serializable {
     /**
      * The key name to the preference number of items to display.
      */
-    public static final String NUMBER_OF_ITEM_1 = "numberOfItem1";
-    public static final String NUMBER_OF_ITEM_2 = "numberOfItem2";
-    public static final String NUMBER_OF_ITEM_3 = "numberOfItem3";
-    public static final String NUMBER_OF_ITEM_4 = "numberOfItem4";
+    public static final String NUMBER_OF_ITEM_1 = "numberOfItems1";
+    public static final String NUMBER_OF_ITEM_2 = "numberOfItems2";
+    public static final String NUMBER_OF_ITEM_3 = "numberOfItems3";
+    public static final String NUMBER_OF_ITEM_4 = "numberOfItems4";
 
     /**
      * Default number of excerpt rows.

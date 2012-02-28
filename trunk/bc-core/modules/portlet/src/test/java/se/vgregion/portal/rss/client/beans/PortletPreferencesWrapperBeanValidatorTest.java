@@ -22,9 +22,11 @@
  */
 package se.vgregion.portal.rss.client.beans;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -51,7 +53,7 @@ public class PortletPreferencesWrapperBeanValidatorTest {
 
     PortletPreferencesWrapperBeanValidator portletPreferencesWrapperBeanValidator;
 
-    private FeedFetcher feedFetcher = new HttpURLFeedFetcher();
+    private final FeedFetcher feedFetcher = new HttpURLFeedFetcher();
 
     @Mock
     private FeedFetcher feedFetcherMock;
@@ -88,17 +90,17 @@ public class PortletPreferencesWrapperBeanValidatorTest {
 
         BindingResult bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
 
-        portletPreferencesWrapperBean.setNumberOfItems("1A2");
+        portletPreferencesWrapperBean.setNumberOfItems1("1A2");
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
 
         bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
-        portletPreferencesWrapperBean.setNumberOfItems(null);
+        portletPreferencesWrapperBean.setNumberOfItems1(null);
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
 
         bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
-        portletPreferencesWrapperBean.setNumberOfItems("1 1");
+        portletPreferencesWrapperBean.setNumberOfItems1("1 1");
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
     }
@@ -109,17 +111,17 @@ public class PortletPreferencesWrapperBeanValidatorTest {
 
         BindingResult bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
 
-        portletPreferencesWrapperBean.setRssFeedLinks("abcd");
+        portletPreferencesWrapperBean.setRssFeedLink1("abcd");
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
 
         bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
-        portletPreferencesWrapperBean.setRssFeedLinks("http://vgregion.se");
+        portletPreferencesWrapperBean.setRssFeedLink1("http://vgregion.se");
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
 
         bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
-        portletPreferencesWrapperBean.setRssFeedLinks("http://vgregion.se/feed.xml");
+        portletPreferencesWrapperBean.setRssFeedLink1("http://vgregion.se/feed.xml");
         portletPreferencesWrapperBeanValidator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(1, bindingResult.getErrorCount());
     }
@@ -156,30 +158,31 @@ public class PortletPreferencesWrapperBeanValidatorTest {
 
     private final void testMockedException(Exception e) throws IllegalArgumentException, FeedException,
             IOException, FetcherException {
-        PortletPreferencesWrapperBeanValidator validator = new PortletPreferencesWrapperBeanValidator(
-                feedFetcherMock);
+        PortletPreferencesWrapperBeanValidator validator =
+                new PortletPreferencesWrapperBeanValidator(feedFetcherMock);
         PortletPreferencesWrapperBean portletPreferencesWrapperBean = new PortletPreferencesWrapperBean();
         BindingResult bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
 
         given(feedFetcherMock.retrieveFeed(any(URL.class))).willThrow(e);
 
-        portletPreferencesWrapperBean.setRssFeedLinks("http://vgregion.se");
+        portletPreferencesWrapperBean.setRssFeedLink1("http://vgregion.se");
         validator.validate(portletPreferencesWrapperBean, bindingResult);
 
         assertEquals(1, bindingResult.getErrorCount());
     }
 
     @Test
-    public final void testFeedOK() throws IllegalArgumentException, FeedException, IOException, FetcherException {
-        PortletPreferencesWrapperBeanValidator validator = new PortletPreferencesWrapperBeanValidator(
-                feedFetcherMock);
+    public final void testFeedOK() throws IllegalArgumentException, FeedException, IOException,
+            FetcherException {
+        PortletPreferencesWrapperBeanValidator validator =
+                new PortletPreferencesWrapperBeanValidator(feedFetcherMock);
         PortletPreferencesWrapperBean portletPreferencesWrapperBean = new PortletPreferencesWrapperBean();
 
         BindingResult bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
 
         bindingResult = new BeanPropertyBindingResult(portletPreferencesWrapperBean, "command");
         given(feedFetcherMock.retrieveFeed(any(URL.class))).willReturn(null);
-        portletPreferencesWrapperBean.setRssFeedLinks("http://vgregion.se");
+        portletPreferencesWrapperBean.setRssFeedLink1("http://vgregion.se");
         validator.validate(portletPreferencesWrapperBean, bindingResult);
         assertEquals(0, bindingResult.getErrorCount());
     }

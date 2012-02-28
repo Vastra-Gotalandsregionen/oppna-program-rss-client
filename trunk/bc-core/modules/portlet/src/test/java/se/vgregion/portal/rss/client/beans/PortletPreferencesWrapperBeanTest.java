@@ -22,7 +22,7 @@
  */
 package se.vgregion.portal.rss.client.beans;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
@@ -48,9 +48,8 @@ public class PortletPreferencesWrapperBeanTest {
     public void setUp() throws Exception {
         portletPreferencesWrapperBean = new PortletPreferencesWrapperBean();
 
-        portletPreferencesWrapperBean.setNumberOfItems("10");
-        portletPreferencesWrapperBean.setRssFeedLinks("link1 link2");
-        portletPreferencesWrapperBean.setNumberOfExcerptRows("1");
+        portletPreferencesWrapperBean.setNumberOfItems1("10");
+        portletPreferencesWrapperBean.setRssFeedLink1("link1 link2");
         portletPreferencesWrapperBean.setRssStandardClientPortletLink("hejsan");
     }
 
@@ -69,11 +68,10 @@ public class PortletPreferencesWrapperBeanTest {
 
         portletPreferencesWrapperBean.store(mockPortletPreferences);
 
-        assertEquals("10", mockPortletPreferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEMS, ""));
+        assertEquals("10",
+                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1, ""));
         assertEquals("link1\nlink2",
-                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
-        assertEquals("1",
-                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS, ""));
+                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, ""));
         assertEquals("hejsan",
                 mockPortletPreferences.getValue(PortletPreferencesWrapperBean.RSS_STD_CLIENT_LINK, ""));
     }
@@ -83,11 +81,11 @@ public class PortletPreferencesWrapperBeanTest {
             IOException {
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
 
-        portletPreferencesWrapperBean.setRssFeedLinks("link1 link2  ");
+        portletPreferencesWrapperBean.setRssFeedLink1("link1 link2  ");
 
         portletPreferencesWrapperBean.store(mockPortletPreferences);
 
         assertEquals("link1\nlink2",
-                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, ""));
+                mockPortletPreferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, ""));
     }
 }

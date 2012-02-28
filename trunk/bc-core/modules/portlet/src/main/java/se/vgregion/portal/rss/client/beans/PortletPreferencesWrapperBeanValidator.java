@@ -76,7 +76,6 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PortletPreferencesWrapperBean bean = (PortletPreferencesWrapperBean) target;
-
         if (bean.getNumberOfItems1() == null || !bean.getNumberOfItems1().matches("^\\d+")) {
             errors.rejectValue(PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1, "invalidnoofitems",
                     "Antalet inlägg måste vara större än noll");

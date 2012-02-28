@@ -22,8 +22,11 @@
  */
 package se.vgregion.portal.rss.client.controllers.standard;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.BDDMockito.willThrow;
 
 import java.io.IOException;
 
@@ -91,14 +94,12 @@ public class RssEditControllerTest {
         assertEquals(rssEditController.getConfigJsp(), rssEditController.showPreferences(modelMap,
                 mockPortletPreferences, preferencesBean, bindingResult));
 
-        PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
-                .get(RssEditController.PREFERENCES);
+        PortletPreferencesWrapperBean pb =
+                (PortletPreferencesWrapperBean) modelMap.get(RssEditController.PREFERENCES);
 
         assertSame(preferencesBean, pb);
-        assertEquals(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS,
-                Integer.parseInt(pb.getNumberOfExcerptRows()));
         assertEquals(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS,
-                Integer.parseInt(pb.getNumberOfItems()));
+                Integer.parseInt(pb.getNumberOfItems1()));
     }
 
     @Test
@@ -108,35 +109,35 @@ public class RssEditControllerTest {
         PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
         BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
         BindingResult errorResult = new BeanPropertyBindingResult(preferencesBean, "command");
-        errorResult.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "invalidurl",
-                new Object[] { "link" }, "Ogiltig adress");
+        errorResult.rejectValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, "invalidurl",
+                new Object[]{"link"}, "Ogiltig adress");
         modelMap.put("errors", errorResult);
 
         rssEditController.showPreferences(modelMap, mockPortletPreferences, preferencesBean, bindingResult);
 
         assertEquals(1, bindingResult.getErrorCount());
-        assertEquals("link", bindingResult.getFieldError(PortletPreferencesWrapperBean.RSS_FEED_LINKS)
+        assertEquals("link", bindingResult.getFieldError(PortletPreferencesWrapperBean.RSS_FEED_LINK_1)
                 .getArguments()[0]);
     }
 
-    //    @Test
-    //    public final void testShowPreferencesInBlackList() throws ReadOnlyException {
-    //        ModelMap modelMap = new ModelMap();
-    //        MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
-    //        mockPortletPreferences.setValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "link1\nlink2");
-    //        PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
-    //        BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
+    // @Test
+    // public final void testShowPreferencesInBlackList() throws ReadOnlyException {
+    // ModelMap modelMap = new ModelMap();
+    // MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
+    // mockPortletPreferences.setValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "link1\nlink2");
+    // PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
+    // BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
     //
-    //        given(rssFetcherService.getFeedBlackList()).willReturn(Arrays.asList("link1", "link3"));
+    // given(rssFetcherService.getFeedBlackList()).willReturn(Arrays.asList("link1", "link3"));
     //
-    //        rssEditController.showPreferences(modelMap, mockPortletPreferences, preferencesBean, bindingResult);
+    // rssEditController.showPreferences(modelMap, mockPortletPreferences, preferencesBean, bindingResult);
     //
-    //        PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
-    //                .get(RssEditController.PREFERENCES);
+    // PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
+    // .get(RssEditController.PREFERENCES);
     //
-    //        assertEquals(1, pb.getFeedBlackList().size());
-    //        assertEquals("link1", pb.getFeedBlackList().get(0));
-    //    }
+    // assertEquals(1, pb.getFeedBlackList().size());
+    // assertEquals("link1", pb.getFeedBlackList().get(0));
+    // }
 
     @Test
     public final void testShowPreferencesException() throws ReadOnlyException {
@@ -183,14 +184,15 @@ public class RssEditControllerTest {
 
     @Test
     public final void testSavePreferencesStoreException() throws ReadOnlyException, ValidatorException,
-    IOException {
+            IOException {
         ModelMap modelMap = new ModelMap();
         MockPortletPreferences mockPortletPreferences = new MockPortletPreferences();
         BindingResult bindingResult = new BeanPropertyBindingResult(mockPreferencesBean, "command");
 
         willThrow(new ReadOnlyException("error")).given(mockPreferencesBean).store(mockPortletPreferences);
 
-        rssEditController.savePreferences(modelMap, mockPortletPreferences, mockPreferencesBean, bindingResult);
+        rssEditController.savePreferences(modelMap, mockPortletPreferences, mockPreferencesBean,
+                bindingResult);
 
         assertEquals("true", modelMap.get("saveError"));
         assertNull(modelMap.get("errors"));

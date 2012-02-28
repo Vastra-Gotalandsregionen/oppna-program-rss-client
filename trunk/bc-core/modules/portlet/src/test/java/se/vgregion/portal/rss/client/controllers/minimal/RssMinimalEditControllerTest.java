@@ -22,7 +22,8 @@
  */
 package se.vgregion.portal.rss.client.controllers.minimal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import javax.portlet.ReadOnlyException;
 
@@ -66,7 +67,8 @@ public class RssMinimalEditControllerTest {
 
         rssMinimalEditController = new RssMinimalEditController(rssFetcherService);
 
-        PortletPreferencesWrapperBeanValidator validator = new PortletPreferencesWrapperBeanValidator(feedFetcher);
+        PortletPreferencesWrapperBeanValidator validator =
+                new PortletPreferencesWrapperBeanValidator(feedFetcher);
 
         ReflectionTestUtils.setField(rssMinimalEditController, "validator", validator);
     }
@@ -85,17 +87,15 @@ public class RssMinimalEditControllerTest {
         PortletPreferencesWrapperBean preferencesBean = new PortletPreferencesWrapperBean();
         BindingResult bindingResult = new BeanPropertyBindingResult(preferencesBean, "command");
 
-        assertEquals(rssMinimalEditController.getConfigJsp(), rssMinimalEditController.showPreferences(modelMap,
-                mockPortletPreferences, preferencesBean, bindingResult));
+        assertEquals(rssMinimalEditController.getConfigJsp(), rssMinimalEditController.showPreferences(
+                modelMap, mockPortletPreferences, preferencesBean, bindingResult));
 
-        PortletPreferencesWrapperBean pb = (PortletPreferencesWrapperBean) modelMap
-                .get(RssEditControllerBase.PREFERENCES);
+        PortletPreferencesWrapperBean pb =
+                (PortletPreferencesWrapperBean) modelMap.get(RssEditControllerBase.PREFERENCES);
 
         assertSame(preferencesBean, pb);
-        assertEquals(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS,
-                Integer.parseInt(pb.getNumberOfExcerptRows()));
         assertEquals(PortletPreferencesWrapperBean.DEFAULT_MAX_NUMBER_OF_ITEMS,
-                Integer.parseInt(pb.getNumberOfItems()));
+                Integer.parseInt(pb.getNumberOfItems1()));
     }
 
     @Test
