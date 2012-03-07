@@ -33,7 +33,7 @@ AUI().add('vgr-rss-client',function(A) {
 					},
 					tabsContentNode: {
 						setter: A.one
-					},
+					}
 				},
 				EXTENDS: A.Component,
 				NAME: NAME,
