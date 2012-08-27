@@ -32,6 +32,7 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.rometools.fetcher.FetcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
 
 /**
@@ -100,7 +100,8 @@ public class RssViewControllerBase {
                         String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
         try {
 
-            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * 80);
+            final int charactersPerRow = 80; // Roughly
+            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();

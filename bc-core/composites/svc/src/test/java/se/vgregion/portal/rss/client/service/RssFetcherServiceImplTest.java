@@ -19,7 +19,7 @@
 
 package se.vgregion.portal.rss.client.service;
 
-import static org.junit.Assert.*;
+import com.sun.syndication.feed.synd.SyndFeed;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -32,17 +32,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sun.syndication.io.FeedException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.rometools.fetcher.FeedFetcher;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.vgregion.portal.rss.blacklist.BlackList;
 import se.vgregion.portal.rss.blacklist.ConcurrentBlackList;
 
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.io.FeedException;
+import java.io.InputStream;
+import java.net.ConnectException;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RssFetcherServiceImplTest {
 

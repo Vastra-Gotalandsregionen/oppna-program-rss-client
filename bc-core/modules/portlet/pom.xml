@@ -12,6 +12,7 @@ Generation time : 2010-05-13 10:52:30 CEST
     <groupId>se.vgregion.rss-client</groupId>
     <artifactId>rss-client-bc-core</artifactId>
     <version>2.5-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-bc-core-module-portlet</artifactId>

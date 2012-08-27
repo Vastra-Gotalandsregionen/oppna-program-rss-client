@@ -32,18 +32,18 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
 
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.ParsingFeedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.rometools.fetcher.FeedFetcher;
+import org.rometools.fetcher.FetcherException;
+import org.rometools.fetcher.impl.HttpURLFeedFetcher;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.ParsingFeedException;
 
 /**
  * @author anders.bergkvist@omegapoint.se

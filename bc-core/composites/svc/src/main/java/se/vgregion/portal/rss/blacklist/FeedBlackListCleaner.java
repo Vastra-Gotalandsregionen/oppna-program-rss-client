@@ -4,10 +4,9 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.util.TimerTask;
 
+import org.rometools.fetcher.FeedFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.syndication.fetcher.FeedFetcher;
 
 /**
  * BlackListCleanup is a {@link TimerTask} which can be scheduled to run on repeated intervals. Its purpose is to
@@ -24,10 +23,10 @@ public class FeedBlackListCleaner extends TimerTask {
     private final FeedFetcher feedFetcher;
 
     /**
-     * Constructs an instance of the {@link TimerTask} BlackListCleanup
+     * Constructs an instance of the {@link TimerTask} BlackListCleanup.
 
-     * @param feedFetcher
-     * @param blackList
+     * @param feedFetcher the feedFetcher
+     * @param blackList the blackList
      */
     public FeedBlackListCleaner(FeedFetcher feedFetcher, BlackList<String> blackList) {
         this.feedFetcher = feedFetcher;

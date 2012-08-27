@@ -109,21 +109,6 @@ public class RssViewController extends RssViewControllerBase {
         addTabStateToModel(model, request, preferences);
         addTabTitleToModel(model, request, preferences);
         
-        String rssFeedTitle = "RSS";
-        
-        System.out.println("FLAG - sortedRssEntries is null: " + (sortedRssEntries == null));
-        System.out.println("FLAG - sortedRssEntries size: " + sortedRssEntries.size());
-        
-        if(sortedRssEntries.size() > 0) {
-        	rssFeedTitle = sortedRssEntries.get(0).getFeedTitle();
-        }
-        
-        /*
-        if(sortedRssEntries.size() > 0) {
-        	rssFeedTitle = sortedRssEntries.get(0).getFeedTitle();
-        }
-        */
-
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
         model.addAttribute("rssFeedLink", preferences.getValue(getRssFeedPref(request), ""));
@@ -131,7 +116,6 @@ public class RssViewController extends RssViewControllerBase {
             model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
         }
 
-        // }
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
         return "rssFeedView";
     }
@@ -276,8 +260,6 @@ public class RssViewController extends RssViewControllerBase {
         addUserToModel(model, request);
 
         setSortOrderByFeedTitle(model);
-        // addSortedFeedEntriesToModel(model, preferences, PortletPreferencesWrapperBean.RSS_FEED_LINK_1,
-        // PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
         return "rssItems";
     }
 
@@ -289,7 +271,6 @@ public class RssViewController extends RssViewControllerBase {
      */
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
-        // System.out.println("RssViewController.setSortOrderByDate()");
         model.addAttribute(SORT_ORDER, FeedEntryBean.SORT_BY_DATE);
     }
 
@@ -301,7 +282,6 @@ public class RssViewController extends RssViewControllerBase {
      */
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
-        // System.out.println("RssViewController.setSortOrderBySource()");
         model.addAttribute(SORT_ORDER, FeedEntryBean.GROUP_BY_SOURCE);
     }
 }

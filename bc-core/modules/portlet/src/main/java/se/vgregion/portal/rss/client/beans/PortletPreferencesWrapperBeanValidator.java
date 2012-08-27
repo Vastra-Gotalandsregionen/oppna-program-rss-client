@@ -24,21 +24,20 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.rometools.fetcher.FeedFetcher;
+import org.rometools.fetcher.FetcherException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.sun.syndication.fetcher.FeedFetcher;
-import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.ParsingFeedException;
 
 /**
  * Validating the WrapperBean.
- * 
+ *
  * @author Simon Göransson - Monator Technologies AB
- * 
  */
 
 @Component
@@ -48,9 +47,8 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
 
     /**
      * Validator must have a FeedFetcher to work.
-     * 
-     * @param feedFetcher
-     *            the FeedFetcher
+     *
+     * @param feedFetcher the FeedFetcher
      */
     @Autowired
     public PortletPreferencesWrapperBeanValidator(FeedFetcher feedFetcher) {
@@ -67,11 +65,9 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
 
     /**
      * Validates a {@link PortletPreferencesWrapperBean}.
-     * 
-     * @param target
-     *            The {@link PortletPreferencesWrapperBean} to validate
-     * @param errors
-     *            An error object provided by the spring container potentially containing the validation errors.
+     *
+     * @param target The {@link PortletPreferencesWrapperBean} to validate
+     * @param errors An error object provided by the spring container potentially containing the validation errors.
      */
     @Override
     public void validate(Object target, Errors errors) {
@@ -103,16 +99,14 @@ public class PortletPreferencesWrapperBeanValidator implements Validator {
     private void validateUrl(Errors errors, String urls, String field) {
         URL feedUrl;
 
-        System.out.println("urls = " + urls);
-
         if (urls != null) {
             for (String url : urls.split("\n")) {
                 try {
-                	if(!url.equals("")) {
+                    if (!url.equals("")) {
                         feedUrl = new URL(url);
                         // As validation, try to fetch feed
                         feedFetcher.retrieveFeed(feedUrl);
-                	}
+                    }
 
                 } catch (MalformedURLException e) {
                     errors.rejectValue(field, "invalidurl", new Object[]{url}, "Ogiltig adress");
