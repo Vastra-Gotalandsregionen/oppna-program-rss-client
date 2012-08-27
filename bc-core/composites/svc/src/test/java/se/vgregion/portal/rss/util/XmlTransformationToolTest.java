@@ -4,6 +4,7 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -88,8 +89,35 @@ public class XmlTransformationToolTest {
         // Last, verify correct timezone
         SimpleDateFormat englishFormat = (SimpleDateFormat) XmlTransformationTool.ENGLISH_FORMAT.clone();
         englishFormat.setTimeZone(TimeZone.getTimeZone("Europe/Stockholm"));
-        String englishWithCorrectTimeZoone = englishFormat.format(afterConversionDate);
-        assertEquals(englishWithCorrectTimeZoone, resultDate); //"Fri, 14 May 2010 15:22:11 CEST" or "Fri, 14 May 2010 14:22:11 CET"
+        String englishWithCorrectTimeZone = englishFormat.format(afterConversionDate);
+        assertEquals(englishWithCorrectTimeZone, resultDate); //"Fri, 14 May 2010 15:22:11 CEST" or "Fri, 14 May 2010 14:22:11 CET"
+    }
+
+    @Test
+    public void testDateFormats() {
+        String[] dateStrings = {
+                "2011-11-30T10:49+01:00",
+                "2011-11-30T10:49:59+01:00",
+                "2011-11-30T10:49+0100",
+                "2011-11-30T10:49:59+0100"
+        };
+
+        for (String dateString : dateStrings) {
+
+            Date date = null;
+            for (DateTimeFormatter formatter : XmlTransformationTool.OTHER_POSSIBLE_FORMATS) {
+                try {
+                    date = formatter.parseDateTime(dateString).toDate();
+                    if (date != null) {
+                        break;
+                    }
+                } catch (IllegalArgumentException e) {
+                }
+            }
+
+            assertNotNull(date);
+        }
+
     }
 
     @SuppressWarnings("unchecked")

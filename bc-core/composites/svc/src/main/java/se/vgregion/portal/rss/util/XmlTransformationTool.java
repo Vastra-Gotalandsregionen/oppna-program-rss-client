@@ -3,6 +3,9 @@ package se.vgregion.portal.rss.util;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Utility class for transforming XML.
@@ -29,6 +29,12 @@ public final class XmlTransformationTool {
     static final SimpleDateFormat SWEDISH_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
             new Locale("sv", "SE"));
     static final SimpleDateFormat ENGLISH_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+
+    static final List<DateTimeFormatter> OTHER_POSSIBLE_FORMATS = Arrays.asList(
+            DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"),
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mmZ"),
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
+    );
 
     static {
         SWEDISH_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Stockholm")); // Explicitly set timezone.
@@ -61,12 +67,27 @@ public final class XmlTransformationTool {
                 List item = channel.getChildren("item");
                 for (Object element : item) {
                     Element e = (Element) element;
-                    List pubDates = e.getChild("pubDate").getContent();
-                    for (Object pubDate : pubDates) {
-                        Text dateText = (Text) pubDate;
-                        String swedishDate = dateText.getText();
-                        String englishDate = toEnglishDate(swedishDate);
-                        dateText.setText(englishDate);
+                    Element pubDateElement = e.getChild("pubDate");
+                    if (pubDateElement != null) {
+                        List pubDates = pubDateElement.getContent();
+                        for (Object pubDate : pubDates) {
+                            Text dateText = (Text) pubDate;
+                            String swedishDate = dateText.getText();
+                            String englishDate = toEnglishDate(swedishDate);
+                            dateText.setText(englishDate);
+                        }
+                    } else {
+                        // Try another rss format.
+                        pubDateElement = e.getChild("date", Namespace.getNamespace("http://purl.org/dc/elements/1.1/"));
+                        if (pubDateElement != null) {
+                            List pubDates = pubDateElement.getContent();
+                            for (Object pubDate : pubDates) {
+                                Text dateText = (Text) pubDate;
+                                String swedishDate = dateText.getText();
+                                String englishDate = toEnglishDate(swedishDate);
+                                dateText.setText(englishDate);
+                            }
+                        }
                     }
                 }
             }
@@ -78,7 +99,6 @@ public final class XmlTransformationTool {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
 
             return byteArrayInputStream;
-
 
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
@@ -92,7 +112,7 @@ public final class XmlTransformationTool {
     }
 
     static String toEnglishDate(String swedishDate) {
-        Date date = null;
+        Date date;
         try {
             date = SWEDISH_FORMAT.parse(swedishDate);
             String englishDate = ENGLISH_FORMAT.format(date);
@@ -107,9 +127,21 @@ public final class XmlTransformationTool {
                     return englishDate;
                 }
             } catch (ParseException e1) {
-                LOGGER.warn("Couldn't parse \"" + swedishDate + "\" in Swedish nor English format.");
-                LOGGER.warn(e.getMessage(), e);
-                // Not English either. Return empty string.
+                // Now try the "other formats" with Joda Time which was needed since the SimpleDateFormat couldn't
+                // handle timezones with ":" like "2011-11-30T10:49:33+01:00". On the other hand time Joda Time can't
+                // parse "z" strings like "GMT" so therefore the SimpleDateFormat is kept too.
+                for (DateTimeFormatter format : OTHER_POSSIBLE_FORMATS) {
+                    try {
+                        DateTime dateTime = format.parseDateTime(swedishDate);
+                        // No exception means we could parse it.
+                        String englishDate = ENGLISH_FORMAT.format(dateTime.toDate());
+                        return englishDate;
+                    } catch (IllegalArgumentException e2) {
+
+                    }
+                }
+                LOGGER.warn("Couldn't parse \"" + swedishDate + "\" in any format.");
+                // No format worked. Return empty string.
                 return "";
             }
         }
