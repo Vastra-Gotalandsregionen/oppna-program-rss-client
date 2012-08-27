@@ -60,7 +60,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         @Override
         public String toString() {
             return "GROUP_BY_SOURCE";
-        };
+        }
     };
 
     /**
@@ -76,16 +76,15 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         @Override
         public String toString() {
             return "SORT_BY_DATE";
-        };
+        }
     };
 
     /**
      * Create instance from SyndEntry object and feed title.
-     * 
-     * @param syndEntry
-     *            Rome representation of an news item
-     * @param feedTitle
-     *            The name of the feed
+     *
+     * @param syndEntry Rome representation of an news item
+     * @param feedTitle The name of the feed
+     * @param excerptLen The maximum length which the description is cut to
      */
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle, int excerptLen) {
@@ -117,11 +116,17 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
             link = syndEntry.getLink().trim();
         }
         publishedDate = syndEntry.getPublishedDate();
+
+        // Fallback on "updatedDate" which is used with Atom feeds.
+        if (publishedDate == null) {
+            publishedDate = syndEntry.getUpdatedDate();
+        }
+
         this.feedTitle = escapeText(feedTitle);
     }
 
     private String removeTags(String input) {
-        return input.replaceAll("\\<[^>]*>","");
+        return input.replaceAll("\\<[^>]*>", "");
     }
 
     private String calculateExcerpt(String input, int excerptLen) {
@@ -131,12 +136,12 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         int cut = excerptLen;
         if (text.length() > cut) {
             suffix = "...";
-            text = text.substring(0,cut);
+            text = text.substring(0, cut);
             cut = text.lastIndexOf(" ");
-            text = text.substring(0,cut);
+            text = text.substring(0, cut);
         }
 
-        return text+suffix;
+        return text + suffix;
     }
 
     private String escapeText(String input) {
@@ -214,8 +219,12 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FeedEntryBean)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FeedEntryBean)) {
+            return false;
+        }
 
         FeedEntryBean that = (FeedEntryBean) o;
 

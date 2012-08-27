@@ -30,7 +30,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Container for the portlet preferences.
- * 
+ *
  * @author Anders Asplund - Callista Enterprise
  * @author Jonas Liljenfeldt - Know IT
  * @author Simon Göransson - Monator Technologies AB
@@ -100,6 +100,8 @@ public class PortletPreferencesWrapperBean implements Serializable {
     private List<String> filteredBlackList;
 
     /**
+     * Get the feedBlackList.
+     *
      * @return the feedBlackList
      */
     public List<String> getFeedBlackList() {
@@ -107,8 +109,9 @@ public class PortletPreferencesWrapperBean implements Serializable {
     }
 
     /**
-     * @param feedBlackList
-     *            the feedBlackList to set
+     * Set the feedBlackList.
+     *
+     * @param filteredBlackList the filteredBlackList to set
      */
     public void setFeedBlackList(List<String> filteredBlackList) {
         this.filteredBlackList = filteredBlackList;
@@ -220,21 +223,16 @@ public class PortletPreferencesWrapperBean implements Serializable {
 
     /**
      * Stores this bean values in the provided PortletPreferences.
-     * 
-     * @param preferences
-     *            the PortletPreference to store the bean values
-     * @throws ReadOnlyException
-     *             Thrown if the portlet container is unable write the bean values in the PortletPreferences
-     * @throws IOException
-     *             Thrown if the portlet container is unable store the PortletPreferences
-     * @throws ValidatorException
-     *             Thrown if the portlet container is unable store the PortletPreferences
+     *
+     * @param preferences the PortletPreference to store the bean values
+     * @throws ReadOnlyException  Thrown if the portlet container is unable write the bean values in the
+     * PortletPreferences
+     * @throws IOException        Thrown if the portlet container is unable store the PortletPreferences
+     * @throws ValidatorException Thrown if the portlet container is unable store the PortletPreferences
      */
     public void store(PortletPreferences preferences) throws ReadOnlyException, ValidatorException,
             IOException {
         parseAndFixUrls();
-        
-        System.out.println("PortletPreferencesWrapperBean - store.");
 
         preferences.setValue(NUMBER_OF_ITEM_1, numberOfItems1);
         preferences.setValue(NUMBER_OF_ITEM_2, numberOfItems2);

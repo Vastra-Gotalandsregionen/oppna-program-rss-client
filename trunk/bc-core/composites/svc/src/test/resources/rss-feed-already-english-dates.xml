@@ -1,0 +1,26 @@
+<rss version="2.0">
+  <channel>
+    <title>Hitta.vgregion.se</title>
+    <link>http://hitta.vgregion.se</link>
+    <description>Sök i regionen</description>
+    <language>sv-se</language>
+    <item>
+      <title>Nyhet</title>
+      <link>http://url.com</link>
+      <description>Nyhetsbeskrivning</description>
+      <pubDate>Fri, 14 May 2010 13:22:11 GMT</pubDate>
+      <guid isPermaLink="true">
+        <value>http://url.com</value>
+      </guid>
+    </item>
+    <item>
+      <title>Sammanhållen IT-organisation Styrgrupp för demokrati inrättad  - Pressmeddelanden från Västra Götalandsregionen</title>
+      <link>http://nyheter.vgregion.se/sv/Nyheter/Vastra-Gotalandsregionen/Arkiv-for-pressmeddelanden/Sammanhallen-IT-organisation-Styrgrupp-for-demokrati-inrattad-/</link>
+      <description> regiongemensam IT-organisation &lt;b&gt;Regionstyrelsen&lt;/b&gt; beslutade att f&amp;ouml;resl&amp;aring; fullm&amp;auml;ktige besluta att en regiongemensam ...  orter. &lt;b&gt;Regionstyrelsen&lt;/b&gt; beslutade f&amp;ouml;r egen del att regiondirekt&amp;ouml;ren f&amp;aring;r uppdraget att &amp;aring;terkomma med en ...  &lt;b&gt;regionstyrelsen&lt;/b&gt;. Detta f&amp;ouml;rslag om en regiongemensam driftorganisation f&amp;ouml;r IT har utarbetats med en bred</description>
+      <pubDate>Sat, 06 Dec 2008 00:00:00 GMT</pubDate>
+      <guid isPermaLink="true">
+        <value>http://nyheter.vgregion.se/sv/Nyheter/Vastra-Gotalandsregionen/Arkiv-for-pressmeddelanden/Sammanhallen-IT-organisation-Styrgrupp-for-demokrati-inrattad-/</value>
+      </guid>
+    </item>
+  </channel>
+</rss>

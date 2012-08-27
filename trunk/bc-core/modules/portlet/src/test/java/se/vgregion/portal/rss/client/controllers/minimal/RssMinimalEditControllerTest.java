@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.rometools.fetcher.FeedFetcher;
 import org.springframework.mock.web.portlet.MockPortletPreferences;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ModelMap;
@@ -41,8 +42,6 @@ import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBeanValidator;
 import se.vgregion.portal.rss.client.controllers.RssEditControllerBase;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
-
-import com.sun.syndication.fetcher.FeedFetcher;
 
 /**
  * @author anders.bergkvist@omegapoint.se

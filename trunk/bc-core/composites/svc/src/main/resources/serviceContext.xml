@@ -18,7 +18,7 @@
   <context:annotation-config />
 
   <!-- Using HttpURLFeedFetcher or HttpClientFeedFetcher -->
-  <bean id="feedFetcher" class="com.sun.syndication.fetcher.impl.HttpURLFeedFetcher" />
+  <bean id="feedFetcher" class="se.vgregion.portal.rss.client.service.CustomHttpURLFeedFetcher" />
   <bean id="blackList" class="se.vgregion.portal.rss.blacklist.ConcurrentBlackList" />
 
   <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"

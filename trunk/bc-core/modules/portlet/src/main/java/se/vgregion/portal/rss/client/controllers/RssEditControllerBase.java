@@ -43,7 +43,7 @@ import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 /**
  * Controller base for edit mode.
- * 
+ *
  * @author Simon Göransson - Monator Technologies AB
  */
 public abstract class RssEditControllerBase {
@@ -54,9 +54,8 @@ public abstract class RssEditControllerBase {
 
     /**
      * Edit controller.
-     * 
-     * @param rssFetcherService
-     *            the ReeFetcher service
+     *
+     * @param rssFetcherService the ReeFetcher service
      */
     public RssEditControllerBase(RssFetcherService rssFetcherService) {
         this.rssFetcherService = rssFetcherService;
@@ -81,20 +80,17 @@ public abstract class RssEditControllerBase {
 
     /**
      * Method handling Action request, saving portlet preferences.
-     * 
-     * @param model
-     *            RSS Client EDIT portlet's ModelMap
-     * @param preferences
-     *            RSS Client portlet's PortletPreferences
-     * @param preferencesBean
-     *            Wrapper bean for portlet preferences
-     * @param result
-     *            Spring object representing the binding of web view element and java object
+     *
+     * @param model           RSS Client EDIT portlet's ModelMap
+     * @param preferences     RSS Client portlet's PortletPreferences
+     * @param preferencesBean Wrapper bean for portlet preferences
+     * @param result          Spring object representing the binding of web view element and java object
      */
     @ActionMapping("save")
     public final void savePreferences(final ModelMap model, final PortletPreferences preferences,
-            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result) {
-    	
+                                      @ModelAttribute PortletPreferencesWrapperBean preferencesBean,
+                                      BindingResult result) {
+
         validator.validate(preferencesBean, result);
 
         if (!result.hasErrors()) {
@@ -115,26 +111,18 @@ public abstract class RssEditControllerBase {
 
     /**
      * Blacklist action method. Remove all url's from blacklist.
-     * 
-     * @param preferences
-     *            PortletPreferences
+     *
+     * @param preferences PortletPreferences
      */
     @ActionMapping("clearFeedBlackList")
     public void clearFeedBlackList(final PortletPreferences preferences) {
         blackList.clear();
-        // String feedLinks = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINKS, "");
-        // if (!StringUtils.isBlank(feedLinks)) {
-        // for (String url : feedLinks.split("\n")) {
-        // blackList.remove(url);
-        // }
-        // }
     }
 
     /**
      * Blacklist action method. Remove one feedlink from blacklist.
-     * 
-     * @param feedLink
-     *            Feed link
+     *
+     * @param feedLink Feed link
      */
     @ActionMapping("removeFromFeedBlackList")
     public void removeFromFeedBlackList(@RequestParam("feedLink") String feedLink) {
@@ -143,22 +131,18 @@ public abstract class RssEditControllerBase {
 
     /**
      * Method handling Render request, fetching portlet preferences for view.
-     * 
-     * @param model
-     *            RSS Client EDIT portlet's ModelMap
-     * @param preferences
-     *            RSS Client portlet's PortletPreferences
-     * @param preferencesBean
-     *            Wrapper bean for portlet preferences
-     * @param result
-     *            Spring object representing the binding of web view element and java object
-     * @throws ReadOnlyException
-     *             Thrown if portlet container does not succeeds changing the portlet preferences
+     *
+     * @param model           RSS Client EDIT portlet's ModelMap
+     * @param preferences     RSS Client portlet's PortletPreferences
+     * @param preferencesBean Wrapper bean for portlet preferences
+     * @param result          Spring object representing the binding of web view element and java object
      * @return jsp url for view
+     * @throws ReadOnlyException Thrown if portlet container does not succeeds changing the portlet preferences
      */
     @RenderMapping
     public final String showPreferences(final ModelMap model, PortletPreferences preferences,
-            @ModelAttribute PortletPreferencesWrapperBean preferencesBean, BindingResult result)
+                                        @ModelAttribute PortletPreferencesWrapperBean preferencesBean,
+                                        BindingResult result)
             throws ReadOnlyException {
         // Check if save action rendered an error
         if ("true".equals(model.get("saveError"))) {

@@ -1,8 +1,10 @@
 package se.vgregion.portal.rss.blacklist;
 
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.rometools.fetcher.FeedFetcher;
 
 import java.net.ConnectException;
 import java.net.MalformedURLException;
@@ -11,12 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import com.sun.syndication.fetcher.FeedFetcher;
+import static org.mockito.BDDMockito.*;
 
 
 public class FeedBlackListCleanerTest {

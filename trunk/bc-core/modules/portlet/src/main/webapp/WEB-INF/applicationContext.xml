@@ -31,10 +31,10 @@
   <bean id="blackList" class="se.vgregion.portal.rss.blacklist.ConcurrentBlackList" />
 
   <bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
-    <!-- wait 1 hour before starting repeated execution -->
-    <property name="delay" value="3600000" />
-    <!-- run every hour -->
-    <property name="period" value="3600000" />
+    <!-- wait 5 minutes before starting repeated execution -->
+    <property name="delay" value="300000" />
+    <!-- run every 15 minutes -->
+    <property name="period" value="900000" />
     <property name="timerTask">
       <bean class="se.vgregion.portal.rss.blacklist.FeedBlackListCleaner">
         <constructor-arg ref="feedFetcher" />
