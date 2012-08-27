@@ -233,8 +233,6 @@ public class RssViewController extends RssViewControllerBase {
         addUserToModel(model, request);
 
         setSortOrderByDate(model);
-        // addSortedFeedEntriesToModel(model, preferences, PortletPreferencesWrapperBean.RSS_FEED_LINK_1,
-        // PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
         return "rssItems";
     }
 
