@@ -27,15 +27,73 @@
 
 <portlet:defineObjects/>
 
-<portlet:actionURL escapeXml="false" var="sortByDate" name="sortByDate"/>
-<portlet:actionURL escapeXml="false" var="groupBySource" name="groupBySource"/>
-<portlet:resourceURL id="sortByDate" escapeXml="false" var="sortByDateResource"/>
-<portlet:resourceURL id="groupBySource" escapeXml="false" var="groupBySourceResource"/>
-
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
+<div class="vgr-list-view-wrap aui-tabview-content-item rss-wrap">
+
+	<ul id="listNews" class="vgr-list-view vgr-list-view-condensed vgr-list-view-news">
+		<c:set var="maxLengthContent" value="50"/>
+	
+	    <c:forEach items="${rssEntries}" var="item" varStatus="status">
+	        
+			<c:set var="listItemCssClass" value="" scope="page" />
+	
+			<c:if test="${(status.index)%2 ne 0}">
+				<c:set var="listItemCssClass" value="${listItemCssClass} vgr-list-view-item-odd" scope="page" />
+			</c:if>
+			
+			<c:if test="${status.last}">
+				<c:set var="listItemCssClass" value="${listItemCssClass} vgr-list-view-item-last" scope="page" />
+			</c:if>
+	        
+	        <li class="vgr-list-view-item ${listItemCssClass}">
+	
+	            <div class="hd clearfix">
+	                <h3 class="title">
+	                	<a href="${item.link}" target="_BLANK">
+	                		${item.title}
+                		</a>
+	                </h3>
+	            </div>
+	            <div class="bd description">
+	            
+	            	<c:if test="${not empty item.publishedDate}">
+		            	<div class="meta">
+		            		<span class="date"><fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd"/></span>
+		            	</div>
+	            	</c:if>
+	            
+					<c:choose>
+						<c:when test="${fn:length(item.contentsString) <= maxLengthContent }">
+							<c:out value="${item.contentsString}" escapeXml="false"/>
+						</c:when>
+						<c:otherwise>
+							<c:out value="${fn:substring(item.contentsString, 0, maxLengthContent)}" escapeXml="false"/>...
+						</c:otherwise>
+					</c:choose>		            
+	            
+	            </div>
+	            <div class="ft">
+	            </div>
+	        </li>
+	    </c:forEach>
+	</ul>
+	<%-- 
+	<div id="<portlet:namespace />moreToggleWrap" class="news-toggle-wrap">
+		<a class="rp-link news-toggle-more" href="#"><span>Visa fler nyheter</span></a>
+		<a class="rp-link news-toggle-less aui-helper-hidden" href="#"><span>Visa färre nyheter</span></a>
+	</div>
+	--%>
+</div>
+
+
+
+<%--
 <div class="aui-tabview-content-item">
 	<ul id="list-news" class="list-news">
+		
+		<c:set var="maxLengthContent" value="100"/>
+	
 		<c:forEach items="${rssEntries}" var="item" varStatus="status">
 		
 			<c:set var="hasDateCssClass" value="" scope="page" />
@@ -56,8 +114,16 @@
 				</span>
 				<span class="news-block">
 					<a class="news-title" href="${item.link}" target="_BLANK">${item.title}</a>
-					<div class="news-content aui-helper-hidden">
-						<c:out value="${item.contentsString}" escapeXml="false"/>
+					<div class="news-content">
+					
+						<c:choose>
+							<c:when test="${fn:length(item.contentsString) <= maxLengthContent }">
+								<c:out value="${item.contentsString}" escapeXml="false"/>
+							</c:when>
+							<c:otherwise>
+								<c:out value="${fn:substring(item.contentsString, 0, maxLengthContent)}" escapeXml="false"/>...
+							</c:otherwise>
+						</c:choose>										
 						<div class="news-actions">
 							<a class="source-link" href="${item.link}" target="_BLANK"><fmt:message key="goToSource"/></a>
 						</div>
@@ -68,95 +134,4 @@
 	</ul>
 	<a href="${rssFeedLink}" target="_blank"><fmt:message key="readmore"/>: ${rssFeedTitle}</a>
 </div>
-
-<%-- 
-<div id="blockMe">
-    <div id="rss-item-container" style="min-height: 100px;">
-        <c:if test="${!empty rssEntries}">
-            <div class="sort-box">
-                <fmt:message key="sorton"/>:
-                <c:choose>
-                    <c:when test="${sort_order == 'SORT_BY_NAME'}">
-                        <span id="sort-by-date-selected"><a id="group-by-source" href="#"><fmt:message
-                                key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
-                    </c:when>
-                    <c:when test="${sort_order == 'GROUP_BY_SOURCE'}">
-                        <span id="group-by-source-selected"><strong><fmt:message key="source"/></strong> | <a
-                                id="sort-by-date" href="#"><fmt:message key="date"/></a></span>
-                    </c:when>
-                    <c:otherwise>
-                        <span id="sort-by-date-selected"><a id="group-by-source" href="#"><fmt:message
-                                key="source"/></a> | <strong><fmt:message key="date"/></strong></span>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </c:if>
-
-        <ul id="list-news" class="list-news">
-            <c:forEach items="${rssEntries}" var="item" varStatus="status">
-                <li class="news-item" id="${item.link}">
-                    <span class="news-source">
-                      <c:out value="${item.feedTitle}" escapeXml="true"/>
-                    </span>
-                    <span class="news-date">
-                      <c:if test="${!empty item.publishedDate}">
-                          [<fmt:formatDate value="${item.publishedDate}" type="both" pattern="yyyy-MM-dd"/>
-                          <span class="news-time">&nbsp;<fmt:formatDate value="${item.publishedDate}" type="both"
-                                                                        pattern="HH:mm"/></span>]
-                      </c:if>
-                    </span>
-                    <a class="news-title" href="${item.link}">${item.title}</a>&nbsp;
-                    <a class="source-link" href="${item.link}"></a>
-
-                    <div class="news-excerpt">
-                            <p class="news-excerpt">
-                            <c:out value="${item.excerpt}" escapeXml="false"/>
-                            </p>
-                    </div>
-                    <div class="news-content" style="display: none;">
-                        <c:out value="${item.contentsString}" escapeXml="false"/>
-                        <div class="news-actions">
-                            <a class="source-link" href="${item.link}"><fmt:message key="goToSource"/></a>
-                            <a href="#" class="read-less"><fmt:message key="close"/></a>
-                        </div>
-                    </div>
-                </li>
-            </c:forEach>
-        </ul>
-    </div>
-    <a href="${rssFeedLink}" target="_blank"><fmt:message key="readmore"/>: ${rssFeedTitle}</a>
-</div>
---%>
-
-<%-- 
-<div id="blockDisplayMessage" style="display:none"> 
-  <h1>&nbsp;Laddar källa...&nbsp;</h1> 
-</div> 
---%>
-
-<%-- 
-
-<c:if test="${empty sort_order and empty selectedRssItemTitle}">
-    <script>
-        //No sort order and no pre-selection, sort by date to fetch content (no fetch on default load, this to avoid "page lock")
-        //updateSorting('${sortByDateResource}', '<portlet:namespace/>');
-    </script>
-</c:if>
-
-
-<script type="text/javascript">
-
-    AUI().ready(
-            'vgr-rss-client',
-            function(A) {
-                var rssClient = new A.VgrRssClient({
-                    portletNamespace: '<portlet:namespace/>',
-                    selectedRssItemTitle: '${selectedRssItemTitle}',
-                    urlGroupBySource: '${groupBySourceResource}',
-                    urlSortByDate: '${sortByDateResource}'
-                }).render();
-            }
-    );
-</script>
-
---%>
+ --%>
