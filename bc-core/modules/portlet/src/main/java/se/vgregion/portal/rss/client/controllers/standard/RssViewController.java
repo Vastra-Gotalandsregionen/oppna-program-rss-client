@@ -19,16 +19,6 @@
 
 package se.vgregion.portal.rss.client.controllers.standard;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,14 +28,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
+import javax.portlet.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
+
 /**
  * Controller for view mode, display of RSS items.
- * 
+ *
  * @author Jonas Liljenfeldt
  * @author anders asplund
  * @author David Rosell
@@ -67,26 +62,20 @@ public class RssViewController extends RssViewControllerBase {
 
     /**
      * Shows RSS items for user.
-     * 
-     * @param model
-     *            ModelMap
-     * @param request
-     *            RenderRequest
-     * @param response
-     *            RenderResponse
-     * @param preferences
-     *            RSS client VIEW portlet's PortletPreferences
-     * @param selectedRssItemTitle
-     *            selectedRssItemTitle
+     *
+     * @param model                ModelMap
+     * @param request              RenderRequest
+     * @param response             RenderResponse
+     * @param preferences          RSS client VIEW portlet's PortletPreferences
+     * @param selectedRssItemTitle selectedRssItemTitle
      * @return View name.
      * @throws
-     * @throws IOException
-     *             If I/O problems occur
+     * @throws IOException If I/O problems occur
      */
     @RenderMapping
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
-            PortletPreferences preferences,
-            @RequestParam(value = "selectedRssItemTitle", required = false) String selectedRssItemTitle)
+                                  PortletPreferences preferences,
+                                  @RequestParam(value = "selectedRssItemTitle", required = false) String selectedRssItemTitle)
             throws IOException {
 
         addUserToModel(model, request);
@@ -108,10 +97,19 @@ public class RssViewController extends RssViewControllerBase {
 
         addTabStateToModel(model, request, preferences);
         addTabTitleToModel(model, request, preferences);
-        
+
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
-        model.addAttribute("rssFeedLink", preferences.getValue(getRssFeedPref(request), ""));
+
+        String rssFeedLink = preferences.getValue(getRssFeedPref(request), "");
+        Long uid = (Long) model.get("uid");
+        if (uid != null) {
+            Set<String> rssFeedLinks = getTemplateProcessor().replacePlaceholders(rssFeedLink, uid);
+            if (rssFeedLinks.size() > 0) { // We assume that users only are member of one organization
+                rssFeedLink = rssFeedLinks.iterator().next();
+            }
+        }
+        model.addAttribute("rssFeedLink", rssFeedLink);
         if (!sortedRssEntries.isEmpty()) {
             model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
         }
@@ -213,22 +211,17 @@ public class RssViewController extends RssViewControllerBase {
 
     /**
      * Prepare to show feed entries view by adding RSS entries sorted by date to model.
-     * 
-     * @param model
-     *            The model
-     * @param request
-     *            The portlet request
-     * @param response
-     *            The portlet response
-     * @param preferences
-     *            The portlet preferences
+     *
+     * @param model       The model
+     * @param request     The portlet request
+     * @param response    The portlet response
+     * @param preferences The portlet preferences
      * @return The name of the view to display
-     * @throws IOException
-     *             If I/O problems occur
+     * @throws IOException If I/O problems occur
      */
     @ResourceMapping("sortByDate")
     public String viewFeedEntriesByDate(ModelMap model, ResourceRequest request, ResourceResponse response,
-            PortletPreferences preferences) throws IOException {
+                                        PortletPreferences preferences) throws IOException {
 
         addUserToModel(model, request);
 
@@ -238,22 +231,17 @@ public class RssViewController extends RssViewControllerBase {
 
     /**
      * Prepare to show feed entries view by adding RSS entries sorted by feed title to model.
-     * 
-     * @param model
-     *            The model
-     * @param request
-     *            The portlet request
-     * @param response
-     *            The portlet response
-     * @param preferences
-     *            The portlet preferences
+     *
+     * @param model       The model
+     * @param request     The portlet request
+     * @param response    The portlet response
+     * @param preferences The portlet preferences
      * @return The name of the view to display
-     * @throws IOException
-     *             If I/O problems occur
+     * @throws IOException If I/O problems occur
      */
     @ResourceMapping("groupBySource")
     public String viewFeedEntriesBySource(ModelMap model, ResourceRequest request, ResourceResponse response,
-            PortletPreferences preferences) throws IOException {
+                                          PortletPreferences preferences) throws IOException {
 
         addUserToModel(model, request);
 
@@ -263,9 +251,8 @@ public class RssViewController extends RssViewControllerBase {
 
     /**
      * Set the sort order of the RSS items to date (descending).
-     * 
-     * @param model
-     *            The model
+     *
+     * @param model The model
      */
     @ActionMapping("sortByDate")
     public void setSortOrderByDate(ModelMap model) {
@@ -274,9 +261,8 @@ public class RssViewController extends RssViewControllerBase {
 
     /**
      * Set the sort order of the RSS items to feed title (ascending).
-     * 
-     * @param model
-     *            The model
+     *
+     * @param model The model
      */
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
