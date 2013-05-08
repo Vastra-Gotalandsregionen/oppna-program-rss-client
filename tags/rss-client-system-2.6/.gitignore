@@ -1,0 +1,12 @@
+.DS_Store
+
+.classpath
+.project
+.settings
+
+rebel.xml
+
+target/*
+
+bc-core/composites/svc/target/*
+bc-core/modules/portlet/target/*
