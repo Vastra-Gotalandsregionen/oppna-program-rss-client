@@ -54,7 +54,9 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
             urlInputStream = feedUrl.openStream();
             return XmlTransformationTool.transformDatesToEnglish(urlInputStream);
         } finally {
-            urlInputStream.close();
+            if (urlInputStream != null) {
+                urlInputStream.close();
+            }
         }
     }
 }
