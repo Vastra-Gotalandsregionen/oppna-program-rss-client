@@ -32,6 +32,8 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import org.rometools.fetcher.FetcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,6 +133,11 @@ public class RssViewControllerBase {
 
         // Get list of URLs for user saved in his/her preferences
         String feedUrlTemplates = preferences.getValue(rssFeedPref, "");
+        if (feedUrlTemplates == null) {
+            //feedUrlTemplates = preferences.getValue(rssFeedPref, "");
+            feedUrlTemplates = "";
+        }
+
         if (feedUrls != null) {
             for (String feedUrl : Arrays.asList(feedUrlTemplates.split("\n"))) {
                 Long uid = (Long) model.get("uid");
@@ -205,6 +212,10 @@ public class RssViewControllerBase {
 
     protected long lookupUid(PortletRequest req) {
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
-        return themeDisplay.getUserId();
+        if (themeDisplay != null) {
+            return themeDisplay.getUserId();
+        } else {
+            return (Long) req.getAttribute("USER_ID");
+        }
     }
 }

@@ -102,6 +102,9 @@ public class RssViewController extends RssViewControllerBase {
         model.addAttribute("rssEntries", sortedRssEntries);
 
         String rssFeedLink = preferences.getValue(getRssFeedPref(request), "");
+        if (rssFeedLink == null) {
+            rssFeedLink = "";
+        }
         Long uid = (Long) model.get("uid");
         if (uid != null) {
             Set<String> rssFeedLinks = getTemplateProcessor().replacePlaceholders(rssFeedLink, uid);
