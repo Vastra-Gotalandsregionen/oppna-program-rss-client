@@ -40,6 +40,7 @@
     <url-pattern>/WEB-INF/servlet/view</url-pattern>
   </servlet-mapping>
 
+  <!--
   <servlet>
     <servlet-name>RssClient</servlet-name>
     <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
@@ -67,4 +68,5 @@
     <servlet-name>RssClientMinimal</servlet-name>
     <url-pattern>/RssClientMinimal/*</url-pattern>
   </servlet-mapping>
+  -->
 </web-app>
