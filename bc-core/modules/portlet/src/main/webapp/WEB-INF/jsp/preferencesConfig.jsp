@@ -46,35 +46,36 @@
     </legend>
     <ol>
       <li>
-        <label for="maximum-items"><fmt:message key="numberofitems1" />:</label> 
-        <form:input id="maximum-items" path="numberOfItems1" cssErrorClass="validation-error"/> 
-        <form:errors cssClass="validation-error-message" path="numberOfItems1" />
+        <label for="maximum-items"><fmt:message key="numberofitems1" />:</label>
+        <input id="maximum-items" name="<portlet:namespace />numberOfItems1" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.numberOfItems1}"/>
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />numberOfItems1" />
       </li>
       <li>
-        <label for="rss-feed-title"><fmt:message key="rssfeedtitle1" />:</label> 
-        <form:input id="rss-feed-title" path="rssFeedTitle1" cssErrorClass="validation-error"/> 
-        <form:errors cssClass="validation-error-message" path="rssFeedTitle1" />
+        <label for="rss-feed-title"><fmt:message key="rssfeedtitle1" />:</label>
+        <input id="rss-feed-title" name="<portlet:namespace />rssFeedTitle1" value="${portletPreferencesWrapperBean.rssFeedTitle1}"/>
+
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />rssFeedTitle1" />
       </li>
       <li>
-        <label for="rss-feed-links1"><fmt:message key="feed1" />:</label>        
-        <form:textarea id="rss-feed-link1" path="rssFeedLink1" cols="100" rows="5" cssErrorClass="validation-error"/>
+        <label for="rss-feed-links1"><fmt:message key="feed1" />:</label>
+        <textarea id="rss-feed-link1" name="<portlet:namespace />rssFeedLink1" cols="100" rows="5" cssErrorClass="validation-error">${portletPreferencesWrapperBean.rssFeedLink1}</textarea>
         <form:errors path="rssFeedLink1" cssClass="validation-error-message validation-error-message-feed-urls"/>
       </li>
     </ol>
     <ol>
       <li>
         <label for="maximum-items"><fmt:message key="numberofitems2" />:</label>
-        <form:input id="maximum-items" path="numberOfItems2" cssErrorClass="validation-error"/>
-        <form:errors cssClass="validation-error-message" path="numberOfItems2" />
+        <input id="maximum-items" name="<portlet:namespace />numberOfItems2" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.numberOfItems2}"/>
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />numberOfItems2" />
       </li>
       <li>
-        <label for="rss-feed-title"><fmt:message key="rssfeedtitle2" />:</label> 
-        <form:input id="rss-feed-title" path="rssFeedTitle2" cssErrorClass="validation-error"/> 
-        <form:errors cssClass="validation-error-message" path="rssFeedTitle2" />
+        <label for="rss-feed-title"><fmt:message key="rssfeedtitle2" />:</label>
+        <input id="rss-feed-title" name="<portlet:namespace />rssFeedTitle2" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.rssFeedTitle2}"/>
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />rssFeedTitle2" />
       </li>
       <li>
         <label for="rss-feed-links2"><fmt:message key="feed2" />:</label>
-        <form:textarea id="rss-feed-link2" path="rssFeedLink2" cols="100" rows="5" cssErrorClass="validation-error"/>
+        <textarea id="rss-feed-link2" name="<portlet:namespace />rssFeedLink2" cols="100" rows="5" cssErrorClass="validation-error">${portletPreferencesWrapperBean.rssFeedLink2}</textarea>
         <form:errors path="rssFeedLink2" cssClass="validation-error-message validation-error-message-feed-urls"
         />
       </li>
@@ -82,17 +83,17 @@
     <ol>
       <li>
         <label for="maximum-items"><fmt:message key="numberofitems3" />:</label>
-        <form:input id="maximum-items" path="numberOfItems3" cssErrorClass="validation-error" />
-        <form:errors cssClass="validation-error-message" path="numberOfItems3" />
+        <input id="maximum-items" name="<portlet:namespace />numberOfItems3" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.numberOfItems3}"/>
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />numberOfItems3" />
       </li>
       <li>
-        <label for="rss-feed-title"><fmt:message key="rssfeedtitle3" />:</label> 
-        <form:input id="rss-feed-title" path="rssFeedTitle3" cssErrorClass="validation-error"/> 
-        <form:errors cssClass="validation-error-message" path="rssFeedTitle3" />
+        <label for="rss-feed-title"><fmt:message key="rssfeedtitle3" />:</label>
+        <input id="rss-feed-title" name="<portlet:namespace />rssFeedTitle3" cssErrorClass="validation-error"  value="${portletPreferencesWrapperBean.rssFeedTitle3}"/>
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />rssFeedTitle3" />
       </li>
       <li>
         <label for="rss-feed-links3"><fmt:message key="feed3" />:</label>
-        <form:textarea id="rss-feed-link3" path="rssFeedLink3" cols="100" rows="5" cssErrorClass="validation-error"/>
+        <textarea id="rss-feed-link3" name="<portlet:namespace />rssFeedLink3" cols="100" rows="5" cssErrorClass="validation-error">${portletPreferencesWrapperBean.rssFeedLink3}</textarea>
         <form:errors path="rssFeedLink3" cssClass="validation-error-message validation-error-message-feed-urls"
         />
       </li>
@@ -100,17 +101,17 @@
     <ol>
       <li>
         <label for="maximum-items"><fmt:message key="numberofitems4" />:</label>
-        <form:input id="maximum-items" path="numberOfItems4" cssErrorClass="validation-error" />
-        <form:errors cssClass="validation-error-message" path="numberOfItems4" />
+        <input id="maximum-items" name="<portlet:namespace />numberOfItems4" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.numberOfItems4}" />
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />numberOfItems4" />
       </li>
       <li>
-        <label for="rss-feed-title"><fmt:message key="rssfeedtitle4" />:</label> 
-        <form:input id="rss-feed-title" path="rssFeedTitle4" cssErrorClass="validation-error"/> 
-        <form:errors cssClass="validation-error-message" path="rssFeedTitle4" />
+        <label for="rss-feed-title"><fmt:message key="rssfeedtitle4" />:</label>
+        <input id="rss-feed-title" name="<portlet:namespace />rssFeedTitle4" cssErrorClass="validation-error" value="${portletPreferencesWrapperBean.rssFeedTitle4}" />
+        <form:errors cssClass="validation-error-message" name="<portlet:namespace />rssFeedTitle4" />
       </li>
       <li>
         <label for="rss-feed-links4"><fmt:message key="feed4" />:</label>
-        <form:textarea id="rss-feed-link4" path="rssFeedLink4" cols="100" rows="5" cssErrorClass="validation-error"/>
+        <textarea id="rss-feed-link4" name="<portlet:namespace />rssFeedLink4" cols="100" rows="5" cssErrorClass="validation-error">${portletPreferencesWrapperBean.rssFeedLink4}</textarea>
         <form:errors path="rssFeedLink4" cssClass="validation-error-message validation-error-message-feed-urls"/>
       </li>
     </ol>
@@ -130,16 +131,16 @@
             <c:out value="${feedLink}" />
             &nbsp;
             &nbsp;
-            <input type="button" 
-                 value="<fmt:message key="removefromblacklist"/>" 
+            <input type="button"
+                 value="<fmt:message key="removefromblacklist"/>"
                  onclick="location.href='${removeFromFeedBlackList}&amp;feedLink=<c:out value="${feedLink}"/>';" />
           </li>
         </c:forEach>
       </ol>
     </fieldset>
     <fieldset class="submit">
-      <input type="button" 
-             value="<fmt:message 
+      <input type="button"
+             value="<fmt:message
              key="clearblacklist"/>"
              onclick="location.href='${clearFeedBlackList}';"
       />
