@@ -114,6 +114,15 @@ public class RssViewControllerBase {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
         }
+
+        /*
+         * for (FeedEntryBean feedEntryBean : feedEntries) { System.out.println("titel !!! = " +
+         * feedEntryBean.getTitle()); System.out.println("titel !!! = " + feedEntryBean.getContentsString());
+         * System.out.println("titel !!! = " + feedEntryBean.getExcerpt());
+         * 
+         * for (String s : feedEntryBean.getContents()) { System.out.println("s !!! = " + s); } }
+         */
+
         return feedEntries;
     }
 

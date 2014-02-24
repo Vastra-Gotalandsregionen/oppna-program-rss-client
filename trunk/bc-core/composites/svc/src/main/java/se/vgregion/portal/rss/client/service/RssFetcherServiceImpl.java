@@ -66,7 +66,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @throws FetcherException
      */
     @Override
@@ -92,6 +92,17 @@ public class RssFetcherServiceImpl implements RssFetcherService {
                 }
             }
         }
+
+        /*
+         * for (SyndFeed syndFeed : syndFeeds) {
+         * 
+         * List<SyndEntry> syndEntries = syndFeed.getEntries();
+         * 
+         * for (SyndEntry syndEntry : syndEntries) { LOGGER.debug("Title " + syndEntry.getTitle());
+         * LOGGER.debug("Enclosures " + syndEntry.getEnclosures()); LOGGER.debug("Description " +
+         * syndEntry.getDescription()); LOGGER.debug("Source " + syndEntry.getSource()); } }
+         */
+
         return syndFeeds;
     }
 }

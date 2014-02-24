@@ -1,12 +1,7 @@
 <?xml version="1.0"?>
-<!--
-This is the Web-app Maven POM.
-
-
-Template version: 1.4
-Generation time : 2010-05-13 10:52:30 CEST
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- This is the Web-app Maven POM. Template version: 1.4 Generation time : 2010-05-13 10:52:30 CEST -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>se.vgregion.rss-client</groupId>
@@ -14,7 +9,6 @@ Generation time : 2010-05-13 10:52:30 CEST
     <version>2.7-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-bc-core-module-portlet</artifactId>
   <packaging>war</packaging>
   <name>${project.artifactId}</name>
@@ -65,9 +59,7 @@ Generation time : 2010-05-13 10:52:30 CEST
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
     </dependency>
-    <!--
-      We use a Servlet Filter from spring-web to control UTF-8 encodings. Facelets doesn't do this for us.
-    -->
+    <!-- We use a Servlet Filter from spring-web to control UTF-8 encodings. Facelets doesn't do this for us. -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
@@ -116,6 +108,7 @@ Generation time : 2010-05-13 10:52:30 CEST
     <dependency>
       <groupId>com.liferay.portal</groupId>
       <artifactId>portal-service</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
