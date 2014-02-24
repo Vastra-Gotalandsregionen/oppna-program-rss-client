@@ -19,8 +19,11 @@
 
 package se.vgregion.portal.rss.client.beans;
 
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndEntry;
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -28,10 +31,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndEnclosure;
+import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     /**
@@ -46,6 +48,8 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String link;
     private String feedTitle;
     private Date publishedDate;
+    private String enclosureType;
+    private String enclosureUrl;
 
     /**
      * Group-by-source comparator.
@@ -53,8 +57,8 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     public static final Comparator<FeedEntryBean> GROUP_BY_SOURCE = new Comparator<FeedEntryBean>() {
         @Override
         public int compare(FeedEntryBean feedEntryBean1, FeedEntryBean feedEntryBean2) {
-            return new CompareToBuilder().append(feedEntryBean1.getFeedTitle(), feedEntryBean2.getFeedTitle())
-                    .toComparison();
+            return new CompareToBuilder()
+                    .append(feedEntryBean1.getFeedTitle(), feedEntryBean2.getFeedTitle()).toComparison();
         }
 
         @Override
@@ -115,6 +119,17 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         if (syndEntry.getLink() != null) {
             link = syndEntry.getLink().trim();
         }
+
+        if (syndEntry.getEnclosures() != null) {
+            List<SyndEnclosure> syndEnclosures = syndEntry.getEnclosures();
+            if (!syndEnclosures.isEmpty()) {
+                SyndEnclosure syndEnclosure = syndEnclosures.get(0);
+
+                enclosureType = syndEnclosure.getType();
+                enclosureUrl = syndEnclosure.getUrl();
+            }
+        }
+
         publishedDate = syndEntry.getPublishedDate();
 
         // Fallback on "updatedDate" which is used with Atom feeds.
@@ -205,6 +220,22 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     public void setContentsString(String contentsString) {
         this.contentsString = contentsString;
+    }
+
+    public String getEnclosureType() {
+        return enclosureType;
+    }
+
+    public void setEnclosureType(String enclosureType) {
+        this.enclosureType = enclosureType;
+    }
+
+    public String getEnclosureUrl() {
+        return enclosureUrl;
+    }
+
+    public void setEnclosureUrl(String enclosureUrl) {
+        this.enclosureUrl = enclosureUrl;
     }
 
     @Override

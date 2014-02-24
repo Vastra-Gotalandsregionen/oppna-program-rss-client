@@ -8,7 +8,6 @@
     <version>2.7-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <groupId>se.vgregion.rss-client</groupId>
   <artifactId>rss-client-bc-core-composite-svc</artifactId>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
@@ -85,13 +84,11 @@
     <dependency>
       <groupId>com.liferay.portal</groupId>
       <artifactId>portal-service</artifactId>
-      <version>6.0.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.liferay.portal</groupId>
       <artifactId>util-java</artifactId>
-      <version>6.0.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -126,7 +123,6 @@
     <dependency>
       <groupId>com.liferay.portal</groupId>
       <artifactId>portal-impl</artifactId>
-      <version>6.0.5</version>
       <scope>provided</scope>
     </dependency>
 
