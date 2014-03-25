@@ -8,8 +8,10 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:ehcache="http://www.springframework.org/schema/cache"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 
   <context:component-scan base-package="se.vgregion.portal.rss.client.service" />
@@ -23,5 +25,17 @@
 
   <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"
     factory-method="getService" lazy-init="true" />
+
+  <ehcache:annotation-driven cache-manager="cacheManager" />
+
+  <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager" ref="cacheManagerFactoryBean"/>
+  </bean>
+
+  <bean id="cacheManagerFactoryBean" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <property name="configLocation"  value="classpath:/rss-feeds-eh-cache.xml"/>
+    <property name="shared" value="true"/>
+    <!--<property name="cacheManagerName"  value="rssFeedsCacheManager"/>-->
+  </bean>
 
 </beans> 

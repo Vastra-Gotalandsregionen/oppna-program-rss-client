@@ -32,8 +32,6 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import com.liferay.portal.service.CompanyLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.rometools.fetcher.FetcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,9 +163,11 @@ public class RssViewControllerBase {
         List<FeedEntryBean> feedEntryBeans = new ArrayList<FeedEntryBean>();
         for (int j = 0; j < rssFeeds.size(); j++) {
             SyndFeed syndFeed = rssFeeds.get(j);
-            for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
-                feedEntryBeans.add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed
-                        .getTitle(), excerptLen));
+            if (syndFeed != null) {
+                for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
+                    feedEntryBeans.add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed
+                            .getTitle(), excerptLen));
+                }
             }
         }
         return feedEntryBeans;

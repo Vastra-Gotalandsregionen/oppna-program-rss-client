@@ -34,9 +34,8 @@ import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Controller for view mode, display of RSS items.
@@ -52,6 +51,8 @@ public class RssViewController extends RssViewControllerBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
     private static final String FEED = "feed";
+
+    private ExecutorService executor = Executors.newFixedThreadPool(4);
 
     /**
      * Standard Rss portlet view controller.
@@ -73,52 +74,67 @@ public class RssViewController extends RssViewControllerBase {
      * @throws IOException If I/O problems occur
      */
     @RenderMapping
-    public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
-                                  PortletPreferences preferences,
+    public String viewRssItemList(final ModelMap model, final RenderRequest request, RenderResponse response,
+                                  final PortletPreferences preferences,
                                   @RequestParam(value = "selectedRssItemTitle", required = false) String selectedRssItemTitle)
             throws IOException {
 
         addUserToModel(model, request);
+        addTabStateToModel(model, request, preferences);
+        addTabTitleToModel(model, request, preferences);
+
 
         // Check for sort order or pre-selection (no fetch on default load, this to avoid "page lock")
         // Comparator<FeedEntryBean> sortOrder = getSortOrder(model);
         // if (sortOrder != null || selectedRssItemTitle != null) {
         ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
-        List<FeedEntryBean> sortedRssEntries =
-                getSortedRssEntries(preferences, model, getRssFeedPref(request));
-
-        sortedRssEntries =
-                getItemsToBeDisplayed(preferences, sortedRssEntries, getRssFeedNumberOfItemsPref(request));
-
-        if (bundle != null) {
-            response.setTitle(bundle.getString("javax.portlet.title") + " (" + sortedRssEntries.size() + ")");
+        String rssFeedPref = getRssFeedPref(request);
+        List<String> rssFeedPrefs = new ArrayList<String>();
+        if ((Boolean) model.get("isTab1Active")) {
+            rssFeedPrefs.add(PortletPreferencesWrapperBean.RSS_FEED_LINK_1);
+        }
+        if ((Boolean) model.get("isTab2Active")) {
+            rssFeedPrefs.add(PortletPreferencesWrapperBean.RSS_FEED_LINK_2);
+        }
+        if ((Boolean) model.get("isTab3Active")) {
+            rssFeedPrefs.add(PortletPreferencesWrapperBean.RSS_FEED_LINK_3);
+        }
+        if ((Boolean) model.get("isTab4Active")) {
+            rssFeedPrefs.add(PortletPreferencesWrapperBean.RSS_FEED_LINK_4);
         }
 
-        addTabStateToModel(model, request, preferences);
-        addTabTitleToModel(model, request, preferences);
+        // Fetch the feeds in parallel
+        List<List<FeedEntryBean>> listOfRssEntriesLists = new ArrayList<List<FeedEntryBean>>();
+        for (String feedPref : rssFeedPrefs) {
+            final String feedPrefTemp = feedPref;
+            listOfRssEntriesLists.add(new FutureWrapperList(executor.submit(new Callable<List<FeedEntryBean>>() {
+                @Override
+                public List<FeedEntryBean> call() throws Exception {
+                    List<FeedEntryBean> sortedRssEntries = getSortedAndFilteredItemsForOneFeedLink(model, request,
+                            preferences, feedPrefTemp);
+
+                    return sortedRssEntries;
+                }
+            })));
+        }
 
         response.setContentType("text/html");
-        model.addAttribute("rssEntries", sortedRssEntries);
-
-        String rssFeedLink = preferences.getValue(getRssFeedPref(request), "");
-        if (rssFeedLink == null) {
-            rssFeedLink = "";
-        }
-        Long uid = (Long) model.get("uid");
-        if (uid != null) {
-            Set<String> rssFeedLinks = getTemplateProcessor().replacePlaceholders(rssFeedLink, uid);
-            if (rssFeedLinks.size() > 0) { // We assume that users only are member of one organization
-                rssFeedLink = rssFeedLinks.iterator().next();
-            }
-        }
-        model.addAttribute("rssFeedLink", rssFeedLink);
-        if (!sortedRssEntries.isEmpty()) {
-            model.addAttribute("rssFeedTitle", sortedRssEntries.get(0).getFeedTitle());
-        }
+        model.addAttribute("listOfRssEntriesLists", listOfRssEntriesLists);
 
         model.addAttribute("selectedRssItemTitle", selectedRssItemTitle);
         return "rssFeedView";
+    }
+
+    private List<FeedEntryBean> getSortedAndFilteredItemsForOneFeedLink(ModelMap model, RenderRequest request,
+                                                                        PortletPreferences preferences,
+                                                                        String rssFeedPref) throws IOException {
+        List<FeedEntryBean> sortedRssEntries =
+                getSortedRssEntries(preferences, model, rssFeedPref);
+
+        sortedRssEntries =
+                getItemsToBeDisplayed(preferences, sortedRssEntries, getRssFeedNumberOfItemsPref(request));
+        return sortedRssEntries;
     }
 
     /**
@@ -127,14 +143,22 @@ public class RssViewController extends RssViewControllerBase {
      * @param preferences
      */
     private void addTabTitleToModel(ModelMap model, RenderRequest request, PortletPreferences preferences) {
-        model.addAttribute("rssFeedTitle1",
-                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_1, ""));
-        model.addAttribute("rssFeedTitle2",
-                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_2, ""));
-        model.addAttribute("rssFeedTitle3",
-                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_3, ""));
-        model.addAttribute("rssFeedTitle4",
-                preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_4, ""));
+        List<String> rssFeedTitles = new ArrayList<String>();
+
+        if ((Boolean) model.get("isTab1Active")) {
+            rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_1, null));
+        }
+        if ((Boolean) model.get("isTab2Active")) {
+            rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_2, null));
+        }
+        if ((Boolean) model.get("isTab3Active")) {
+            rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_3, null));
+        }
+        if ((Boolean) model.get("isTab4Active")) {
+            rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_4, null));
+        }
+
+        model.addAttribute("rssFeedTitles", rssFeedTitles);
     }
 
     /**
@@ -270,5 +294,42 @@ public class RssViewController extends RssViewControllerBase {
     @ActionMapping("groupBySource")
     public void setSortOrderByFeedTitle(ModelMap model) {
         model.addAttribute(SORT_ORDER, FeedEntryBean.GROUP_BY_SOURCE);
+    }
+
+    private class FutureWrapperList extends AbstractList<FeedEntryBean> {
+
+        private Future<List<FeedEntryBean>> internalList;
+
+        public FutureWrapperList(Future<List<FeedEntryBean>> submit) {
+            internalList = submit;
+        }
+
+        @Override
+        public FeedEntryBean get(int index) {
+            try {
+                return internalList.get(10, TimeUnit.SECONDS).get(index);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (TimeoutException e) {
+                LOGGER.error(e.getMessage(), e);
+                return null;
+            }
+        }
+
+        @Override
+        public int size() {
+            try {
+                return internalList.get(10, TimeUnit.SECONDS).size();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (TimeoutException e) {
+                LOGGER.error(e.getMessage(), e);
+                return 0;
+            }
+        }
     }
 }

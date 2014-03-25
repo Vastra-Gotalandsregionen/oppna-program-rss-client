@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+        name="rssFeedsCache">
+
+  <defaultCache eternal="false" maxElementsInMemory="1000" overflowToDisk="false"
+         memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="600" timeToIdleSeconds="300" />
+
+  <cache name="feedCache" maxElementsInMemory="1000" eternal="false" overflowToDisk="false"
+         memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="600" timeToIdleSeconds="300" />
+
+</ehcache>

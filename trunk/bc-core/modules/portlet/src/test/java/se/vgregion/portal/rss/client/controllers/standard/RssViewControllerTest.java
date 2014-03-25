@@ -123,7 +123,7 @@ public class RssViewControllerTest {
 
         assertEquals("rssFeedView", rssViewController.viewRssItemList(modelMap, mockRenderRequest,
                 mockRenderResponse, mockPortletPreferences, "TheTitle"));
-        assertEquals(0, ((List<FeedEntryBean>) modelMap.get("rssEntries")).size());
+        assertEquals(0, ((List<FeedEntryBean>) modelMap.get("listOfRssEntriesLists")).size());
         assertEquals("TheTitle", modelMap.get("selectedRssItemTitle"));
     }
 

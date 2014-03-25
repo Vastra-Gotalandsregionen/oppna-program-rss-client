@@ -27,6 +27,7 @@ import org.rometools.fetcher.FetcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import se.vgregion.portal.rss.blacklist.BlackList;
 
@@ -70,6 +71,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      * @throws FetcherException
      */
     @Override
+    @Cacheable(value = "feedCache")
     public List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
             FetcherException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();
