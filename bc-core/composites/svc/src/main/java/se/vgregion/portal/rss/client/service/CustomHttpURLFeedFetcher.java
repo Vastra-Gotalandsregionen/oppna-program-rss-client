@@ -5,11 +5,14 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 import org.rometools.fetcher.impl.HttpURLFeedFetcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.vgregion.portal.rss.util.XmlTransformationTool;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * This class overrides one method of {@link HttpURLFeedFetcher} in order to work around the fact that dates often are
@@ -20,6 +23,8 @@ import java.net.URL;
  */
 public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomHttpURLFeedFetcher.class);
+
     /**
      * This method retrieves the {@link SyndFeed} from a {@link URL}. The difference between
      * {@link org.rometools.fetcher.impl.HttpURLFeedFetcher#retrieveFeed(java.net.URL)} and this method is that this
@@ -28,7 +33,7 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
      *
      * @param feedUrl the URL to retrieve feeds from
      * @return the resulting feed
-     * @throws IOException IOException
+     * @throws IOException   IOException
      * @throws FeedException FeedException
      */
     @Override
@@ -37,9 +42,13 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
         try {
             // Possibly modify the response to correct dates
             modifiedStream = getModifiedStream(feedUrl);
+
             XmlReader reader = new XmlReader(modifiedStream);
             SyndFeed syndFeed = new SyndFeedInput().build(reader);
             return syndFeed;
+        } catch (Exception e) {
+            LOGGER.error("Feed: " + feedUrl.toString() + " - " + e.getMessage(), e);
+            return null;
         } finally {
             if (modifiedStream != null) {
                 modifiedStream.close();
@@ -50,8 +59,10 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
     // In case the dates are in Swedish we need to transform them to English to conform to the standard.
     protected InputStream getModifiedStream(URL feedUrl) throws IOException {
         InputStream urlInputStream = null;
+        URLConnection urlConnection = null;
         try {
-            urlInputStream = feedUrl.openStream();
+            urlConnection = feedUrl.openConnection();
+            urlInputStream = urlConnection.getInputStream();
             return XmlTransformationTool.transformDatesToEnglish(urlInputStream);
         } finally {
             if (urlInputStream != null) {

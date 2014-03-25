@@ -38,41 +38,31 @@
 
 <div class="rss-tabs-wrap vgr-tabs" id="<portlet:namespace />rssTabsWrap">
     <ul class="rss-tabs-nav aui-tabview-list aui-widget-hd" id="<portlet:namespace />rssTabsList">
-        <c:if test="${isTab1Active}">        
+        <c:forEach items="${rssFeedTitles}" varStatus="index" var="rssFeedTitle">
             <li class="aui-tab">
-              <a class="aui-tab-label" href="${feedURL1}">${rssFeedTitle1}</a>
+                <a class="aui-tab-label" href="#tab-${index}">${rssFeedTitle}</a>
             </li>
-        </c:if>
-        <c:if test="${isTab2Active}">        
-            <li class="aui-tab">
-              <a class="aui-tab-label" href="${feedURL2}">${rssFeedTitle2}</a>
-            </li>
-        </c:if>
-        <c:if test="${isTab3Active}">        
-            <li class="aui-tab">
-              <a class="aui-tab-label" href="${feedURL3}">${rssFeedTitle3}</a>
-            </li>
-        </c:if>
-        <c:if test="${isTab4Active}">        
-            <li class="aui-tab">
-              <a class="aui-tab-label" href="${feedURL4}">${rssFeedTitle4}</a>
-            </li>
-        </c:if>
+        </c:forEach>
     </ul>
-	
-    <div class="vgr-tabs-content-wrap" id="<portlet:namespace />rssTabsContent">
+
+    <div class="vgr-tabs-content-wrap vgr-list-view-wrap aui-tabview-content-item rss-wrap" id="<portlet:namespace />rssTabsContent">
     	<jsp:directive.include file="rssItems.jsp" />
     </div>
 </div>
 
 <script type="text/javascript">
 
-AUI().ready('vgr-rss-client', function(A) {
-	var vgrRssClient = new A.VgrRssClient({
-		tabsBoundingBox: '#<portlet:namespace />rssTabsWrap',
-		tabsListNode: '#<portlet:namespace />rssTabsList',
-		tabsContentNode: '#<portlet:namespace />rssTabsContent'
-	}).render();			
-});
+AUI().use(
+        'aui-tabview',
+        function(A) {
+            new A.TabView(
+                    {
+                        cssClass: 'vgr-tabs',
+                        srcNode: '#<portlet:namespace />rssTabsWrap'
+                    }
+            ).render();
+        }
+);
+
 
 </script>
