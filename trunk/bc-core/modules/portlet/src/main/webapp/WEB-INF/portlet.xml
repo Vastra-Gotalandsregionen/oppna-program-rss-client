@@ -33,6 +33,7 @@
     </portlet-info>
   </portlet>
   
+<!-- todo Probably remove?
   <portlet>
     <portlet-name>RssReader</portlet-name>
     <display-name>RSS Reader</display-name>
@@ -51,7 +52,8 @@
       <keywords>rss client viewer feeds reader</keywords>
     </portlet-info>
   </portlet>
-  
+-->
+
   <portlet>
     <portlet-name>RssClientMinimal</portlet-name>
     <display-name>Minimal RSS Client</display-name>
