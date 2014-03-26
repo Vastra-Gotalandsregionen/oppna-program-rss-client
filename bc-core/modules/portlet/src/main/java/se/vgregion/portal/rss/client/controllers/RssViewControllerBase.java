@@ -134,8 +134,8 @@ public class RssViewControllerBase {
     protected Set<String> getFeedUrls(PortletPreferences preferences, ModelMap model, String rssFeedPref) {
         Set<String> feedUrls = new HashSet<String>();
 
-        for (String key : model.keySet()) {
-            logger.debug("Model key: " + key);
+        for (String key : new ArrayList<String>(model.keySet())) {
+            logger.debug("Model key: "+key);
         }
 
         // Get list of URLs for user saved in his/her preferences
