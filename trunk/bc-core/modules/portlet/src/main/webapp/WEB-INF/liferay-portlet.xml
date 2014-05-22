@@ -17,6 +17,8 @@
     <portlet-name>RssClient</portlet-name>
     <instanceable>true</instanceable>
     <requires-namespaced-parameters>false</requires-namespaced-parameters>
+    <render-weight>0</render-weight>
+    <ajaxable>true</ajaxable>
     <footer-portlet-javascript>/script/vgr-rss-client.js</footer-portlet-javascript>
   </portlet>
   
