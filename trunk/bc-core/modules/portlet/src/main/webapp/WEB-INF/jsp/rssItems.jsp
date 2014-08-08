@@ -46,7 +46,7 @@
                     <c:set var="listItemCssClass" value="${listItemCssClass} vgr-list-view-item-last" scope="page" />
                 </c:if>
 
-                <li class="vgr-list-view-item ${listItemCssClass}">
+                <li class="vgr-list-view-item ${listItemCssClass} clearfix">
 
                     <div class="hd clearfix">
                         <h3 class="title">
