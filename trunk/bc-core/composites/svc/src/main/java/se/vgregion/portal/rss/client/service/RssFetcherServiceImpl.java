@@ -90,6 +90,8 @@ public class RssFetcherServiceImpl implements RssFetcherService {
                             LOGGER.error("Failed to fetch feed [{}], received error [{}]", feedLink,
                                     e.getMessage());
                         }
+                    } else {
+                        LOGGER.warn("Feedlink {" + feedLink + "} is blacklisted. Skipping...");
                     }
                 }
             }
