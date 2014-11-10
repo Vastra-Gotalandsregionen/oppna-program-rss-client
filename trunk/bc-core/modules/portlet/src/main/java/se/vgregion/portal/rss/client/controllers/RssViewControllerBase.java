@@ -223,6 +223,8 @@ public class RssViewControllerBase {
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {
             return themeDisplay.getUserId();
+        } else if (req.getAttribute("LIFERAY_SHARED_THEME_DISPLAY") != null) {
+            return ((ThemeDisplay) req.getAttribute("LIFERAY_SHARED_THEME_DISPLAY")).getUserId();
         } else {
             return (Long) req.getAttribute("USER_ID");
         }
