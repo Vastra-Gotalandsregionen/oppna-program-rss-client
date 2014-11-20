@@ -73,6 +73,25 @@
     </portlet-info>
   </portlet>
 
+  <portlet>
+    <portlet-name>IntraRssClient</portlet-name>
+    <display-name>RSS Client for intra-nets</display-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+    <resource-bundle>se.vgregion.portal.rss.client.rssClient</resource-bundle>
+    <portlet-info>
+      <title>RSS Client for intranets</title>
+      <short-title>RSS Intra-Client</short-title>
+      <keywords>Intranet rss client viewer feeds</keywords>
+    </portlet-info>
+  </portlet>
+
   <user-attribute>
     <description>User Login ID</description>
     <name>user.login.id</name>

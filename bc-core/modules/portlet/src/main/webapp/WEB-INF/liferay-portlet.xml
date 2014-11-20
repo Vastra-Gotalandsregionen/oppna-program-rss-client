@@ -21,10 +21,17 @@
     <ajaxable>true</ajaxable>
     <footer-portlet-javascript>/script/vgr-rss-client.js</footer-portlet-javascript>
   </portlet>
-  
+
   <portlet>
     <portlet-name>RssClientMinimal</portlet-name>
     <instanceable>true</instanceable>
     <requires-namespaced-parameters>false</requires-namespaced-parameters>
   </portlet>
+
+  <portlet>
+    <portlet-name>IntraRssClient</portlet-name>
+    <instanceable>true</instanceable>
+    <requires-namespaced-parameters>false</requires-namespaced-parameters>
+  </portlet>
+
 </liferay-portlet-app>
