@@ -49,11 +49,11 @@
                 <li class="vgr-list-view-item ${listItemCssClass} clearfix">
 
                     <div class="hd clearfix">
-                        <h3 class="title">
+                        <div class="title">
                             <a href="${item.link}" target="_BLANK">
                                 ${item.title}
                             </a>
-                        </h3>
+                        </div>
                     </div>
                     <div class="bd description">
 
