@@ -92,6 +92,6 @@ public class RssIntraViewController extends RssViewControllerBase {
         }
         response.setContentType("text/html");
         model.addAttribute("rssEntries", sortedRssEntries);
-        return "rssFeedViewMinimal";
+        return "rssFeedViewMinimalIntra";
     }
 }
