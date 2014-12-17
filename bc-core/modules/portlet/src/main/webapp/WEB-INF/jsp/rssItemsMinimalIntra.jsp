@@ -29,35 +29,6 @@
 
 <fmt:setBundle basename="se.vgregion.portal.rss.client.rssClient"/>
 
-<%-- 
-<script>
-	jQuery(document).ready(function() {
-	    jQuery("#p_p_id<portlet:namespace/> .news-title-minimal").excerpt({lines: '${portletPreferencesValues.numberOfExcerptRows[0]}', end: '...'});
-	});
-</script>
-
-<div id="rss-item-container" class="rss-item-container-minimal">
-  <ul id="list-news" class="list-news-minimal">
-    <c:forEach items="${rssEntries}" var="item" varStatus="status">
-      <c:choose>
-        <c:when test="${not empty portletPreferencesValues.rssStandardClientPortletLink[0]}">
-          <li class="news-item-minimal"
-              onClick="location.href='${portletPreferencesValues.rssStandardClientPortletLink[0]}&selectedRssItemTitle=${item.link}#${item.link}'">
-        </c:when>
-        <c:otherwise>
-          <li class="news-item-minimal" onClick="location.href='${item.link}'">
-        </c:otherwise>
-      </c:choose>
-      <div class="news-title-minimal"
-          title="(<fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm" />) ${item.feedTitle}">
-        <c:out value="${item.title}" escapeXml="false"/>
-      </div>
-    </c:forEach>
-  </ul>
-</div>
-
---%>
-
 <c:forEach items="${rssEntries}" var="item" varStatus="status">
     <div class="entry-item">
         <c:set var="link" scope="page">
@@ -75,7 +46,10 @@
             <div class="entry-date">
                 <div class="entry-date-inner">
                     <div class="entry-date-month">
-                        <fmt:formatDate value="${item.publishedDate}" type="both" pattern="HH:mm"/>
+                        <fmt:formatDate value="${item.publishedDate}" type="date" dateStyle="medium" pattern="MMM"/>
+                    </div>
+                    <div class="entry-date-day">
+                      <fmt:formatDate value="${item.publishedDate}" type="date" pattern="d"/>
                     </div>
                 </div>
             </div>
