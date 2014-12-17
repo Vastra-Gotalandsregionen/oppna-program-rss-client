@@ -36,7 +36,7 @@ public class RssIntraEditController extends RssEditControllerBase {
     /**
      * JSP to show on success.
      */
-    public static final String CONFIG_JSP = "preferencesConfigMinimal";
+    public static final String CONFIG_JSP = "preferencesConfigIntra";
 
     /**
      * Edit controller for the minimal view rss portlet.

@@ -34,11 +34,12 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
  * Controller for view mode, display of RSS items.
- * 
+ *
  * @author Jonas Liljenfeldt
  * @author anders asplund
  * @author David Rosell
@@ -58,7 +59,7 @@ public class RssIntraViewController extends RssViewControllerBase {
 
     /**
      * Shows RSS items for user.
-     * 
+     *
      * @param model
      *            ModelMap
      * @param request
@@ -77,6 +78,8 @@ public class RssIntraViewController extends RssViewControllerBase {
             PortletPreferences preferences) throws IOException {
 
         addUserToModel(model, request);
+        addTabStateToModel(model, request, preferences);
+        addTabTitleToModel(model, request, preferences);
 
         ResourceBundle bundle = getPortletConfig().getResourceBundle(response.getLocale());
 
@@ -94,4 +97,66 @@ public class RssIntraViewController extends RssViewControllerBase {
         model.addAttribute("rssEntries", sortedRssEntries);
         return "rssFeedViewMinimalIntra";
     }
+
+    /**
+    * @param model
+    * @param request
+    */
+    private void addTabStateToModel(ModelMap model, RenderRequest request, PortletPreferences preferences) {
+
+      boolean isTab1Active = false;
+      boolean isTab2Active = false;
+      boolean isTab3Active = false;
+      boolean isTab4Active = false;
+
+      String rssFeedLink1 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_1, "");
+      String rssFeedLink2 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_2, "");
+      String rssFeedLink3 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_3, "");
+      String rssFeedLink4 = preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_LINK_4, "");
+
+      if (rssFeedLink1 != null && !rssFeedLink1.equals("")) {
+        isTab1Active = true;
+      }
+      if (rssFeedLink2 != null && !rssFeedLink2.equals("")) {
+        isTab2Active = true;
+      }
+      if (rssFeedLink3 != null && !rssFeedLink3.equals("")) {
+        isTab3Active = true;
+      }
+      if (rssFeedLink4 != null && !rssFeedLink4.equals("")) {
+        isTab4Active = true;
+      }
+
+      model.addAttribute("isTab1Active", isTab1Active);
+      model.addAttribute("isTab2Active", isTab2Active);
+      model.addAttribute("isTab3Active", isTab3Active);
+      model.addAttribute("isTab4Active", isTab4Active);
+    }
+
+    /**
+    * @param model
+    * @param request
+    * @param preferences
+    */
+    private void addTabTitleToModel(ModelMap model, RenderRequest request, PortletPreferences preferences) {
+      List<String> rssFeedTitles = new ArrayList<String>();
+
+      if ((Boolean) model.get("isTab1Active")) {
+        rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_1, null));
+      }
+      if ((Boolean) model.get("isTab2Active")) {
+        rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_2, null));
+      }
+      if ((Boolean) model.get("isTab3Active")) {
+        rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_3, null));
+      }
+      if ((Boolean) model.get("isTab4Active")) {
+        rssFeedTitles.add(preferences.getValue(PortletPreferencesWrapperBean.RSS_FEED_TITLE_4, null));
+      }
+
+      model.addAttribute("rssFeedTitles", rssFeedTitles);
+    }
+
+
+
 }

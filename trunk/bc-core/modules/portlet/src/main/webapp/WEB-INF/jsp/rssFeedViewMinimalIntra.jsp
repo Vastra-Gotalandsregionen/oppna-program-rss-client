@@ -21,19 +21,12 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0"%>
-<style>
-<!--
-    @import url("${pageContext.request.contextPath}/style/style.css");
--->
-</style>
-<%--
-<div id="<portlet:namespace/>-module-news" class="module rss-client">
-<div id="<portlet:namespace/>-module-content"><jsp:directive.include file="rssItemsMinimalIntra.jsp" /></div>
-</div>
---%>
 
 <div class="blogs-listing content-box">
+    <%--
     <h2>IT-Nytt</h2>
+    --%>
+    <h2>${rssFeedTitles[0]}</h2>
     <div class="content-box-bd">
         <div class="news-items">
           <jsp:directive.include file="rssItemsMinimalIntra.jsp" />
