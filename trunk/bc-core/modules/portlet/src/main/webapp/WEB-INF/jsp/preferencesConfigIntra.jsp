@@ -31,7 +31,6 @@
 <portlet:actionURL var="clearFeedBlackList" name="clearFeedBlackList"/>
 <portlet:actionURL var="removeFromFeedBlackList" name="removeFromFeedBlackList"/>
 
-<p>Foo</p>
 <form:form id="preferencesForm" method="POST" action="${save}" modelAttribute="portletPreferencesWrapperBean" htmlEscape="false">
   <fieldset>
     <legend><fmt:message key="settings"/></legend>
