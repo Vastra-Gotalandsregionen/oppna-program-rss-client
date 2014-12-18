@@ -52,7 +52,9 @@ public class RssViewController extends RssViewControllerBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(RssViewController.class);
     private static final String FEED = "feed";
 
-    private ExecutorService executor = Executors.newFixedThreadPool(4);
+    // In certain environments it seems that the fetching is not threadsafe and thus fails when using multiple threads.
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
+//    private ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     /**
      * Standard Rss portlet view controller.
@@ -307,7 +309,7 @@ public class RssViewController extends RssViewControllerBase {
         @Override
         public FeedEntryBean get(int index) {
             try {
-                return internalList.get(10, TimeUnit.SECONDS).get(index);
+                return internalList.get(30, TimeUnit.SECONDS).get(index);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ExecutionException e) {
@@ -321,7 +323,7 @@ public class RssViewController extends RssViewControllerBase {
         @Override
         public int size() {
             try {
-                return internalList.get(10, TimeUnit.SECONDS).size();
+                return internalList.get(30, TimeUnit.SECONDS).size();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ExecutionException e) {

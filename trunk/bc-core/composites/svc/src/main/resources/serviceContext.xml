@@ -38,4 +38,4 @@
     <!--<property name="cacheManagerName"  value="rssFeedsCacheManager"/>-->
   </bean>
 
-</beans> 
+</beans>

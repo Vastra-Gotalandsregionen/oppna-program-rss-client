@@ -3,7 +3,6 @@ package se.vgregion.portal.rss.client.service;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 import org.rometools.fetcher.impl.HttpURLFeedFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,8 @@ import se.vgregion.portal.rss.util.XmlTransformationTool;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -24,6 +25,7 @@ import java.net.URLConnection;
 public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHttpURLFeedFetcher.class);
+    private SyndFeedInput syndFeedInput = new SyndFeedInput();
 
     /**
      * This method retrieves the {@link SyndFeed} from a {@link URL}. The difference between
@@ -38,13 +40,17 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
      */
     @Override
     public SyndFeed retrieveFeed(URL feedUrl) throws IOException, FeedException {
+        LOGGER.debug("Retrieve feed: " + feedUrl.toString());
+
         InputStream modifiedStream = null;
         try {
             // Possibly modify the response to correct dates
             modifiedStream = getModifiedStream(feedUrl);
 
-            XmlReader reader = new XmlReader(modifiedStream);
-            SyndFeed syndFeed = new SyndFeedInput().build(reader);
+            Reader r = new InputStreamReader(modifiedStream);
+            SyndFeed syndFeed = syndFeedInput.build(r);
+
+            LOGGER.debug("Retrieved " + syndFeed.getEntries().size() + " entries from " + feedUrl.toString());
             return syndFeed;
         } catch (Exception e) {
             LOGGER.error("Feed: " + feedUrl.toString() + " - " + e.getMessage(), e);
