@@ -30,6 +30,8 @@
 
   <portlet>
     <portlet-name>IntraRssClient</portlet-name>
+    <configuration-action-class>se.vgregion.portal.rss.client.intra.action.ConfigurationActionImpl</configuration-action-class>
+    <template-handler>se.vgregion.portal.rss.client.intra.displaytemplates.RssPortletDisplayTemplateHandler</template-handler>
     <instanceable>true</instanceable>
     <requires-namespaced-parameters>false</requires-namespaced-parameters>
   </portlet>

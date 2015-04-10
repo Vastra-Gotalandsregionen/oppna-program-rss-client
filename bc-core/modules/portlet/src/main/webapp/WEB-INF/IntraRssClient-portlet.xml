@@ -18,7 +18,7 @@
   <import resource="applicationContext.xml" />
 
   <!-- Enables component scanning -->
-  <context:component-scan base-package="se.vgregion.portal.rss.client.controllers.intra" />
+  <context:component-scan base-package="se.vgregion.portal.rss.client.intra.controllers" />
 
   <!-- Enables annotations -->
   <context:annotation-config />
@@ -29,7 +29,7 @@
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-    <property name="prefix" value="/WEB-INF/jsp/" />
+    <property name="prefix" value="/WEB-INF/jsp/intra/" />
     <property name="suffix" value=".jsp" />
     <property name="contentType" value="text/html;charset=UTF-8" />
   </bean>
