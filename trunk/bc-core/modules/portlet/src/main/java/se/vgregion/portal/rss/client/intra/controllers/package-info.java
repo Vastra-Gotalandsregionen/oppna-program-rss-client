@@ -20,4 +20,4 @@
 /**
  * Package for controllers.
  */
-package se.vgregion.portal.rss.client.controllers.intra;
+package se.vgregion.portal.rss.client.intra.controllers;

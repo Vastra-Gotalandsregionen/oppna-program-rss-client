@@ -91,17 +91,33 @@ public abstract class RssEditControllerBase {
                                       @ModelAttribute PortletPreferencesWrapperBean preferencesBean,
                                       BindingResult result) {
 
+    	System.out.println("RssEditControllerBase - save - before validate");
+    	
         validator.validate(preferencesBean, result);
+        
+        System.out.println("RssEditControllerBase - save - after validate");
+        
+        
 
         if (!result.hasErrors()) {
             try {
                 // Set preference and store value
+            	
+            	System.out.println("RssEditControllerBase - save - before store");
+            	
                 preferencesBean.store(preferences);
+                
+                System.out.println("RssEditControllerBase - save - after store");
+                
                 model.addAttribute("saveError", null);
                 // response.setPortletMode(PortletMode.VIEW); This did not work well since the preferences page was
                 // opened initially every time.
             } catch (Exception e) {
                 logger.error("Error when trying to store RSS Client preferences.", e);
+                
+                System.out.println("preferencesBean.store exception");
+                System.out.print(e);
+                
                 model.addAttribute("saveError", "true");
             }
         } else {

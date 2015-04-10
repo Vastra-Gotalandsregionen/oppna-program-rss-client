@@ -102,6 +102,7 @@ public class RssViewControllerBase {
 
             final int charactersPerRow = 80; // Roughly
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
+            
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();

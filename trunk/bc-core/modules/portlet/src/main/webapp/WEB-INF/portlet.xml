@@ -77,11 +77,15 @@
     <portlet-name>IntraRssClient</portlet-name>
     <display-name>RSS Client for intra-nets</display-name>
     <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+	<init-param>
+		<name>config-template</name>
+		<value>/WEB-INF/jsp/intra/configuration.jsp</value>
+	</init-param>
+    
     <expiration-cache>0</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
       <portlet-mode>view</portlet-mode>
-      <portlet-mode>edit</portlet-mode>
     </supports>
     <supported-locale>sv</supported-locale>
     <resource-bundle>se.vgregion.portal.rss.client.rssClient</resource-bundle>
