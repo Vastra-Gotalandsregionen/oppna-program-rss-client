@@ -13,7 +13,9 @@
 				<action-key>VIEW</action-key>
 			</supports>
 			<site-member-defaults />
-			<guest-defaults />
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
 			<guest-unsupported>
 				<!-- 
 				<action-key>CONFIGURATION</action-key>
@@ -32,7 +34,9 @@
 				<action-key>VIEW</action-key>
 			</supports>
 			<site-member-defaults />
-			<guest-defaults />
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
 			<guest-unsupported>
 				<!-- 
 				<action-key>CONFIGURATION</action-key>
@@ -52,7 +56,9 @@
 				<action-key>VIEW</action-key>
 			</supports>
 			<site-member-defaults />
-			<guest-defaults />
+			<guest-defaults>
+				<action-key>VIEW</action-key>
+			</guest-defaults>
 			<guest-unsupported>
 				<!-- 
 				<action-key>CONFIGURATION</action-key>
