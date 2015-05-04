@@ -20,13 +20,7 @@
 package se.vgregion.portal.rss.client.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
@@ -102,7 +96,19 @@ public class RssViewControllerBase {
 
             final int charactersPerRow = 80; // Roughly
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
-            
+
+            int i = 0;
+            for (FeedEntryBean feb : feedEntries) {
+                Map<String, String> map = rssFetcherService.getAllInformationFromLatestFeed().get(i);
+                feb.setStartDate(map.get("startdate"));
+                feb.setStartTime(map.get("starttime"));
+                feb.setEndTime(map.get("endtime"));
+                feb.setEndDate(map.get("enddate"));
+                feb.setLocation(map.get("location"));
+                i++;
+            }
+
+
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
@@ -166,8 +172,18 @@ public class RssViewControllerBase {
             SyndFeed syndFeed = rssFeeds.get(j);
             if (syndFeed != null) {
                 for (int i = 0; syndFeed.getEntries() != null && i < syndFeed.getEntries().size(); i++) {
-                    feedEntryBeans.add(new FeedEntryBean((SyndEntry) syndFeed.getEntries().get(i), syndFeed
-                            .getTitle(), excerptLen));
+                    SyndEntry syndEntry = (SyndEntry) syndFeed.getEntries().get(i);
+                    FeedEntryBean feedEntry = new FeedEntryBean(syndEntry, syndFeed
+                            .getTitle(), excerptLen);
+
+                    /*
+                        private String startDate;
+    private String startTime;
+    private String endDate;
+    private String location;
+                     */
+                    //feedEntry.setStartDate(syndFeed.get);
+                    feedEntryBeans.add(feedEntry);
                 }
             }
         }

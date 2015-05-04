@@ -63,6 +63,28 @@
 			            <div class="entry-content news-title-minimal">
 			                <c:out value="${item.title}" escapeXml="false"/>
 			            </div>
+			            <div class="time-interval">
+							<!--
+							<span class="entry-content news-title-minimal start-date">
+								<c:out value="${item.startDate}" escapeXml="false"/>
+							</span>
+							-->
+							<span class="news-title-minimal start-time">
+								<c:out value="${item.startTime}" escapeXml="false"/>
+							</span>
+							<span> - </span>
+							<!--
+							<div class="entry-content news-title-minimal end-date">
+								<c:out value="${item.endDate}" escapeXml="false"/>
+							</div>
+							-->
+							<span class="news-title-minimal end-time">
+								<c:out value="${item.endTime}" escapeXml="false"/>
+							</span>
+			            </div>
+                        <div class="entry-content news-title-minimal location">
+			                <c:out value="${item.location}" escapeXml="false"/>
+			            </div>
 			        </a>
 			    </div>
 			</c:forEach>

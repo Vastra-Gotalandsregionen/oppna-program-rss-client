@@ -36,6 +36,7 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,7 +52,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
 
     private final BlackList<String> feedBlackList;
 
-    private final FeedFetcher feedFetcher;
+    private final CustomHttpURLFeedFetcher feedFetcher;
 
     /**
      * This RssFetcher service keeps track of a feed fetcher and a blacklist.
@@ -60,7 +61,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      * @param blackList the blackList
      */
     @Autowired
-    public RssFetcherServiceImpl(FeedFetcher feedFetcher, BlackList<String> blackList) {
+    public RssFetcherServiceImpl(CustomHttpURLFeedFetcher feedFetcher, BlackList<String> blackList) {
         this.feedFetcher = feedFetcher;
         feedBlackList = blackList;
     }
@@ -109,5 +110,10 @@ public class RssFetcherServiceImpl implements RssFetcherService {
          */
 
         return syndFeeds;
+    }
+
+    @Override
+    public List<Map<String, String>> getAllInformationFromLatestFeed() {
+        return feedFetcher.getAllInformationFromLatestFeed().get();
     }
 }

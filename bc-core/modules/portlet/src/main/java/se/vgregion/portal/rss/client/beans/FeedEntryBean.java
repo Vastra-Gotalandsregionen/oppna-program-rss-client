@@ -51,6 +51,14 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private String enclosureType;
     private String enclosureUrl;
 
+    // startdate, starttime, enddate, endtime och location
+
+    private String startDate;
+    private String startTime;
+    private String endTime;
+    private String endDate;
+    private String location;
+
     /**
      * Group-by-source comparator.
      */
@@ -92,6 +100,7 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
      */
     @SuppressWarnings("unchecked")
     public FeedEntryBean(SyndEntry syndEntry, String feedTitle, int excerptLen) {
+        Object fm = syndEntry.getForeignMarkup();
         if (syndEntry.getTitle() != null) {
             title = escapeText(syndEntry.getTitle().trim());
         }
@@ -265,5 +274,45 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(title).append(link).hashCode();
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

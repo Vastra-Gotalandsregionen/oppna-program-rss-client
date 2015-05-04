@@ -54,7 +54,7 @@ import static org.junit.Assert.assertTrue;
 public class RssFetcherServiceImplTest {
 
     @Mock
-    private FeedFetcher feedFetcher;
+    private CustomHttpURLFeedFetcher feedFetcher;
     @Mock
     private SyndFeed syndFeed;
     @Mock

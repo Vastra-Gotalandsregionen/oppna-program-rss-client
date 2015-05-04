@@ -25,6 +25,7 @@ import org.rometools.fetcher.FetcherException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,4 +48,5 @@ public interface RssFetcherService {
     List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
             FetcherException;
 
+    List<Map<String, String>> getAllInformationFromLatestFeed();
 }
