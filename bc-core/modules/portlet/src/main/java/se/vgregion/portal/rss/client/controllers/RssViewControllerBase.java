@@ -1,20 +1,19 @@
 /**
  * Copyright 2010 Västra Götalandsregionen
- *
- *   This library is free software; you can redistribute it and/or modify
- *   it under the terms of version 2.1 of the GNU Lesser General Public
- *   License as published by the Free Software Foundation.
- *
- *   This library is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- *
- *   You should have received a copy of the GNU Lesser General Public
- *   License along with this library; if not, write to the
- *   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- *   Boston, MA 02111-1307  USA
- *
+ * <p>
+ * This library is free software; you can redistribute it and/or modify
+ * it under the terms of version 2.1 of the GNU Lesser General Public
+ * License as published by the Free Software Foundation.
+ * <p>
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307  USA
  */
 
 package se.vgregion.portal.rss.client.controllers;
@@ -45,7 +44,7 @@ import com.sun.syndication.io.FeedException;
 
 /**
  * Controller base for view mode, display of RSS items.
- * 
+ *
  * @author Jonas Liljenfeldt
  * @author Anders Asplund
  * @author David Rosell
@@ -86,7 +85,7 @@ public class RssViewControllerBase {
     }
 
     protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model,
-            String rssFeedPref) throws IOException {
+                                                String rssFeedPref) throws IOException {
         Set<String> feedUrls = getFeedUrls(preferences, model, rssFeedPref);
         List<FeedEntryBean> feedEntries = Collections.emptyList();
         int noOfRows =
@@ -98,14 +97,19 @@ public class RssViewControllerBase {
             feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
 
             int i = 0;
-            for (FeedEntryBean feb : feedEntries) {
-                Map<String, String> map = rssFetcherService.getAllInformationFromLatestFeed().get(i);
-                feb.setStartDate(map.get("startdate"));
-                feb.setStartTime(map.get("starttime"));
-                feb.setEndTime(map.get("endtime"));
-                feb.setEndDate(map.get("enddate"));
-                feb.setLocation(map.get("location"));
-                i++;
+            List<Map<String, String>> extraInfo = rssFetcherService.getAllInformationFromLatestFeed();
+
+            if (extraInfo != null && !extraInfo.isEmpty()) {
+                for (FeedEntryBean feb : feedEntries) {
+                    Map<String, String> map = extraInfo.get(i);
+                    feb.setStartDate(map.get("startdate"));
+                    feb.setStartTime(map.get("starttime"));
+                    feb.setEndTime(map.get("endtime"));
+                    feb.setEndDate(map.get("enddate"));
+                    feb.setLocation(map.get("location"));
+                    i++;
+                }
+                extraInfo.clear();
             }
 
 
@@ -132,7 +136,7 @@ public class RssViewControllerBase {
     }
 
     protected void addSortedFeedEntriesToModel(ModelMap model, PortletPreferences preferences,
-            String rssFeedPref, String rssFeedNumberOfItemsPref) throws IOException {
+                                               String rssFeedPref, String rssFeedNumberOfItemsPref) throws IOException {
         List<FeedEntryBean> feedEntries = getSortedRssEntries(preferences, model, rssFeedPref);
         feedEntries = getItemsToBeDisplayed(preferences, feedEntries, rssFeedNumberOfItemsPref);
         model.addAttribute("rssEntries", feedEntries);
@@ -142,7 +146,7 @@ public class RssViewControllerBase {
         Set<String> feedUrls = new HashSet<String>();
 
         for (String key : new ArrayList<String>(model.keySet())) {
-            logger.debug("Model key: "+key);
+            logger.debug("Model key: " + key);
         }
 
         // Get list of URLs for user saved in his/her preferences
@@ -191,7 +195,7 @@ public class RssViewControllerBase {
     }
 
     protected List<FeedEntryBean> getItemsToBeDisplayed(PortletPreferences preferences,
-            List<FeedEntryBean> sortedRssEntries, String rssFeedNumberOfItemsPref) {
+                                                        List<FeedEntryBean> sortedRssEntries, String rssFeedNumberOfItemsPref) {
         sortedRssEntries =
                 sortedRssEntries.subList(0, Math.min(
                         sortedRssEntries.size(),
@@ -201,7 +205,7 @@ public class RssViewControllerBase {
     }
 
     protected List<FeedEntryBean> getSortedRssEntries(PortletPreferences preferences, ModelMap model,
-            String rssFeedPref) throws IOException {
+                                                      String rssFeedPref) throws IOException {
         List<FeedEntryBean> feedEntries = getRssEntries(preferences, model, rssFeedPref);
         Collections.sort(feedEntries, getSortOrder(model));
         return feedEntries;
