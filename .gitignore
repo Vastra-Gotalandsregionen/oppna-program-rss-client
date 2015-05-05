@@ -10,3 +10,5 @@ target/*
 
 bc-core/composites/svc/target/*
 bc-core/modules/portlet/target/*
+.idea/
+*.iml

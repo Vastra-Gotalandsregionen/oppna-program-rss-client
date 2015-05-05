@@ -85,7 +85,7 @@ public class RssFetcherServiceImpl implements RssFetcherService {
                         try {
                             URL feedUrl = new URL(feedLink);
                             SyndFeed syndFeed = feedFetcher.retrieveFeed(feedUrl);
-                            
+                            feedFetcher.getAllInformationFromLatestFeed();
                             syndFeeds.add(syndFeed);
                         } catch (ConnectException e) {
                             feedBlackList.add(feedLink);

@@ -102,7 +102,7 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
         }
     }
 
-    private final ThreadLocal<List<Map<String, String>>> allInformationFromLatestFeed = new ThreadLocal<List<Map<String, String>>>();
+    private final static ThreadLocal<List<Map<String, String>>> allInformationFromLatestFeed = new ThreadLocal<List<Map<String, String>>>();
 
     // In case the dates are in Swedish we need to transform them to English to conform to the standard.
     protected InputStream getModifiedStream(URL feedUrl) throws IOException {
