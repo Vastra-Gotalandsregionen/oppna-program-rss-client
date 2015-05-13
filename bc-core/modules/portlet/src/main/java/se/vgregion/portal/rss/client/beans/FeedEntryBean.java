@@ -20,6 +20,8 @@
 package se.vgregion.portal.rss.client.beans;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,11 @@ import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
+
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
     /**
      * The limit for the short version of the news item description.
      */
@@ -53,10 +60,10 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     // startdate, starttime, enddate, endtime och location
 
-    private String startDate;
-    private String startTime;
-    private String endTime;
-    private String endDate;
+    private Date startDate;
+    private Date startTime;
+    private Date endTime;
+    private Date endDate;
     private String location;
 
     /**
@@ -276,27 +283,39 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         return new HashCodeBuilder().append(title).append(link).hashCode();
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(String startDate) {
+        this.startDate = toDate(startDate);
+    }
+
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
     public void setStartTime(String startTime) {
+        this.startTime = toTimeDate(startTime);
+    }
+
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
     public void setEndDate(String endDate) {
+        this.endDate = toDate(endDate);
+    }
+
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -308,11 +327,34 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
         this.location = location;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
     public void setEndTime(String endTime) {
+        this.endTime = toTimeDate(endTime);
+    }
+
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+    private Date toDate(String text) {
+        try {
+            return (dateFormat.parse(text));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Date toTimeDate(String text) {
+        try {
+            return (timeFormat.parse(text));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
