@@ -29,6 +29,7 @@ import org.rometools.fetcher.FetcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.ui.ModelMap;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
@@ -84,6 +85,29 @@ public class RssViewControllerBase {
         return comparator;
     }
 
+    @Cacheable(value = "feedCache")
+    private List<FeedEntryBean> getRssEntriesImpl(Set<String> feedUrls, int noOfRows, int charactersPerRow) throws FetcherException, IOException, FeedException {
+        List<FeedEntryBean> feedEntries  = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
+
+        int i = 0;
+        List<Map<String, String>> extraInfo = rssFetcherService.getAllInformationFromLatestFeed();
+
+        if (extraInfo != null && !extraInfo.isEmpty()) {
+            for (FeedEntryBean feb : feedEntries) {
+                Map<String, String> map = extraInfo.get(i);
+                feb.setStartDate(map.get("startdate"));
+                feb.setStartTime(map.get("starttime"));
+                feb.setEndTime(map.get("endtime"));
+                feb.setEndDate(map.get("enddate"));
+                feb.setLocation(map.get("location"));
+                i++;
+            }
+            extraInfo.clear();
+        }
+
+        return feedEntries;
+    }
+
     protected List<FeedEntryBean> getRssEntries(PortletPreferences preferences, ModelMap model,
                                                 String rssFeedPref) throws IOException {
         Set<String> feedUrls = getFeedUrls(preferences, model, rssFeedPref);
@@ -92,27 +116,8 @@ public class RssViewControllerBase {
                 Integer.parseInt(preferences.getValue(PortletPreferencesWrapperBean.NUMBER_OF_EXCERPT_ROWS,
                         String.valueOf(PortletPreferencesWrapperBean.DEFAULT_NUMBER_OF_EXCERPT_ROWS)));
         try {
-
             final int charactersPerRow = 80; // Roughly
-            feedEntries = getFeedEntries(rssFetcherService.getRssFeeds(feedUrls), noOfRows * charactersPerRow);
-
-            int i = 0;
-            List<Map<String, String>> extraInfo = rssFetcherService.getAllInformationFromLatestFeed();
-
-            if (extraInfo != null && !extraInfo.isEmpty()) {
-                for (FeedEntryBean feb : feedEntries) {
-                    Map<String, String> map = extraInfo.get(i);
-                    feb.setStartDate(map.get("startdate"));
-                    feb.setStartTime(map.get("starttime"));
-                    feb.setEndTime(map.get("endtime"));
-                    feb.setEndDate(map.get("enddate"));
-                    feb.setLocation(map.get("location"));
-                    i++;
-                }
-                extraInfo.clear();
-            }
-
-
+            feedEntries = getRssEntriesImpl(feedUrls, noOfRows, charactersPerRow);
         } catch (FeedException e) {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
@@ -123,14 +128,6 @@ public class RssViewControllerBase {
             logger.error("Error when trying to fetch RSS items: " + feedUrls, e);
             e.printStackTrace();
         }
-
-        /*
-         * for (FeedEntryBean feedEntryBean : feedEntries) { System.out.println("titel !!! = " +
-         * feedEntryBean.getTitle()); System.out.println("titel !!! = " + feedEntryBean.getContentsString());
-         * System.out.println("titel !!! = " + feedEntryBean.getExcerpt());
-         * 
-         * for (String s : feedEntryBean.getContents()) { System.out.println("s !!! = " + s); } }
-         */
 
         return feedEntries;
     }
@@ -179,14 +176,6 @@ public class RssViewControllerBase {
                     SyndEntry syndEntry = (SyndEntry) syndFeed.getEntries().get(i);
                     FeedEntryBean feedEntry = new FeedEntryBean(syndEntry, syndFeed
                             .getTitle(), excerptLen);
-
-                    /*
-                        private String startDate;
-    private String startTime;
-    private String endDate;
-    private String location;
-                     */
-                    //feedEntry.setStartDate(syndFeed.get);
                     feedEntryBeans.add(feedEntry);
                 }
             }

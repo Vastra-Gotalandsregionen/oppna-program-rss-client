@@ -72,7 +72,6 @@ public class RssFetcherServiceImpl implements RssFetcherService {
      * @throws FetcherException
      */
     @Override
-    @Cacheable(value = "feedCache")
     public List<SyndFeed> getRssFeeds(Set<String> feedUrls) throws FeedException, IOException,
             FetcherException {
         List<SyndFeed> syndFeeds = new ArrayList<SyndFeed>();

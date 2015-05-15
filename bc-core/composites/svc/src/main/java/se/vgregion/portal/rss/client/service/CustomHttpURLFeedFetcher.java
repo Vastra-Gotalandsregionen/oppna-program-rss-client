@@ -41,15 +41,6 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHttpURLFeedFetcher.class);
     private SyndFeedInput syndFeedInput = new SyndFeedInput();
 
-    {
-        addFetcherEventListener(new FetcherListener() {
-            @Override
-            public void fetcherEvent(FetcherEvent event) {
-                System.out.println(event);
-            }
-        });
-    }
-
     /**
      * This method retrieves the {@link SyndFeed} from a {@link URL}. The difference between
      * {@link org.rometools.fetcher.impl.HttpURLFeedFetcher#retrieveFeed(java.net.URL)} and this method is that this
