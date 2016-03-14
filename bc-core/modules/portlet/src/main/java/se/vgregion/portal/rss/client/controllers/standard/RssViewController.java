@@ -32,6 +32,7 @@ import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
 import se.vgregion.portal.rss.client.controllers.RssViewControllerBase;
 
+import javax.annotation.PreDestroy;
 import javax.portlet.*;
 import java.io.IOException;
 import java.util.*;
@@ -61,6 +62,11 @@ public class RssViewController extends RssViewControllerBase {
      */
     public RssViewController() {
         super.setLogger(LOGGER);
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        executor.shutdownNow();
     }
 
     /**
