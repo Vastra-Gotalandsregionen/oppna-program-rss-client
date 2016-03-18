@@ -119,10 +119,15 @@ public class RssViewController extends RssViewControllerBase {
             listOfRssEntriesLists.add(new FutureWrapperList(executor.submit(new Callable<List<FeedEntryBean>>() {
                 @Override
                 public List<FeedEntryBean> call() throws Exception {
-                    List<FeedEntryBean> sortedRssEntries = getSortedAndFilteredItemsForOneFeedLink(model, request,
-                            preferences, feedPrefTemp);
+                    try {
+                        List<FeedEntryBean> sortedRssEntries = getSortedAndFilteredItemsForOneFeedLink(model, request,
+                                preferences, feedPrefTemp);
 
-                    return sortedRssEntries;
+                        return sortedRssEntries;
+                    } catch (Exception e) {
+                        LOGGER.error(e.getMessage(), e);
+                        throw e;
+                    }
                 }
             })));
         }
@@ -333,6 +338,7 @@ public class RssViewController extends RssViewControllerBase {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ExecutionException e) {
+                LOGGER.error(e.getCause().getMessage(), e.getCause());
                 throw new RuntimeException(e);
             } catch (TimeoutException e) {
                 LOGGER.error(e.getMessage(), e);

@@ -36,8 +36,12 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeedEntryBean.class);
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -341,9 +345,16 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
 
     private Date toDate(String text) {
         try {
+            if (text == null) {
+                return null;
+            }
+
             return (dateFormat.parse(text));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            LOGGER.warn("Null date text.");
+            return null;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
     }
@@ -351,8 +362,11 @@ public class FeedEntryBean implements Serializable, Comparable<FeedEntryBean> {
     private Date toTimeDate(String text) {
         try {
             return (timeFormat.parse(text));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            LOGGER.warn("Null date text.");
+            return null;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             return null;
         }
     }

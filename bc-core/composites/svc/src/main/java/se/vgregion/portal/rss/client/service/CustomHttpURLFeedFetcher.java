@@ -101,6 +101,8 @@ public class CustomHttpURLFeedFetcher extends HttpURLFeedFetcher {
         URLConnection urlConnection = null;
         try {
             urlConnection = feedUrl.openConnection();
+            urlConnection.setConnectTimeout(5000);
+            urlConnection.setReadTimeout(5000);
             urlInputStream = urlConnection.getInputStream();
             return XmlTransformationTool.transformDatesToEnglish(urlInputStream);
         } finally {
