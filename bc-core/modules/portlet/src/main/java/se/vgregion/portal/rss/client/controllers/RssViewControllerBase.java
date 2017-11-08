@@ -38,7 +38,7 @@ import se.vgregion.portal.rss.client.chain.StringTemplatePlaceholderProcessor;
 import se.vgregion.portal.rss.client.service.RssFetcherService;
 
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;

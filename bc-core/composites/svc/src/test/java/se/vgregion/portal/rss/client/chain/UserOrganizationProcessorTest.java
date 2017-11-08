@@ -2,9 +2,9 @@ package se.vgregion.portal.rss.client.chain;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
-import com.liferay.portal.service.UserLocalService;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.After;
 import org.junit.Before;

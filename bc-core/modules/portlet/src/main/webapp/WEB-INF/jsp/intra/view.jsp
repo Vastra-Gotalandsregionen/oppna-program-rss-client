@@ -30,7 +30,7 @@
 <%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-<%@ page import="com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateUtil" %>
+<%@ page import="com.liferay.portlet.display.template.PortletDisplayTemplateUtil" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -39,9 +39,9 @@
 <portlet:defineObjects/>
 <liferay-theme:defineObjects />
 
-<%	
+<%
 	long portletDisplayDDMTemplateId = (Long)request.getAttribute("portletDisplayDDMTemplateId");
-	
+
 	Map<String, Object> displayTemplateContextObjects = (HashMap<String, Object>)request.getAttribute("displayTemplateContextObjects");
 
 	List<FeedEntryBean> rssEntries = (List<FeedEntryBean>)request.getAttribute("rssEntries");

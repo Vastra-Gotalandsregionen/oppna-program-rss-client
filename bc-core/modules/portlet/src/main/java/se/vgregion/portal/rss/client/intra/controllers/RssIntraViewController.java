@@ -28,8 +28,8 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portlet.display.template.PortletDisplayTemplateUtil;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
@@ -87,14 +87,14 @@ public class RssIntraViewController extends RssViewControllerBase {
     @RenderMapping
     public String viewRssItemList(ModelMap model, RenderRequest request, RenderResponse response,
             PortletPreferences preferences) throws IOException {
-    	
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 				WebKeys.THEME_DISPLAY);
-		
+
 		long scopeGroupId = themeDisplay.getScopeGroupId();
-		
+
     	PortletPreferences portletPreferences = request.getPreferences();
-    	
+
     	// Note, Erik Andersson 2015-04-10. Realized that addUserToModel is required by RssViewControllerBase
     	// Code should be refactored.
     	addUserToModel(model, request);
@@ -107,17 +107,17 @@ public class RssIntraViewController extends RssViewControllerBase {
 
         sortedRssEntries = getItemsToBeDisplayed(
         		preferences, sortedRssEntries, PortletPreferencesWrapperBean.NUMBER_OF_ITEM_1);
-        
+
         // Display Template
 		String displayStyle = GetterUtil.getString(portletPreferences.getValue("displayStyle", ""));
 		long displayStyleGroupId = GetterUtil.getLong(portletPreferences.getValue("displayStyleGroupId", null), scopeGroupId);
-		
+
 		Map<String, Object> displayTemplateContextObjects = new HashMap<String, Object>();
 		displayTemplateContextObjects.put("feedTitle", feedTitle);
-		
+
 		long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(
 				displayStyleGroupId, displayStyle);
-		
+
         model.addAttribute("feedTitle", feedTitle);
         model.addAttribute("portletDisplayDDMTemplateId", portletDisplayDDMTemplateId);
         model.addAttribute("displayTemplateContextObjects", displayTemplateContextObjects);

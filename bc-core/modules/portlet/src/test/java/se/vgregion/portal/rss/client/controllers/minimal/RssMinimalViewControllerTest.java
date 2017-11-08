@@ -18,12 +18,12 @@
  */
 
 /**
- * 
+ *
  */
 package se.vgregion.portal.rss.client.controllers.minimal;
 
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,7 +44,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author anders.bergkvist@omegapoint.se
- * 
+ *
  */
 public class RssMinimalViewControllerTest {
 
@@ -73,7 +73,7 @@ public class RssMinimalViewControllerTest {
      * Test method for
      * {@link se.vgregion.portal.rss.client.controllers.minimal.RssMinimalViewController#viewRssItemList(org.springframework.ui.ModelMap, javax.portlet.RenderRequest, javax.portlet.RenderResponse, javax.portlet.PortletPreferences)}
      * .
-     * 
+     *
      * @throws IOException
      */
     @Test

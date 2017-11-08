@@ -8,9 +8,9 @@ import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.SessionClicks;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.SessionClicks;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -19,51 +19,98 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 
 /**
- * @author Erik Andersson 
+ * @author Erik Andersson
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
-	
+
+	// public void include(
+	// 		PortletConfig portletConfig, HttpServletRequest request,
+	// 		HttpServletResponse response)
+	// 	throws Exception;
+
 	@Override
-	public String render(
-			PortletConfig portletConfig, RenderRequest renderRequest,
-			RenderResponse renderResponse)
-		throws Exception {
-		
-		System.out.println("Custom Configuration Action - ConfigurationActionImpl - render");
-		
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-		
-		long scopeGroupId = themeDisplay.getScopeGroupId();
-		
-		PortletPreferences portletPreferences = renderRequest.getPreferences();
-		
+	public void include(
+			PortletConfig portletConfig, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) throws Exception {
+
+//		httpServletRequest.setAttribute(
+//				ExampleConfiguration.class.getName(),
+//				_exampleConfiguration);
+
+
+		long scopeGroupId = PortalUtil.getScopeGroupId(httpServletRequest);
+
+
+		PortletPreferences portletPreferences = PortalUtil.getPreferences(httpServletRequest);
+
 		String displayStyle = GetterUtil.getString(portletPreferences.getValue("displayStyle", ""));
 		long displayStyleGroupId = GetterUtil.getLong(portletPreferences.getValue("displayStyleGroupId", null), scopeGroupId);
-		
+
 		String rssFeedtitle1 = GetterUtil.getString(portletPreferences.getValue("rssFeedtitle1", ""));
 		String rssFeedLink1 = GetterUtil.getString(portletPreferences.getValue("rssFeedLink1", ""));
 		int numberOfItems1 = GetterUtil.getInteger(portletPreferences.getValue("numberOfItems1", "5"));
-		
+
 		TemplateHandler templateHandler = TemplateHandlerRegistryUtil.getTemplateHandler(FeedEntryBean.class.getName());
 		long templateHandlerClassNameId = PortalUtil.getClassNameId(templateHandler.getClassName());
-		
-		String refreshUrl = PortalUtil.getCurrentURL(renderRequest);
-		
-		renderRequest.setAttribute("displayStyle", displayStyle);
-		renderRequest.setAttribute("displayStyleGroupId", displayStyleGroupId);
-		renderRequest.setAttribute("refreshUrl", refreshUrl);
-		renderRequest.setAttribute("numberOfItems1", numberOfItems1);
-		renderRequest.setAttribute("rssFeedtitle1", rssFeedtitle1);
-		renderRequest.setAttribute("rssFeedLink1", rssFeedLink1);
-		renderRequest.setAttribute("templateHandlerClassNameId", templateHandlerClassNameId);
-		
-		return super.render(portletConfig, renderRequest, renderResponse);
-	}	
+
+		String refreshUrl = PortalUtil.getCurrentURL(httpServletRequest);
+
+		httpServletRequest.setAttribute("displayStyle", displayStyle);
+		httpServletRequest.setAttribute("displayStyleGroupId", displayStyleGroupId);
+		httpServletRequest.setAttribute("refreshUrl", refreshUrl);
+		httpServletRequest.setAttribute("numberOfItems1", numberOfItems1);
+		httpServletRequest.setAttribute("rssFeedtitle1", rssFeedtitle1);
+		httpServletRequest.setAttribute("rssFeedLink1", rssFeedLink1);
+		httpServletRequest.setAttribute("templateHandlerClassNameId", templateHandlerClassNameId);
+
+
+
+		super.include(portletConfig, httpServletRequest, httpServletResponse);
+	}
+
+
+//	@Override
+//	public String include(
+//			PortletConfig portletConfig, RenderRequest renderRequest,
+//			RenderResponse renderResponse)
+//		throws Exception {
+//
+//		System.out.println("Custom Configuration Action - ConfigurationActionImpl - render");
+//
+//		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+//				WebKeys.THEME_DISPLAY);
+//
+//		long scopeGroupId = themeDisplay.getScopeGroupId();
+//
+//		PortletPreferences portletPreferences = renderRequest.getPreferences();
+//
+//		String displayStyle = GetterUtil.getString(portletPreferences.getValue("displayStyle", ""));
+//		long displayStyleGroupId = GetterUtil.getLong(portletPreferences.getValue("displayStyleGroupId", null), scopeGroupId);
+//
+//		String rssFeedtitle1 = GetterUtil.getString(portletPreferences.getValue("rssFeedtitle1", ""));
+//		String rssFeedLink1 = GetterUtil.getString(portletPreferences.getValue("rssFeedLink1", ""));
+//		int numberOfItems1 = GetterUtil.getInteger(portletPreferences.getValue("numberOfItems1", "5"));
+//
+//		TemplateHandler templateHandler = TemplateHandlerRegistryUtil.getTemplateHandler(FeedEntryBean.class.getName());
+//		long templateHandlerClassNameId = PortalUtil.getClassNameId(templateHandler.getClassName());
+//
+//		String refreshUrl = PortalUtil.getCurrentURL(renderRequest);
+//
+//		renderRequest.setAttribute("displayStyle", displayStyle);
+//		renderRequest.setAttribute("displayStyleGroupId", displayStyleGroupId);
+//		renderRequest.setAttribute("refreshUrl", refreshUrl);
+//		renderRequest.setAttribute("numberOfItems1", numberOfItems1);
+//		renderRequest.setAttribute("rssFeedtitle1", rssFeedtitle1);
+//		renderRequest.setAttribute("rssFeedLink1", rssFeedLink1);
+//		renderRequest.setAttribute("templateHandlerClassNameId", templateHandlerClassNameId);
+//
+//		return super.render(portletConfig, renderRequest, renderResponse);
+//	}
 
 	@Override
 	public void processAction(
@@ -79,15 +126,15 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 	protected void updateRssSettings(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
-		
+
 		PortletPreferences portletPreferences = actionRequest.getPreferences();
-		
+
 		System.out.println("Updated RSS settings");
-		
+
 		//String displayStyle = ParamUtil.getString(actionRequest, "preferences--displayStyle--");
 		//portletPreferences.setValue("displayStyle", displayStyle);
 		//portletPreferences.store();
-		
+
 		/*
 		int defaultDuration = ParamUtil.getInteger(
 			actionRequest, "defaultDuration");

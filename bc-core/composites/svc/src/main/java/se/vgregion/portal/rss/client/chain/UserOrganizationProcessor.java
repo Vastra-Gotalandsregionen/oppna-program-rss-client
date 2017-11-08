@@ -40,8 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.liferay.portal.model.Organization;
-import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
 
 /**
  * @author Anders Asplund - Callista Enterprise
@@ -60,7 +60,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     /**
      * Constructor for UserOrganizationProcessor.
-     * 
+     *
      * @param organizationLocalService
      *            Liferay service
      */
@@ -91,7 +91,7 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
 
     /**
      * Load the replace value map.
-     * 
+     *
      * @param mapFile
      *            - File reference to the replace value property file.
      * @throws ConfigurationException

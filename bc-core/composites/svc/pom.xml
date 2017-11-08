@@ -78,20 +78,21 @@
             <version>1.6</version>
         </dependency>
 
-        <!--dependency>
-            <groupId>com.liferay.portal</groupId>
-            <artifactId>portal-kernel</artifactId>
-        </dependency-->
         <dependency>
             <groupId>com.liferay.portal</groupId>
-            <artifactId>portal-service</artifactId>
+            <artifactId>com.liferay.portal.kernel</artifactId>
             <scope>provided</scope>
+            <version>2.46.0</version>
         </dependency>
+
+        <!--
         <dependency>
             <groupId>com.liferay.portal</groupId>
             <artifactId>util-java</artifactId>
             <scope>provided</scope>
         </dependency>
+        -->
+
         <dependency>
             <groupId>easyconf</groupId>
             <artifactId>easyconf</artifactId>
@@ -125,12 +126,6 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>1.6.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.liferay.portal</groupId>
-            <artifactId>portal-impl</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -8,7 +8,7 @@ import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
-import com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateConstants;
+import com.liferay.portlet.display.template.PortletDisplayTemplateConstants;
 
 public class RssPortletDisplayTemplateHandler extends BasePortletDisplayTemplateHandler {
 
@@ -43,11 +43,11 @@ public class RssPortletDisplayTemplateHandler extends BasePortletDisplayTemplate
 		templateVariableGroup.addCollectionVariable(
 			"entries", List.class, PortletDisplayTemplateConstants.ENTRIES,
 			"entry", FeedEntryBean.class, "curEntry", "title");
-		
+
 		templateVariableGroup.addVariable("feedTitle", String.class, "feedTitle");
 
 		return templateVariableGroups;
 	}
-	
-	
+
+
 }
