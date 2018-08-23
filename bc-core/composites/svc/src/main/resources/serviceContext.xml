@@ -23,7 +23,7 @@
   <bean id="feedFetcher" class="se.vgregion.portal.rss.client.service.CustomHttpURLFeedFetcher" />
   <bean id="blackList" class="se.vgregion.portal.rss.blacklist.ConcurrentBlackList" />
 
-  <bean id="organizationLocalService" class="com.liferay.portal.service.OrganizationLocalServiceUtil"
+  <bean id="organizationLocalService" class="com.liferay.portal.kernel.service.OrganizationLocalServiceUtil"
     factory-method="getService" lazy-init="true" />
 
   <ehcache:annotation-driven cache-manager="cacheManager" />

@@ -58,6 +58,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -81,8 +82,8 @@
         <dependency>
             <groupId>com.liferay.portal</groupId>
             <artifactId>com.liferay.portal.kernel</artifactId>
-            <scope>provided</scope>
             <version>2.46.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!--

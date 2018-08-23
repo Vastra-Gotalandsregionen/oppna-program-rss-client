@@ -40,10 +40,21 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>rss-client-bc-core-composite-svc</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+         <exclusion>
+           <groupId>xerces</groupId>
+           <artifactId>xercesImpl</artifactId>
+         </exclusion>
+         <exclusion>
+           <groupId>xml-apis</groupId>
+           <artifactId>xml-apis</artifactId>
+         </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.portlet</groupId>
       <artifactId>portlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
@@ -100,6 +111,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>biz.aQute.bnd</groupId>
