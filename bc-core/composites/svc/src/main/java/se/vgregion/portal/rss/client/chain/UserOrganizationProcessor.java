@@ -24,6 +24,7 @@ package se.vgregion.portal.rss.client.chain;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -92,19 +93,19 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
     /**
      * Load the replace value map.
      *
-     * @param mapFile
+     * @param mapResourceURL
      *            - File reference to the replace value property file.
      * @throws ConfigurationException
      *             an ConfigurationException has occurred
      * @throws UnsupportedEncodingException
      *             an UnsupportedEncodingException has occurred
      */
-    public void setReplaceValues(File mapFile) throws ConfigurationException, UnsupportedEncodingException {
+    public void setReplaceValues(URL mapResourceURL) throws ConfigurationException, UnsupportedEncodingException {
         try {
-            LOGGER.debug("Map: {}", mapFile.getAbsolutePath());
+            LOGGER.debug("Map: {}", mapResourceURL.getPath());
             PropertiesConfiguration pc = new PropertiesConfiguration();
             pc.setEncoding(ENCODING);
-            pc.load(mapFile);
+            pc.load(mapResourceURL);
 
             replaceValues = new HashMap<String, String>();
             for (@SuppressWarnings("unchecked")
@@ -121,18 +122,18 @@ public class UserOrganizationProcessor extends StringTemplatePlaceholderProcesso
             }
         } catch (UnsupportedEncodingException e) {
             String msg = "Encoding failure in mapping";
-            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapFile) + "]", e);
+            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapResourceURL) + "]", e);
         } catch (ConfigurationException e) {
             String msg = "Failed to load replaceValues mapping";
-            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapFile) + "]", e);
+            LOGGER.error(msg + " file [" + mapFilePathErrorMessage(mapResourceURL) + "]", e);
         }
     }
 
-    private String mapFilePathErrorMessage(File mapFilePath) {
+    private String mapFilePathErrorMessage(URL mapFilePath) {
         if (mapFilePath == null) {
             return "No mapFile has been configured";
         } else {
-            return mapFilePath.getAbsolutePath();
+            return mapFilePath.getPath();
         }
     }
 

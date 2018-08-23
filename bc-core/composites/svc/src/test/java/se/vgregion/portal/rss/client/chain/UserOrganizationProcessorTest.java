@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,7 @@ public class UserOrganizationProcessorTest {
     UserOrganizationProcessor proc;
 
     File propertiesFile;
+    URL propertiesFileURL;
     Writer w;
 
     @Mock
@@ -54,6 +56,7 @@ public class UserOrganizationProcessorTest {
 
         propertiesFile = File.createTempFile("tmp", ".properties");
         w = new OutputStreamWriter(new FileOutputStream(propertiesFile), "UTF-8");
+        propertiesFileURL = propertiesFile.toURI().toURL();
 
         proc = new UserOrganizationProcessor(organizationLocalServiceMock);
     }
@@ -71,7 +74,7 @@ public class UserOrganizationProcessorTest {
 
         writeToFile(key, value);
 
-        proc.setReplaceValues(propertiesFile);
+        proc.setReplaceValues(propertiesFileURL);
         Map<String, String> result = proc.getReplaceValues();
 
         assertEquals(1, result.size());
@@ -87,7 +90,7 @@ public class UserOrganizationProcessorTest {
 
         writeToFile(key, value);
 
-        proc.setReplaceValues(propertiesFile);
+        proc.setReplaceValues(propertiesFileURL);
         Map<String, String> result = proc.getReplaceValues();
 
         assertEquals(1, result.size());
@@ -103,7 +106,7 @@ public class UserOrganizationProcessorTest {
 
         writeToFile(key, value);
 
-        proc.setReplaceValues(propertiesFile);
+        proc.setReplaceValues(propertiesFileURL);
         Map<String, String> result = proc.getReplaceValues();
 
         assertEquals(1, result.size());
@@ -119,7 +122,7 @@ public class UserOrganizationProcessorTest {
 
         writeToFile(key, value);
 
-        proc.setReplaceValues(propertiesFile);
+        proc.setReplaceValues(propertiesFileURL);
         Map<String, String> result = proc.getReplaceValues();
 
         assertEquals(1, result.size());
@@ -135,7 +138,7 @@ public class UserOrganizationProcessorTest {
 
         writeToFile(key, value);
 
-        proc.setReplaceValues(propertiesFile);
+        proc.setReplaceValues(propertiesFileURL);
         Map<String, String> result = proc.getReplaceValues();
 
         assertEquals(0, result.size());
