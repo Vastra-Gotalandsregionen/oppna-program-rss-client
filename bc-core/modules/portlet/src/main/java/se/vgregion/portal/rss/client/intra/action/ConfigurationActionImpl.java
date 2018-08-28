@@ -2,10 +2,13 @@ package se.vgregion.portal.rss.client.intra.action;
 
 import java.util.Map;
 
+import com.liferay.portal.kernel.model.PortletPreferencesWrapper;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -16,6 +19,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +49,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		long scopeGroupId = PortalUtil.getScopeGroupId(httpServletRequest);
 
-
-		PortletPreferences portletPreferences = PortalUtil.getPreferences(httpServletRequest);
+		PortletPreferences portletPreferences = getPreferences(httpServletRequest);
 
 		String displayStyle = GetterUtil.getString(portletPreferences.getValue("displayStyle", ""));
 		long displayStyleGroupId = GetterUtil.getLong(portletPreferences.getValue("displayStyleGroupId", null), scopeGroupId);
@@ -66,7 +69,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		httpServletRequest.setAttribute("numberOfItems1", numberOfItems1);
 		httpServletRequest.setAttribute("rssFeedtitle1", rssFeedtitle1);
 		httpServletRequest.setAttribute("rssFeedLink1", rssFeedLink1);
-		httpServletRequest.setAttribute("templateHandlerClassNameId", templateHandlerClassNameId);
+		httpServletRequest.setAttribute("templateHandlerClassName", templateHandler.getClassName());
 
 
 
@@ -165,5 +168,18 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		portletPreferences.store();
 		*/
 	}
+	
+	private PortletPreferences getPreferences(HttpServletRequest request) {
+        PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+            JavaConstants.JAVAX_PORTLET_REQUEST);
+
+        PortletPreferences portletPreferences = null;
+
+        if (portletRequest != null) {
+            portletPreferences = portletRequest.getPreferences();
+        }
+
+        return portletPreferences;
+}
 
 }

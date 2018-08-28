@@ -31,6 +31,7 @@
 
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 <%@ page import="com.liferay.portlet.display.template.PortletDisplayTemplateUtil" %>
+<%@ page import="com.liferay.dynamic.data.mapping.model.DDMTemplate" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -49,7 +50,7 @@
 
 <c:choose>
     <c:when test="${portletDisplayDDMTemplateId > 0 }">
-		<%= PortletDisplayTemplateUtil.renderDDMTemplate(pageContext, portletDisplayDDMTemplateId, rssEntries, displayTemplateContextObjects) %>
+		<%= PortletDisplayTemplateUtil.renderDDMTemplate(request, response, portletDisplayDDMTemplateId, rssEntries, displayTemplateContextObjects) %>
     </c:when>
     <c:otherwise>
 		<liferay-util:include page="/WEB-INF/jsp/intra/view_default.jsp" servletContext="<%= application %>" />
