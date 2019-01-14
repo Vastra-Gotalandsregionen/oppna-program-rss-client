@@ -30,8 +30,8 @@
 <%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
-<%@ page import="com.liferay.portlet.display.template.PortletDisplayTemplateUtil" %>
-<%@ page import="com.liferay.dynamic.data.mapping.model.DDMTemplate" %>
+<%@ page import="com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManagerUtil" %>
+<%@ page import="com.liferay.dynamic.data.mapping.kernel.DDMTemplate" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -41,16 +41,16 @@
 <liferay-theme:defineObjects />
 
 <%
-	long portletDisplayDDMTemplateId = (Long)request.getAttribute("portletDisplayDDMTemplateId");
-
+    DDMTemplate portletDisplayDDMTemplate = (DDMTemplate)request.getAttribute("portletDisplayDDMTemplate");
+    
 	Map<String, Object> displayTemplateContextObjects = (HashMap<String, Object>)request.getAttribute("displayTemplateContextObjects");
 
 	List<FeedEntryBean> rssEntries = (List<FeedEntryBean>)request.getAttribute("rssEntries");
 %>
 
 <c:choose>
-    <c:when test="${portletDisplayDDMTemplateId > 0 }">
-		<%= PortletDisplayTemplateUtil.renderDDMTemplate(request, response, portletDisplayDDMTemplateId, rssEntries, displayTemplateContextObjects) %>
+    <c:when test="${portletDisplayDDMTemplate != null }">
+		<%= PortletDisplayTemplateManagerUtil.renderDDMTemplate(request, response, portletDisplayDDMTemplate, rssEntries, displayTemplateContextObjects) %>
     </c:when>
     <c:otherwise>
 		<liferay-util:include page="/WEB-INF/jsp/intra/view_default.jsp" servletContext="<%= application %>" />

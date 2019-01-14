@@ -27,9 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.dynamic.data.mapping.kernel.DDMTemplate;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManagerUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portlet.display.template.PortletDisplayTemplateUtil;
 
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 import se.vgregion.portal.rss.client.beans.PortletPreferencesWrapperBean;
@@ -115,11 +119,12 @@ public class RssIntraViewController extends RssViewControllerBase {
 		Map<String, Object> displayTemplateContextObjects = new HashMap<String, Object>();
 		displayTemplateContextObjects.put("feedTitle", feedTitle);
 
-		long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(
-				displayStyleGroupId, displayStyle);
+		long febClassNameId = PortalUtil.getClassNameId(FeedEntryBean.class);
+		DDMTemplate portletDisplayDDMTemplate = PortletDisplayTemplateManagerUtil.getDDMTemplate(displayStyleGroupId, 
+		        febClassNameId, displayStyle, false);
 
         model.addAttribute("feedTitle", feedTitle);
-        model.addAttribute("portletDisplayDDMTemplateId", portletDisplayDDMTemplateId);
+        model.addAttribute("portletDisplayDDMTemplate", portletDisplayDDMTemplate);
         model.addAttribute("displayTemplateContextObjects", displayTemplateContextObjects);
         model.addAttribute("rssEntries", sortedRssEntries);
 

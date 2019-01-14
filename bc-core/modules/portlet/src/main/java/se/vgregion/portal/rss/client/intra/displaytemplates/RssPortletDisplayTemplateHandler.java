@@ -7,8 +7,8 @@ import java.util.Map;
 import se.vgregion.portal.rss.client.beans.FeedEntryBean;
 
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
+import com.liferay.portlet.display.template.constants.PortletDisplayTemplateConstants;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
-import com.liferay.portlet.display.template.PortletDisplayTemplateConstants;
 
 public class RssPortletDisplayTemplateHandler extends BasePortletDisplayTemplateHandler {
 

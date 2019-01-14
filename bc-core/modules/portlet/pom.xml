@@ -135,19 +135,25 @@
         <groupId>com.liferay.portal</groupId>
         <artifactId>com.liferay.portal.kernel</artifactId>
         <scope>provided</scope>
-        <version>2.46.0</version>
+        <version>3.26.0</version>
     </dependency>
 
     <dependency>
         <groupId>com.liferay</groupId>
-        <artifactId>com.liferay.portlet.display.template</artifactId>
-        <version>2.0.7</version>
+        <artifactId>com.liferay.portlet.display.template.api</artifactId>
+        <version>1.0.3</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.liferay</groupId>
+        <artifactId>com.liferay.portlet.display.template.impl</artifactId>
+        <version>1.0.6</version>
         <scope>provided</scope>
     </dependency>
     <dependency>
 	    <groupId>com.liferay</groupId>
 	    <artifactId>com.liferay.dynamic.data.mapping.api</artifactId>
-	    <version>3.0.0</version>
+	    <version>4.6.4</version>
 	    <scope>provided</scope>
 	</dependency>
     
