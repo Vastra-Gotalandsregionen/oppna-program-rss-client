@@ -94,12 +94,37 @@ public class RssViewControllerBase {
 
         if (extraInfo != null && !extraInfo.isEmpty()) {
             for (FeedEntryBean feb : feedEntries) {
+
                 Map<String, String> map = extraInfo.get(i);
-                feb.setStartDate(map.get("startdate"));
-                feb.setStartTime(map.get("starttime"));
-                feb.setEndTime(map.get("endtime"));
-                feb.setEndDate(map.get("enddate"));
-                feb.setLocation(map.get("location"));
+
+                String startDate = map.get("startdate");
+                if(startDate == null || startDate.isEmpty()) {
+                    startDate = map.get("rk:startdate");
+                }
+
+                String startTime = map.get("starttime");
+                if(startTime == null || startTime.isEmpty()) {
+                    startTime = map.get("rk:starttime");
+                }
+
+
+                String endDate = map.get("enddate");
+                if(endDate == null || endDate.isEmpty()) {
+                    endDate = map.get("rk:enddate");
+                }
+
+                String endTime = map.get("endtime");
+                if(endTime == null || endTime.isEmpty()) {
+                    endTime = map.get("rk:endtime");
+                }
+
+                String location = map.get("location");
+
+                feb.setStartDate(startDate);
+                feb.setStartTime(startTime);
+                feb.setEndDate(endDate);
+                feb.setEndTime(endTime);
+                feb.setLocation(location);
                 i++;
             }
             extraInfo.clear();
