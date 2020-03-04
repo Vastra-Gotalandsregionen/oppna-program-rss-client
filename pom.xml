@@ -61,8 +61,8 @@
     <!--<liferay.version>6.2.2</liferay.version>-->
     <!-- Enterprise Edition -->
     <liferay.version>7.2.0</liferay.version>
-    <compileSource>1.7</compileSource>
-    <compileTarget>1.7</compileTarget>
+    <compileSource>11</compileSource>
+    <compileTarget>11</compileTarget>
   </properties>
 
 </project>

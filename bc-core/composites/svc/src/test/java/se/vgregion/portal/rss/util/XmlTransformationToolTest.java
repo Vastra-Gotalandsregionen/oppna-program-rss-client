@@ -10,10 +10,12 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
@@ -34,6 +36,25 @@ public class XmlTransformationToolTest {
         verifyDates(resourceAsStream, inputStream);
 
         assertNotSame(resourceAsStream, inputStream);
+    }
+
+    @Test
+    public void testParseDates() throws ParseException {
+        SimpleDateFormat SWEDISH_FORMAT_FOR_DATEFORMAT_SYMBOLS = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+                new Locale("sv", "SE"));
+
+        SimpleDateFormat SWEDISH_FORMAT = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z",
+                SWEDISH_FORMAT_FOR_DATEFORMAT_SYMBOLS.getDateFormatSymbols());
+
+        DateFormatSymbols dateFormatSymbols = SWEDISH_FORMAT.getDateFormatSymbols();
+
+        String[] newShortWeekdays = {"", "sö", "må", "ti", "on", "to", "fr", "lö"};
+        String[] newShortMonths = {"jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec", ""};
+        dateFormatSymbols.setShortWeekdays(newShortWeekdays);
+        dateFormatSymbols.setShortMonths(newShortMonths);
+        SWEDISH_FORMAT.setDateFormatSymbols(dateFormatSymbols);
+
+        SWEDISH_FORMAT.parse("on, 06 dec 2008 00:00:00 CEST");
     }
 
     @Test
@@ -72,7 +93,7 @@ public class XmlTransformationToolTest {
 
         // Given
         String englishDate = "Fri, 14 May 2010 13:22:11 GMT";
-        String swedishDate = "fr, 14 maj 2010 13:22:11 GMT";
+        String swedishDate = "fre, 14 maj 2010 13:22:11 GMT";
         Date originalDate = XmlTransformationTool.ENGLISH_FORMAT.parse(englishDate);
 
         // When

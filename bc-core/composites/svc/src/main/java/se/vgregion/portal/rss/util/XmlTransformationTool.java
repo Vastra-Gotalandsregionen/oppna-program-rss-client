@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,8 +27,22 @@ public final class XmlTransformationTool {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlTransformationTool.class);
 
-    static final SimpleDateFormat SWEDISH_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
-            new Locale("sv", "SE"));
+    // To be backwards compatible independently of what the system property java.locale.providers is set to.
+    static String[] newShortMonths = {"jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec", ""};
+    static String[] newShortWeekdays = {"", "sö", "må", "ti", "on", "to", "fr", "lö"};
+
+    static final SimpleDateFormat SWEDISH_FORMAT;
+
+    static {
+        DateFormatSymbols dateFormatSymbols = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
+                new Locale("sv", "SE")).getDateFormatSymbols();
+
+        dateFormatSymbols.setShortWeekdays(newShortWeekdays);
+        dateFormatSymbols.setShortMonths(newShortMonths);
+
+        SWEDISH_FORMAT = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z", dateFormatSymbols);
+    }
+
     static final SimpleDateFormat ENGLISH_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
     static final List<DateTimeFormatter> OTHER_POSSIBLE_FORMATS = Arrays.asList(
@@ -140,6 +155,27 @@ public final class XmlTransformationTool {
 
                     }
                 }
+
+                // Failover with other short week day names.
+                DateFormatSymbols dateFormatSymbols = SWEDISH_FORMAT.getDateFormatSymbols();
+                String[] originalShortWeekdays = dateFormatSymbols.getShortWeekdays();
+                if (originalShortWeekdays[1].length() == 3) {
+                    String[] newShortWeekdays = {"", "sö", "må", "ti", "on", "to", "fr", "lö"};
+                    dateFormatSymbols.setShortWeekdays(newShortWeekdays);
+                    SWEDISH_FORMAT.setDateFormatSymbols(dateFormatSymbols);
+                } else if (originalShortWeekdays[1].length() == 2) {
+                    String[] newShortWeekdays = {"", "sön", "mån", "tis", "ons", "tor", "fre", "lör"};
+                    dateFormatSymbols.setShortWeekdays(newShortWeekdays);
+                    SWEDISH_FORMAT.setDateFormatSymbols(dateFormatSymbols);
+                }
+
+                try {
+                    Date dateTime = SWEDISH_FORMAT.parse(swedishDate);
+                    // No exception means we could parse it.
+                    String englishDate = ENGLISH_FORMAT.format(dateTime);
+                    return englishDate;
+                } catch (ParseException e2) {}
+
                 LOGGER.warn("Couldn't parse \"" + swedishDate + "\" in any format.");
                 // No format worked. Return empty string.
                 return "";
