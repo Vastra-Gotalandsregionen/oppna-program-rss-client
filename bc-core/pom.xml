@@ -21,6 +21,6 @@
   </modules>
 
   <properties>
-    <spring.fw.version>3.1.1.RELEASE</spring.fw.version>
+    <spring.fw.version>4.3.26.RELEASE</spring.fw.version>
   </properties>
 </project>
